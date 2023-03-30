@@ -1,0 +1,6 @@
+D:\Programm\Projects\AutoCad_dll\Size point\Size_Separation_Point\bin\Debug\Size_Separation_Point.dll
+D:\Programm\Projects\AutoCad_dll\Size point\Size_Separation_Point\bin\Debug\Size_Separation_Point.pdb
+D:\Programm\Projects\AutoCad_dll\Size point\Size_Separation_Point\obj\Debug\Size_Separation_Point.csproj.AssemblyReference.cache
+D:\Programm\Projects\AutoCad_dll\Size point\Size_Separation_Point\obj\Debug\Size_Separation_Point.csproj.CoreCompileInputs.cache
+D:\Programm\Projects\AutoCad_dll\Size point\Size_Separation_Point\obj\Debug\Size_Separation_Point.dll
+D:\Programm\Projects\AutoCad_dll\Size point\Size_Separation_Point\obj\Debug\Size_Separation_Point.pdb
