@@ -32,23 +32,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="accoremgd">
-      <HintPath>..\..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\accoremgd.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\accoremgd.dll</HintPath>
     </Reference>
     <Reference Include="acdbmgd">
-      <HintPath>..\..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\acdbmgd.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\acdbmgd.dll</HintPath>
     </Reference>
     <Reference Include="acmgd">
-      <HintPath>..\..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\acmgd.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\acmgd.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.AutoCAD.Interop">
-      <HintPath>..\..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\Autodesk.AutoCAD.Interop.dll</HintPath>
+      <HintPath>..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\Autodesk.AutoCAD.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Autodesk.AutoCAD.Interop.Common">
-      <HintPath>..\..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
+      <HintPath>..\..\..\AutoCad 2016\ACad_setup\AutoCAD 2016\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
