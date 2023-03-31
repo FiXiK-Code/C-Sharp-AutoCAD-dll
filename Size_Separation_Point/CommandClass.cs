@@ -2,11 +2,8 @@
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.Interop;
-using Autodesk.AutoCAD.Interop.Common;
 using Autodesk.AutoCAD.Runtime;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Size_Separation_Point
 {
@@ -15,7 +12,6 @@ namespace Size_Separation_Point
         [CommandMethod("TestCom")]
         public void RunCommand()
         {
-
             //получение списка слоев
             Document adoc = Application.DocumentManager.MdiActiveDocument;
 
@@ -30,14 +26,13 @@ namespace Size_Separation_Point
             using (Transaction tr = db.TransactionManager.StartTransaction())
             {
                 LayerTable layerTable = tr.GetObject(layerTableId, OpenMode.ForRead) as LayerTable;
+
                 foreach (ObjectId layerId in layerTable)
                 {
                     LayerTableRecord LTRecord = tr.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
 
                     LayerNames.Add(LTRecord.Name);
                 }
-
-
 
                 tr.Commit();
             }
@@ -47,18 +42,14 @@ namespace Size_Separation_Point
             {
                 ed.WriteMessage("\n" + layerName);
             }
-
-
             //рисование линии по двум точкам
             
-
             while (true)
             {
                 PromptPointResult pt1 = adoc.Editor.GetPoint("\nУкажите первую точку: ");
                 Point3d startPoint = pt1.Value;
                 if (pt1.Status == PromptStatus.Cancel) return;
                 
-
                 PromptPointResult pt2 = adoc.Editor.GetPoint("\nУкажите вторую точку: ");
                 Point3d endPoint = pt2.Value;
                 if (pt2.Status == PromptStatus.Cancel) return;
@@ -68,11 +59,9 @@ namespace Size_Separation_Point
                     BlockTable blockTable;
                     BlockTableRecord blockTableRes;
 
-
                     blockTable = tr.GetObject(db.BlockTableId, OpenMode.ForNotify) as BlockTable;
 
                     blockTableRes = tr.GetObject(blockTable[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
-
 
                     using (Line acLine = new Line(startPoint,endPoint))
                     {
@@ -89,16 +78,10 @@ namespace Size_Separation_Point
                         blockTableRes.AppendEntity(newDim);
                         tr.AddNewlyCreatedDBObject(newDim, true);
                     }
-
-
-
-                        tr.Commit();
+                    
+                    tr.Commit();
                 }
-
-
             }
-
-
         }
 
         [CommandMethod("SeparationPoint")]
@@ -123,27 +106,20 @@ namespace Size_Separation_Point
                     return;
                 }
 
-
-
                 using (Transaction tr = db.TransactionManager.StartTransaction())
                 {
                     AlignedDimension obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as AlignedDimension;
                     BlockTable blockTable = tr.GetObject(db.BlockTableId, OpenMode.ForNotify) as BlockTable;
                     BlockTableRecord blockTableRes = tr.GetObject(blockTable[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
-
-
                     Point3d startPoint = obj.XLine1Point;
                     Point3d endPoint = obj.XLine2Point;
                     Point3d dimPoint = obj.DimLinePoint;
-
-
 
                     PromptPointResult pt1 = adoc.Editor.GetPoint("\nУкажите точку разделения: ");
                     Point3d sepPoint = pt1.Value;
                     ed.WriteMessage("\nString result: " + pt1.StringResult);
                     if (pt1.Status == PromptStatus.Cancel) return;
-
 
                     sepPoint = GetProjectionOnLine(sepPoint, startPoint, endPoint);
                     if (sepPoint == new Point3d())
@@ -171,8 +147,6 @@ namespace Size_Separation_Point
                     tr.Commit();
                 }
             }
-            
-
         }
 
         public static Point3d GetProjectionOnLine(Point3d point, Point3d startPoint, Point3d endPoint)
