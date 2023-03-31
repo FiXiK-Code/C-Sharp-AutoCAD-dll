@@ -6,26 +6,7 @@ D:\Programm\Projects\AutoCad_dll\Size point\Size_Separation_Point\obj\Debug\Size
 D:\Programm\Projects\AutoCad_dll\Size point\Size_Separation_Point\obj\Debug\Size_Separation_Point.pdb
 D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\Size_Separation_Point.dll
 D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\Size_Separation_Point.pdb
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\accoremgd.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\acdbmgd.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\acmgd.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\AdUiPalettes.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\AcDx.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\AcDxPublishUi.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\AdWindows.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\AcMr.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\AcWindows.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\AcTcMgd.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\AcCui.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\AcMNUParser.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\ru-RU\acdbmgd.resources.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\ru-RU\AcDx.resources.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\ru-RU\AcDxPublishUi.resources.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\ru-RU\AdWindows.resources.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\ru-RU\AcMr.resources.dll
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\bin\Debug\ru-RU\AcWindows.resources.dll
 D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\obj\Debug\Size_Separation_Point.csproj.AssemblyReference.cache
 D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\obj\Debug\Size_Separation_Point.csproj.CoreCompileInputs.cache
-D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\obj\Debug\Size_Separation_Point.csproj.CopyComplete
 D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\obj\Debug\Size_Separation_Point.dll
 D:\Programm\Projects\AutoCad_dll\Size_Separation_Point\obj\Debug\Size_Separation_Point.pdb
