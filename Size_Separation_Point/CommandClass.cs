@@ -18,17 +18,14 @@ namespace Size_Separation_Point
             while (true)
             {
                 PromptEntityResult result = ed.GetEntity("\nВыберите размер: ");
-                if (result.Status == PromptStatus.Cancel)
-                {
-                    return;
-                }
+                if (result.Status == PromptStatus.Cancel) return;
 
                 ObjectId enId = result.ObjectId;
 
                 if (!enId.ObjectClass.Name.Equals("AcDbAlignedDimension"))
                 {
                     ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
-                    return;
+                    continue;
                 }
 
                 using (Transaction tr = db.TransactionManager.StartTransaction())
@@ -43,7 +40,6 @@ namespace Size_Separation_Point
 
                     PromptPointResult pt1 = adoc.Editor.GetPoint("\nУкажите точку разделения: ");
                     Point3d sepPoint = pt1.Value;
-                    ed.WriteMessage("\nString result: " + pt1.StringResult);
                     if (pt1.Status == PromptStatus.Cancel) return;
 
                     sepPoint = GetProjectionOnLine(sepPoint, startPoint, endPoint);
