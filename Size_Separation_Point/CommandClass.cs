@@ -3,12 +3,16 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
-using System.Collections.Generic;
+using Autodesk.AutoCAD.Windows;
+using Autodesk.Windows;
+using System;
+using System.Windows.Input;
 
 namespace Size_Separation_Point
 {
     public class CommandClass
     {
+
         [CommandMethod("SeparationPoint")]
         public void RunCommand2()
         {
@@ -86,5 +90,93 @@ namespace Size_Separation_Point
 
             return startPoint + projectionOnDirection;
         }
+
     }
+    public class YourPluginClass : IExtensionApplication
+    {
+
+        // создание новой панели
+        RibbonPanelSource ribbonPanelSource = new RibbonPanelSource();
+        RibbonPanel ribbonPanel = new RibbonPanel();
+
+        // создание новой кнопки
+        RibbonButton ribbonButton = new RibbonButton();
+
+        public void Initialize()
+        {
+            
+
+            // установка свойств панели
+            ribbonPanelSource.Title = "Разделение размера";
+            ribbonPanelSource.Id = "ID_SepPoint_Panel";
+            ribbonPanelSource.Title = "Разделение размера";
+            // добавление панели на вкладку Главная (Home)
+            Document adoc = Application.DocumentManager.MdiActiveDocument;
+            Editor ed = adoc.Editor;
+            RibbonControl ribbon = Autodesk.Windows.ComponentManager.Ribbon;
+            
+            RibbonTab homeTab = ribbon.FindTab("ACAD.ID_TabHome");
+            
+            // установка свойств кнопки
+            ribbonButton.Id = "Id_SepPoint";
+            ribbonButton.ToolTip = "Разделение размера на две части в указанной точке.";
+
+            // добавление обработчика события при нажатии на кнопку
+            ribbonButton.CommandParameter = "SeparationPoint";
+            ribbonButton.CommandHandler = new YourCommandHandler();
+
+            // добавление кнопки на созданную панель
+            ribbonButton.Text = "Разделение";
+            try
+            {
+                ribbonPanelSource.Items.Add(ribbonButton);
+            }
+            catch (System.Exception ex) { ed.WriteMessage(ex.Message + "\n Error on ribbonPanelSource.Items.Add(ribbonButton);"); return; }
+
+            try
+            {
+                ribbonPanel.Source = ribbonPanelSource;
+            }
+            catch (System.Exception ex) { ed.WriteMessage(ex.Message + "\n Error on ribbonPanel.Source = ribbonPanelSource;"); return; }
+
+            try
+            {
+                homeTab.Panels.Add(ribbonPanel);
+            }
+            catch (System.Exception ex) { ed.WriteMessage(ex.Message + "\n Error on homeTab.Panels.Add(ribbonPanel);"); return; }
+
+        }
+
+        public void Terminate()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class YourCommandHandler : ICommand
+    {
+        public event EventHandler CanExecuteChanged;
+
+        public void Execute(object parameter)
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            if (parameter is RibbonButton)
+            {
+                // Просто берем команду, записанную в CommandParameter кнопки
+                // и выпоняем её используя функцию SendStringToExecute
+                RibbonButton button = parameter as RibbonButton;
+                Application.DocumentManager.MdiActiveDocument.SendStringToExecute(
+                    button.CommandParameter + " ", true, false, true);
+            }
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+    }
+
+
 }
+
