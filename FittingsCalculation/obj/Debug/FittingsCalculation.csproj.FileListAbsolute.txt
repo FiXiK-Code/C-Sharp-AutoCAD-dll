@@ -1,0 +1,5 @@
+D:\Programm\Projects\AutoCad_dll\FittingsCalculation\obj\Debug\FittingsCalculation.csproj.AssemblyReference.cache
+D:\Programm\Projects\AutoCad_dll\FittingsCalculation\obj\Debug\ModalWinow.g.cs
+D:\Programm\Projects\AutoCad_dll\FittingsCalculation\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Programm\Projects\AutoCad_dll\FittingsCalculation\obj\Debug\FittingsCalculation_MarkupCompile.cache
+D:\Programm\Projects\AutoCad_dll\FittingsCalculation\obj\Debug\FittingsCalculation_MarkupCompile.lref
