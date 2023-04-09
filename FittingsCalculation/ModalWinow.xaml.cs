@@ -15,14 +15,13 @@ using System.Windows.Shapes;
 
 namespace FittingsCalculation
 {
-    /// <summary>
-    /// Логика взаимодействия для ModalWinow.xaml
-    /// </summary>
-    public partial class ModalWinow : UserControl
+    public partial class ModalWinow
     {
         public ModalWinow()
         {
             InitializeComponent();
         }
+
+
     }
 }
