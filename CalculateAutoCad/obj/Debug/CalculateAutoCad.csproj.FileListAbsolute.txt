@@ -1,0 +1,8 @@
+D:\Programm\Projects\AutoCad_dll\CalculateAutoCad\obj\Debug\CalculateAutoCad.csproj.AssemblyReference.cache
+D:\Programm\Projects\AutoCad_dll\CalculateAutoCad\obj\Debug\FittingsCalculation.dll
+D:\Programm\Projects\AutoCad_dll\CalculateAutoCad\obj\Debug\FittingsCalculation.pdb
+D:\Programm\Projects\AutoCad_dll\CalculateAutoCad\obj\Debug\ModalWin.baml
+D:\Programm\Projects\AutoCad_dll\CalculateAutoCad\obj\Debug\ModalWin.g.cs
+D:\Programm\Projects\AutoCad_dll\CalculateAutoCad\obj\Debug\FittingsCalculation_MarkupCompile.cache
+D:\Programm\Projects\AutoCad_dll\CalculateAutoCad\obj\Debug\FittingsCalculation.g.resources
+D:\Programm\Projects\AutoCad_dll\CalculateAutoCad\obj\Debug\CalculateAutoCad.csproj.CoreCompileInputs.cache
