@@ -10,6 +10,7 @@ namespace FittingsCalculation
     {
         public static double CalcMass(bool pm, string gost, double diametr, double plSech, double mass1PM, string classFitting, double length)
         {
+
             switch (pm)
             {
                 case true:

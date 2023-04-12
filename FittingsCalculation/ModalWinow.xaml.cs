@@ -19,9 +19,12 @@ namespace FittingsCalculation
     {
         public ModalWinow()
         {
-            InitializeComponent();
+            InitializeComponent();   
         }
 
-
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            CommandClass.RunCommand2();
+        }
     }
 }

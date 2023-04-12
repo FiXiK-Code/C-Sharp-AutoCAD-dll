@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FittingsCalculation"
         WindowStyle="ToolWindow"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight" Loaded="Window_Loaded">
     <StackPanel Orientation="Vertical">
         
         <!--Верняя панель ( название кнопка ext)-->
@@ -22,12 +22,41 @@
                 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Норм. документ</TextBlock>
                 <ComboBox Margin="2" Height="20">
-                    <TextBlock Text="ГОСТ"/>
+                    <TextBlock Text="ГОСТ 5781-82 (устар.)"/>
+                    <TextBlock Text="ГОСТ 34028-2016 (актуал.)"/>
                 </ComboBox>
                 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Диаметр</TextBlock>
                 <ComboBox Margin="2" Height="20">
-                    <TextBlock Text="ГОСТ"/>
+                    <TextBlock Text="4"/>
+                    <TextBlock Text="4.5"/>
+                    <TextBlock Text="5"/>
+                    <TextBlock Text="5.5"/>
+                    <TextBlock Text="6"/>
+                    <TextBlock Text="6.5"/>
+                    <TextBlock Text="7"/>
+                    <TextBlock Text="7.5"/>
+                    <TextBlock Text="8"/>
+                    <TextBlock Text="8.5"/>
+                    <TextBlock Text="9"/>
+                    <TextBlock Text="9.5"/>
+                    <TextBlock Text="10"/>
+                    <TextBlock Text="11"/>
+                    <TextBlock Text="12"/>
+                    <TextBlock Text="13"/>
+                    <TextBlock Text="14"/>
+                    <TextBlock Text="15"/>
+                    <TextBlock Text="16"/>
+                    <TextBlock Text="17"/>
+                    <TextBlock Text="18"/>
+                    <TextBlock Text="19"/>
+                    <TextBlock Text="20"/>
+                    <TextBlock Text="22"/>
+                    <TextBlock Text="25"/>
+                    <TextBlock Text="28"/>
+                    <TextBlock Text="32"/>
+                    <TextBlock Text="36"/>
+                    <TextBlock Text="40"/>
                 </ComboBox>
                 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Площадь сеч., см²</TextBlock>
@@ -37,12 +66,43 @@
                 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Масса 1 п.м, кг</TextBlock>
                 <ComboBox Margin="2" Height="20">
-                    <TextBlock Text="ГОСТ"/>
+                    <TextBlock Text="0.099 кг"/>
+                    <TextBlock Text="0.125 кг"/>
+                    <TextBlock Text="0.154 кг"/>
+                    <TextBlock Text="0.187 кг"/>
+                    <TextBlock Text="0.222 кг"/>
+                    <TextBlock Text="0.395 кг"/>
+                    <TextBlock Text="0.261 кг"/>
+                    <TextBlock Text="0.302 кг"/>
+                    <TextBlock Text="0.347 кг"/>
+                    <TextBlock Text="0.445 кг"/>
+                    <TextBlock Text="0.409 кг"/>
+                    <TextBlock Text="0.556 кг"/>
+                    <TextBlock Text="0.617 кг"/>
+                    <TextBlock Text="0.746 кг"/>
+                    <TextBlock Text="0.888 кг"/>
+                    <TextBlock Text="1.042 кг"/>
+                    <TextBlock Text="1.208 кг"/>
+                    <TextBlock Text="1.387 кг"/>
+                    <TextBlock Text="1.578 кг"/>
+                    <TextBlock Text="1.782 кг"/>
+                    <TextBlock Text="1.998 кг"/>
+                    <TextBlock Text="2.226 кг"/>
+                    <TextBlock Text="2.486 кг"/>
+                    <TextBlock Text="2.984 кг"/>
+                    <TextBlock Text="3.853 кг"/>
+                    <TextBlock Text="4.834 кг"/>
+                    <TextBlock Text="6.313 кг"/>
+                    <TextBlock Text="7.990 кг"/>
+                    <TextBlock Text="9.665 кг"/>
                 </ComboBox>
                 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Класс арматуры</TextBlock>
                 <ComboBox Margin="2" Height="20">
-                    <TextBlock Text="ГОСТ"/>
+                    <TextBlock Text="А-I (А240)"/>
+                    <TextBlock Text="АIII (А400)"/>
+                    <TextBlock Text="А500С"/>
+                    <TextBlock Text="Ат800"/>
                 </ComboBox>
                 
             </StackPanel>
@@ -88,13 +148,22 @@
                                 <TextBlock>При числе стержней:</TextBlock>
                                 <TextBlock>Площадь, см²:</TextBlock>
                                 <TextBlock>При шаге стержней (мм):</TextBlock>
-                                <TextBlock>Площадь, мс²/1м:</TextBlock>
+                                <TextBlock>Площадь, см²/1м:</TextBlock>
                             </StackPanel>
                             
                             <StackPanel>
                                 <ComboBox></ComboBox>
                                 <TextBox></TextBox>
-                                <ComboBox></ComboBox>
+                                <ComboBox>
+                                    <TextBlock Text="100"/>
+                                    <TextBlock Text="125"/>
+                                    <TextBlock Text="150"/>
+                                    <TextBlock Text="200"/>
+                                    <TextBlock Text="250"/>
+                                    <TextBlock Text="300"/>
+                                    <TextBlock Text="350"/>
+                                    <TextBlock Text="400"/>
+                                </ComboBox>
                                 <TextBox></TextBox>
                             </StackPanel>
                             
