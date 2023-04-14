@@ -27,7 +27,7 @@
                 </ComboBox>
                 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Диаметр</TextBlock>
-                <ComboBox Margin="2" Height="20">
+                <ComboBox x:Name="diamComboBox" Margin="2" Height="20" SelectionChanged="diamComboBox_SelectionChanged">
                     <TextBlock Text="4"/>
                     <TextBlock Text="4.5"/>
                     <TextBlock Text="5"/>
@@ -60,12 +60,10 @@
                 </ComboBox>
                 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Площадь сеч., см²</TextBlock>
-                <ComboBox Margin="2" Height="20">
-                    <TextBlock Text="ГОСТ"/>
-                </ComboBox>
-                
+                <TextBox IsEnabled="False" Name="PSechTextBox"/>
+
                 <TextBlock Margin="2" HorizontalAlignment="Center">Масса 1 п.м, кг</TextBlock>
-                <ComboBox Margin="2" Height="20">
+                <ComboBox x:Name="masOnePMComboBox" IsEnabled="False" Margin="2" Height="20">
                     <TextBlock Text="0.099 кг"/>
                     <TextBlock Text="0.125 кг"/>
                     <TextBlock Text="0.154 кг"/>
@@ -117,25 +115,25 @@
 
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock>Длинна, мм:</TextBlock>
-                                <TextBox>1180</TextBox>
-                                <CheckBox>п.м</CheckBox>
-                                <Button>img 1</Button>
-                                <Button>img 2</Button>
+                                <TextBox x:Name="lengthFitting" TextChanged="lengthFitting_TextChanged">1180</TextBox>
+                                <CheckBox x:Name="onePMCheckBox" Click="onePMCheckBox_Click" Cursor="Hand">п.м</CheckBox>
+                                <Button x:Name="sizeBtn" Click="sizeBtn_Click" Cursor="Hand">img 1</Button>
+                                <Button x:Name="polySizeBtn" Click="polySizeBtn_Click" Cursor="Hand">img 2</Button>
                             </StackPanel>
 
                             <TextBlock>РЕЗУЛЬТАТ, КГ</TextBlock>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Width="200"></TextBox>
-                                <Slider MinWidth="60"/>
-                                <TextBox MinWidth="20">3</TextBox>
+                            <StackPanel x:Name="resStackPanel"  Orientation="Horizontal">
+                                <TextBox x:Name="resultTextBox" Width="200" IsEnabled="False"></TextBox>
+                                <Slider IsSnapToTickEnabled="True" TickFrequency="1" x:Name="sliderCountFitting" MinWidth="60" Cursor="Hand" ValueChanged="sliderCountFitting_ValueChanged" SmallChange="1" TickPlacement="TopLeft" Minimum="1"/>
+                                <TextBox x:Name="countFittingTextBox" MinWidth="20" TextChanged="countFittingTextBox_TextChanged">1</TextBox>
                             </StackPanel>
 
-                            <Label HorizontalAlignment="Center" Content="Результат в талицу"/>
-                            <Label HorizontalAlignment="Center" Content="Наименование в таблицу"/>
-                            <Label HorizontalAlignment="Center" Content="Вставить результат и наименование"/>
+                            <Label x:Name="resToTableLink" HorizontalAlignment="Center" Content="Результат в талицу" MouseDown="resToTableLink_MouseDown" Cursor="Hand"/>
+                            <Label x:Name="nameToTableLink" HorizontalAlignment="Center" Content="Наименование в таблицу" MouseDown="nameToTableLink_MouseDown" Cursor="Hand"/>
+                            <Label x:Name="resAndNameToTableLink" HorizontalAlignment="Center" Content="Вставить результат и наименование" MouseDown="resAndNameToTableLink_MouseDown" Cursor="Hand"/>
 
-                            <CheckBox>Добавить символ диаметра (Ø)</CheckBox>
+                            <CheckBox x:Name="addSymbolCheckBox" Click="addSymbolCheckBox_Click" Cursor="Hand">Добавить символ диаметра (Ø)</CheckBox>
 
                         </StackPanel>
                     </TabItem>

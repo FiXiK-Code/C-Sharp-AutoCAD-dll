@@ -8,12 +8,13 @@ namespace FittingsCalculation
 {
     public static class BufferClass
     {
-        public static double lengthFitting { get; set; }
-        public static double massFitting { get; set; }
+        public static string lengthFitting { get; set; }
+        public static string massFitting { get; set; }
         public static string nameFitting { get; set; }
-        public static bool synbol { get; set; } = false;
+        public static string countFitting { get; set; }
+        public static bool synbol { get; set; }
 
-        public static double ploshadFitting { get; set; }
-        public static double ploshadFitting_On_1M { get; set; }
+        public static string ploshadFitting { get; set; }
+        public static string ploshadFitting_On_1M { get; set; }
     }
 }
