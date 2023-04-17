@@ -13,14 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FittingCalculation
+namespace ClaculationPlagin
 {
     /// <summary>
-    /// Логика взаимодействия для ModalWin.xaml
+    /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class ModalWin
+    public partial class MainWindow : UserControl
     {
-        public Modal      InitializeComponent();
+        public MainWindow()
+        {
+            InitializeComponent();
         }
     }
 }
