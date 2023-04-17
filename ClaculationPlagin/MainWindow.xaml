@@ -48,14 +48,14 @@
 
                 <!--Кнопки выборки с чертежа-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="3">
-                    <Button x:Name="PointSizeBtn" Margin="3" >///</Button>
-                    <Button x:Name="PolySizeBtn" Margin="3">///</Button>
-                    <Button x:Name="PointCoordinateBtn" Margin="3">///</Button>
-                    <Button x:Name="PlBtn" Margin="3">///</Button>
-                    <Button x:Name="InputTextBtn" Margin="3">///</Button>
-                    <Button x:Name="InputToolsBtn" Margin="3">///</Button>
-                    <Button x:Name="TableInputBtn" Margin="3">///</Button>
-                    <Button x:Name="SizeInputBtn" Margin="3">///</Button>
+                    <Button x:Name="PointSizeBtn" Margin="3" RenderTransformOrigin="0.511,0.51" Click="PointSizeBtn_Click" >///</Button>
+                    <Button x:Name="PolySizeBtn" Margin="3" RenderTransformOrigin="0.511,0.51" Click="PolySizeBtn_Click">///</Button>
+                    <Button x:Name="PointCoordinateBtn" Margin="3" Click="PointCoordinateBtn_Click">///</Button>
+                    <Button x:Name="PlBtn" Margin="3" Click="PlBtn_Click">///</Button>
+                    <Button x:Name="InputTextBtn" Margin="3" Click="InputTextBtn_Click">///</Button>
+                    <Button x:Name="InputToolsBtn" Margin="3" RenderTransformOrigin="0.511,0.51" Click="InputToolsBtn_Click">///</Button>
+                    <Button x:Name="TableInputBtn" Margin="3" Click="TableInputBtn_Click">///</Button>
+                    <Button x:Name="SizeInputBtn" Margin="3" Click="SizeInputBtn_Click">///</Button>
                 </StackPanel>
 
                 <!--Чекбоксы и разделитель-->
@@ -137,11 +137,11 @@
                 <!--Нижняя панель-->
                 <Label Foreground="#FF2200FF" >Реультат в таблицу:</Label>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="OutputOneTextBtn" Padding="5">Ш</Button>
-                    <Button x:Name="OutputAddetTextBtn" Padding="5">Ш</Button>
-                    <Button x:Name="OutputInTableBtn" Padding="5">Ш</Button>
-                    <Button x:Name="OutputPolyTextBtn" Padding="5">Ш</Button>
-                    <Button x:Name="OutputToolBtn" Padding="5">Ш</Button>
+                    <Button x:Name="OutputOneTextBtn" Padding="5" Click="OutputOneTextBtn_Click">Ш</Button>
+                    <Button x:Name="OutputAddetTextBtn" Padding="5" Click="OutputAddetTextBtn_Click">Ш</Button>
+                    <Button x:Name="OutputInTableBtn" Padding="5" Click="OutputInTableBtn_Click">Ш</Button>
+                    <Button x:Name="OutputPolyTextBtn" Padding="5" Click="OutputPolyTextBtn_Click">Ш</Button>
+                    <Button x:Name="OutputToolBtn" Padding="5" Click="OutputToolBtn_Click">Ш</Button>
                 </StackPanel>
 
             </StackPanel>

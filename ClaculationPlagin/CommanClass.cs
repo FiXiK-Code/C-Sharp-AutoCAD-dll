@@ -8,5 +8,7 @@ namespace ClaculationPlagin
 {
     public class CommanClass
     {
+
+
     }
 }
