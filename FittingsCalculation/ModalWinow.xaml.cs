@@ -131,5 +131,10 @@ namespace FittingsCalculation
             }
             catch(Exception) { }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

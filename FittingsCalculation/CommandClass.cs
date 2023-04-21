@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace FittingsCalculation
 {
-    public class CommandClass 
+    public class CommandClass
     {
 
         public static string RunCommand2()
@@ -106,7 +106,7 @@ namespace FittingsCalculation
             PromptPointResult _pt2 = adoc.Editor.GetPoint("\nУкажите первую точку : ");
             Point3d pt2 = _pt2.Value;
 
-            return Math.Round(pt1.DistanceTo(pt2),3).ToString();
+            return Math.Round(pt1.DistanceTo(pt2), 3).ToString();
         }
 
         public static string GetPolySize()
@@ -121,7 +121,7 @@ namespace FittingsCalculation
             {
                 PromptEntityResult result = ed.GetEntity("\nВыберите объект: ");
                 if (result.Status == PromptStatus.Cancel) break;
-                
+
                 ObjectId enId = result.ObjectId;
 
                 using (Transaction tr = db.TransactionManager.StartTransaction())
@@ -163,22 +163,120 @@ namespace FittingsCalculation
                 }
             }
 
-            return  Math.Round(outRez,3).ToString();
+            return Math.Round(outRez, 3).ToString();
         }
 
-    }
-
-    public class StartClass : IExtensionApplication
-    {
-        public void Initialize()
+        [CommandMethod("testObj")]
+        public static void Test()
         {
-            ModalWinow modalWinow = new ModalWinow();
-            Application.ShowModelessWindow(modalWinow);
+            Document adoc = Application.DocumentManager.MdiActiveDocument;
+            Editor ed = adoc.Editor;
+
+            while (true)
+            {
+                PromptEntityResult result = ed.GetEntity("\nВыберите объект: ");
+                if (result.Status == PromptStatus.Cancel) break;
+
+
+                if (result.ObjectId.ObjectClass.Name.Equals("AcDbTable"))
+                {
+                    ed.WriteMessage("Выбрана не таблица!");
+                    continue;
+                }
+
+                ObjectId enId = result.ObjectId;
+
+
+            }
         }
 
-        public void Terminate()
+        [CommandMethod("INSERTTABLEVALUE")]
+        public void InsertTableValue()
         {
-            throw new NotImplementedException();
+            // Получаем текущий документ и его базу данных
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Editor ed = doc.Editor;
+            Database db = doc.Database;
+
+            // Запрашиваем пользователю выбор ячейки таблицы
+            PromptPointResult ptRes = ed.GetPoint("\nВыберите ячейку таблицы:");
+            if (ptRes.Status != PromptStatus.OK)
+            {
+                ed.WriteMessage("Ошибка: не удалось выбрать ячейку таблицы");
+                return;
+            }
+
+            // Открываем таблицу и ищем выбранную ячейку
+            Table table = null;
+            Cell cell = null;
+            BlockTableRecord btr = null;
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+                BlockTable bt = (BlockTable)tr.GetObject(doc.Database.BlockTableId, OpenMode.ForRead);
+                btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForRead);
+                foreach (ObjectId entId in btr)
+                {
+                    Entity ent = (Entity)tr.GetObject(entId, OpenMode.ForRead);
+                    if (ent is Table)
+                    {
+                        table = (Table)ent;
+                        break;
+                    }
+                    if (ent is Cell)
+                    {
+                        Cell c = (Cell)ent;
+                        Point3d ptCell = c.Position.TransformBy(ed.CurrentUserCoordinateSystem);
+                        if (ptCell.X <= ptRes.Value.X && ptCell.X + c.BlockWidth > ptRes.Value.X && ptCell.Y <= ptRes.Value.Y && ptCell.Y + c.BlockHeight > ptRes.Value.Y)
+                        {
+                            cell = c;
+                            break;
+                        }
+                    }
+                }
+                tr.Commit();
+            }
+
+            // Вставляем значение ячейки на чертеж в виде однострочного текста
+            if (cell != null)
+            {
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    BlockTable bt = (BlockTable)tr.GetObject(db.BlockTableId, OpenMode.ForRead);
+                    BlockTableRecord btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+
+                    DBText text = new DBText();
+                    text.Position = cell.Position;
+                    text.TextString = cell.Value.ToString();
+                    text.Height = cell.Height;
+                    text.Rotation = cell.Rotation;
+                    btr.AppendEntity(text);
+                    tr.AddNewlyCreatedDBObject(text, true);
+                    tr.Commit();
+
+                    ed.WriteMessage("Значение ячейки таблицы вставлено на чертеж в виде однострочного текста.");
+                }
+            }
+            else
+            {
+                ed.WriteMessage("Ошибка: ячейка таблицы не найдена.");
+            }
+        }
+        
+
+
+        public class StartClass : IExtensionApplication
+        {
+            public void Initialize()
+            {
+                ModalWinow modalWinow = new ModalWinow();
+                Application.ShowModelessWindow(modalWinow);
+            }
+
+            public void Terminate()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
+

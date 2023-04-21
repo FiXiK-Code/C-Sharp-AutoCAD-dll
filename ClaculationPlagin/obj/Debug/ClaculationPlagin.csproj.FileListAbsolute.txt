@@ -1,0 +1,10 @@
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\ClaculationPlagin.csproj.AssemblyReference.cache
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\MainWindow.baml
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\MainWindow.g.cs
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\ClaculationPlagin_MarkupCompile.cache
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\ClaculationPlagin.g.resources
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\ClaculationPlagin.csproj.CoreCompileInputs.cache
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\bin\Debug\ClaculationPlagin.dll
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\bin\Debug\ClaculationPlagin.pdb
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\ClaculationPlagin.dll
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\ClaculationPlagin.pdb

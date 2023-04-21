@@ -18,7 +18,7 @@ namespace ClaculationPlagin
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : UserControl
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
@@ -27,21 +27,31 @@ namespace ClaculationPlagin
 
         private void PointSizeBtn_Click(object sender, RoutedEventArgs e) // получене расстояния между точками
         {
+            var result = CommanClass.GetSize();
+
 
         }
 
         private void PolySizeBtn_Click(object sender, RoutedEventArgs e) // получение длянны объктов
         {
+            var result = CommanClass.GetPolySize();
+
 
         }
 
         private void PointCoordinateBtn_Click(object sender, RoutedEventArgs e) // получение координаты точки (выбор - XYZ)
         {
+            string nap = "x";
+
+            var result = CommanClass.GetCoordinate(nap);
+
 
         }
 
         private void PlBtn_Click(object sender, RoutedEventArgs e) // получение площади
         {
+
+
 
         }
 
@@ -62,7 +72,17 @@ namespace ClaculationPlagin
 
         private void SizeInputBtn_Click(object sender, RoutedEventArgs e) // получение размера
         {
-
+            string result = CommanClass.GetDimension();
+            if(result == "Комманда была завершена!")
+            {
+                MessageBox.Show(result);
+                return;
+            }
+            if(result == null)
+            {
+                MessageBox.Show("Error!");
+                return;
+            }
         }
 
 

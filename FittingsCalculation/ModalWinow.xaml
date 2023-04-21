@@ -11,7 +11,7 @@
         <!--Верняя панель ( название кнопка ext)-->
         <StackPanel Orientation="Horizontal">
             <TextBlock>АРМАТУРА</TextBlock>
-            <Button Margin="0" >X</Button>
+            <Button Margin="0" Click="Button_Click" >X</Button>
         </StackPanel>
         
         <!--основная паналь ( левая часть с ComboBox; правая часть с вкладками)-->
