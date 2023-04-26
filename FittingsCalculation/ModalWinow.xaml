@@ -6,26 +6,91 @@
              xmlns:local="clr-namespace:FittingsCalculation"
         WindowStyle="None"
         SizeToContent="WidthAndHeight" Loaded="Window_Loaded">
+    <Window.Resources>
+        <SolidColorBrush x:Key="SelectedTabColorBrush" Color="White"/>
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="0" Padding="0">
+                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="12,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="Blue" />
+                                <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                                <Setter Property="BorderBrush" Value="Blue"/>
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectedTabColorBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="white" />
+                                <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CustomCheckBox" TargetType="{x:Type CheckBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Width="15" Height="15">
+                                <Grid x:Name="grid">
+                                    <Rectangle x:Name="zxc" Fill="White" Stroke="Black" StrokeThickness="1" RadiusX="0" RadiusY="0"/>
+                                    <Path x:Name="path" Data="M2,9 L9 17 M9,17 L19,4" Stroke="White" StrokeThickness="2.65" StrokeStartLineCap="Round"  StrokeEndLineCap="Round" Opacity="0"/>
+                                </Grid>
+                            </Viewbox>
+                            <ContentPresenter VerticalAlignment="Center"  Margin="4,0,0,0"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="path" Property="Opacity" Value="1"/>
+                                <Setter TargetName="zxc" Property="Fill" Value="Blue"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="path" Property="Opacity" Value="0"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="grid" Property="Background" Value="LightGray"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="grid" Property="Background" Value="Blue"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="Gray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <StackPanel Orientation="Vertical">
-        
+
+
         <!--Верняя панель ( название кнопка ext)-->
-        <StackPanel Orientation="Horizontal">
-            <TextBlock>АРМАТУРА</TextBlock>
-            <Button Margin="0" Click="Button_Click" >X</Button>
+        <StackPanel Orientation="Horizontal" Background="#FFEBEBEB">
+            <Image Height="20" Width="20" Source="icons\лого.PNG"/>
+            <TextBlock><Run Text="АРМАТУРА"/></TextBlock>
+            <Image Height="20" Width="20" HorizontalAlignment="Right" Margin="380,0,0,0" Source="icons\4115230-cancel-close-cross-delete_114048.png"/>
         </StackPanel>
+
         
         <!--основная паналь ( левая часть с ComboBox; правая часть с вкладками)-->
         <StackPanel Orientation="Horizontal">
-            
+
             <!--Левая панель-->
             <StackPanel Orientation="Vertical" Margin="3" MinWidth="150">
-                
+
                 <TextBlock Margin="2" HorizontalAlignment="Center">Норм. документ</TextBlock>
                 <ComboBox Margin="2" Height="20">
                     <TextBlock Text="ГОСТ 5781-82 (устар.)"/>
                     <TextBlock Text="ГОСТ 34028-2016 (актуал.)"/>
                 </ComboBox>
-                
+
                 <TextBlock Margin="2" HorizontalAlignment="Center">Диаметр</TextBlock>
                 <ComboBox x:Name="diamComboBox" Margin="2" Height="20" SelectionChanged="diamComboBox_SelectionChanged">
                     <TextBlock Text="4"/>
@@ -58,9 +123,9 @@
                     <TextBlock Text="36"/>
                     <TextBlock Text="40"/>
                 </ComboBox>
-                
+
                 <TextBlock Margin="2" HorizontalAlignment="Center">Площадь сеч., см²</TextBlock>
-                <TextBox IsEnabled="False" Name="PSechTextBox"/>
+                <TextBox IsEnabled="False" Name="PSechTextBox" Text="123123" SelectionOpacity="1"/>
 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Масса 1 п.м, кг</TextBlock>
                 <ComboBox x:Name="masOnePMComboBox" IsEnabled="False" Margin="2" Height="20">
@@ -94,7 +159,7 @@
                     <TextBlock Text="7.990 кг"/>
                     <TextBlock Text="9.665 кг"/>
                 </ComboBox>
-                
+
                 <TextBlock Margin="2" HorizontalAlignment="Center">Класс арматуры</TextBlock>
                 <ComboBox Margin="2" Height="20">
                     <TextBlock Text="А-I (А240)"/>
@@ -102,57 +167,58 @@
                     <TextBlock Text="А500С"/>
                     <TextBlock Text="Ат800"/>
                 </ComboBox>
-                
+
             </StackPanel>
-            
+
             <!--Правая панель-->
-            <StackPanel Orientation="Vertical" Margin="3" MinWidth="300">
+            <StackPanel Orientation="Vertical" Margin="3" MinWidth="300" Width="317">
                 <TabControl>
-                    
+
                     <!--Масса-->
                     <TabItem Header="Масса">
-                        <StackPanel Orientation="Vertical">
+
+                        <StackPanel Orientation="Vertical" Height="232">
 
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock>Длинна, мм:</TextBlock>
-                                <TextBox x:Name="lengthFitting" TextChanged="lengthFitting_TextChanged">1180</TextBox>
-                                <CheckBox x:Name="onePMCheckBox" Click="onePMCheckBox_Click" Cursor="Hand">п.м</CheckBox>
-                                <Button x:Name="sizeBtn" Click="sizeBtn_Click" Cursor="Hand">img 1</Button>
-                                <Button x:Name="polySizeBtn" Click="polySizeBtn_Click" Cursor="Hand">img 2</Button>
+                                <Label Content="Длинна, мм:" Margin="0,0,2,0"/>
+                                <TextBox x:Name="lengthFitting" TextChanged="lengthFitting_TextChanged" Text="1180" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,0,2,0" Margin="0,0,2,0"/>
+                                <CheckBox x:Name="onePMCheckBox" Style="{StaticResource CustomCheckBox}" Click="onePMCheckBox_Click" Cursor="Hand" Content="п.м" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsChecked="False" Margin="0,0,2,0"/>
+                                <Image Height="20" Width="20" Margin="0,0,3,0" Source="icons\size_maximize_icon_142968.png" ToolTip="Замерить расстояние между двумя точками"/>
+                                <Image Height="20" Width="20" Source="icons\two-squares_icon-icons.com_55537.png" ToolTip="Получить сумму длин из объектов"/>
                             </StackPanel>
-
-                            <TextBlock>РЕЗУЛЬТАТ, КГ</TextBlock>
+                            <Label Content="РЕЗУЛЬТАТ, КГ"/>
 
                             <StackPanel x:Name="resStackPanel"  Orientation="Horizontal">
-                                <TextBox x:Name="resultTextBox" Width="200" IsEnabled="False"></TextBox>
-                                <Slider IsSnapToTickEnabled="True" TickFrequency="1" x:Name="sliderCountFitting" MinWidth="60" Cursor="Hand" ValueChanged="sliderCountFitting_ValueChanged" SmallChange="1" TickPlacement="TopLeft" Minimum="1"/>
-                                <TextBox x:Name="countFittingTextBox" MinWidth="20" TextChanged="countFittingTextBox_TextChanged">1</TextBox>
+                                <TextBox x:Name="resultTextBox" Width="200" IsEnabled="False" Text="1000" VerticalContentAlignment="Center" HorizontalAlignment="Left" SelectionOpacity="-1" Foreground="Black" IsReadOnly="True"/>
+                                <Slider  IsSnapToTickEnabled="True" x:Name="sliderCountFitting" MinWidth="60"   ValueChanged="sliderCountFitting_ValueChanged" Value="1" Minimum="1" SmallChange="1" TickPlacement="TopLeft" Foreground="Blue" />
+                                <TextBox x:Name="countFittingTextBox" MinWidth="20" TextChanged="countFittingTextBox_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">1</TextBox>
+
                             </StackPanel>
 
-                            <Label x:Name="resToTableLink" HorizontalAlignment="Center" Content="Результат в талицу" MouseDown="resToTableLink_MouseDown" Cursor="Hand"/>
-                            <Label x:Name="nameToTableLink" HorizontalAlignment="Center" Content="Наименование в таблицу" MouseDown="nameToTableLink_MouseDown" Cursor="Hand"/>
-                            <Label x:Name="resAndNameToTableLink" HorizontalAlignment="Center" Content="Вставить результат и наименование" MouseDown="resAndNameToTableLink_MouseDown" Cursor="Hand"/>
+                            <Label x:Name="resToTableLink" HorizontalAlignment="Center" Content="Результат в талицу" MouseDown="resToTableLink_MouseDown" Cursor="Hand" Foreground="#FF153AD0" Margin="0,25,0,0"/>
+                            <Label x:Name="nameToTableLink" HorizontalAlignment="Center" Content="Наименование в таблицу" MouseDown="nameToTableLink_MouseDown" Cursor="Hand" Foreground="#FF153AD0"/>
+                            <Label x:Name="resAndNameToTableLink" HorizontalAlignment="Center" Content="Вставить результат и наименование" MouseDown="resAndNameToTableLink_MouseDown" Cursor="Hand" Foreground="#FF153AD0"/>
 
-                            <CheckBox x:Name="addSymbolCheckBox" Click="addSymbolCheckBox_Click" Cursor="Hand">Добавить символ диаметра (Ø)</CheckBox>
+                            <CheckBox x:Name="addSymbolCheckBox" Style="{StaticResource CustomCheckBox}" Click="addSymbolCheckBox_Click" Cursor="Hand" IsChecked="True" Margin="0,28,0,0">Добавить символ диаметра (Ø)</CheckBox>
 
                         </StackPanel>
                     </TabItem>
-                    
+
                     <!--Площади-->
                     <TabItem Header="Площади">
-                        <StackPanel Orientation="Horizontal">
-                            
-                            <StackPanel>
-                                <TextBlock>При числе стержней:</TextBlock>
-                                <TextBlock>Площадь, см²:</TextBlock>
-                                <TextBlock>При шаге стержней (мм):</TextBlock>
-                                <TextBlock>Площадь, см²/1м:</TextBlock>
+                        <StackPanel Orientation="Horizontal" Height="231">
+
+                            <StackPanel Margin="0,0,8,0">
+                                <Label Content="При числе стержней:" VerticalContentAlignment="Center" Padding="3,0,0,2" Height="25"/>
+                                <Label Content="Площадь, см²:" VerticalContentAlignment="Center" Padding="3,0,0,2" Height="25" Margin="0,13,0,0"/>
+                                <Label Content="При шаге стержней (мм):" VerticalContentAlignment="Center" Padding="3,0,0,2" Height="25" Margin="0,13,0,0"/>
+                                <Label Content="Площадь, см²/1м:" VerticalContentAlignment="Center" Padding="3,0,0,2" Height="25" Margin="0,13,0,0"/>
                             </StackPanel>
-                            
-                            <StackPanel>
-                                <ComboBox></ComboBox>
-                                <TextBox></TextBox>
-                                <ComboBox>
+
+                            <StackPanel RenderTransformOrigin="0.537,0.597" Width="100">
+                                <ComboBox Height="25" Width="99" BorderBrush="Blue"/>
+                                <TextBox Height="25" Margin="0,13,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                <ComboBox Height="25" Margin="0,13,0,0" BorderBrush="Blue">
                                     <TextBlock Text="100"/>
                                     <TextBlock Text="125"/>
                                     <TextBlock Text="150"/>
@@ -162,34 +228,34 @@
                                     <TextBlock Text="350"/>
                                     <TextBlock Text="400"/>
                                 </ComboBox>
-                                <TextBox></TextBox>
+                                <TextBox Height="25" Margin="0,13,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="5"></TextBox>
                             </StackPanel>
-                            
+
                         </StackPanel>
                     </TabItem>
-                    
+
                     <!--Анкеровка/Нахлестка-->
                     <TabItem Header="Анкеровка/Нахлестка">
-                        <StackPanel>
-                            
-                            <TextBlock>Рассчет длинны анкеровки или нахлестки для текущего диаметра арматуры выполняется в отдельном окне</TextBlock>
+                        <StackPanel Height="232">
 
-                            <Button>Открыть</Button>
-                            
+                            <TextBlock TextAlignment="Center" Height="201" TextWrapping="Wrap" Foreground="#FF020202" Padding="0,83,0,0" Width="311">Рассчет длинны анкеровки или нахлестки для текущего диаметра арматуры выполняется в отдельном окне</TextBlock>
+
+                            <Button Width="88" BorderBrush="Black" Background="#FF5252E3" Foreground="White" Height="23">Открыть</Button>
+
                         </StackPanel>
                     </TabItem>
-            
+
                 </TabControl>
-                
+
             </StackPanel>
-            
+
         </StackPanel>
-        
+
         <!--Нижняя панель-->
-        <StackPanel Orientation="Horizontal">
-            <TextBlock>Статус документа: </TextBlock>
+        <StackPanel Orientation="Horizontal" Height="22">
+            <TextBlock Margin="7,0,0,0">Статус документа:</TextBlock>
             <TextBlock>Недействующий</TextBlock>
         </StackPanel>
-        
+
     </StackPanel>
 </Window>

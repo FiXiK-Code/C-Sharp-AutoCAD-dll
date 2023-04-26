@@ -91,5 +91,47 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="icons\1485477104-basket_78591.png" />
+    <Resource Include="icons\1492790985-3arrow-down_84192 %281%29.png" />
+    <Resource Include="icons\1492790985-3arrow-down_84192.png" />
+    <Resource Include="icons\4115230-cancel-close-cross-delete_114048.png" />
+    <Resource Include="icons\arrowpointingup_83680.png" />
+    <Resource Include="icons\dots_vertical_icon_138663.png" />
+    <Resource Include="icons\fileinterfacesymboloftextpapersheet_79740.png" />
+    <Resource Include="icons\fileinterfacesymboloftextpapersheet_79740.svg" />
+    <Resource Include="icons\font_decrease_filled_icon_200590.png" />
+    <Resource Include="icons\font_decrease_filled_icon_202196.png" />
+    <Resource Include="icons\format_font_size_decrease_icon_136597 %281%29.png" />
+    <Resource Include="icons\format_font_size_decrease_icon_136597.png" />
+    <Resource Include="icons\format_font_size_increase_icon_137585 %281%29.png" />
+    <Resource Include="icons\format_font_size_increase_icon_137585.png" />
+    <Resource Include="icons\Frame 8.png" />
+    <Resource Include="icons\framesquaresymbolwithfourangles_79933.png" />
+    <Resource Include="icons\frame_icon_217736.png" />
+    <Resource Include="icons\function.png" />
+    <Resource Include="icons\Group 10.png" />
+    <Resource Include="icons\Group 11 %281%29.png" />
+    <Resource Include="icons\Group 11.png" />
+    <Resource Include="icons\Group 8 %282%29.png" />
+    <Resource Include="icons\Group 8.png" />
+    <Resource Include="icons\Mask group.png" />
+    <Resource Include="icons\menu_add_icon_206006.png" />
+    <Resource Include="icons\minus_icon-icons.com_61183.png" />
+    <Resource Include="icons\plus_icon-icons.com_61187.png" />
+    <Resource Include="icons\point_icon_151143.png" />
+    <Resource Include="icons\resizearrow_cambiareltamañ_5500.png" />
+    <Resource Include="icons\size_maximize_icon_142968.png" />
+    <Resource Include="icons\square-frame_icon-icons.com_55551.png" />
+    <Resource Include="icons\table_120011 %281%29.png" />
+    <Resource Include="icons\table_120011.png" />
+    <Resource Include="icons\table_icon-icons.com_69867.png" />
+    <Resource Include="icons\table_icon_159830.png" />
+    <Resource Include="icons\two-squares_icon-icons.com_55537.png" />
+    <Resource Include="icons\txt_5583.png" />
+    <Resource Include="icons\А.png" />
+    <Resource Include="icons\лого.PNG" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

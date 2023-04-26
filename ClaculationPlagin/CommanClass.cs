@@ -298,9 +298,14 @@ namespace ClaculationPlagin
             return null;
         }
 
+        [CommandMethod("_mpCalc")]
+        public static void Satart()
+        {
+            AddPanel.StartWindow();
+        }
 
-        [CommandMethod("MLeaderInsert")]
-        public void MLeaderInsert()
+
+        public void InsertOneText(string value)
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
             Database acCurDb = acDoc.Database;
@@ -310,52 +315,110 @@ namespace ClaculationPlagin
             PromptPointResult insPointResult = acDoc.Editor.GetPoint(insPointPrompt);
             if (insPointResult.Status != PromptStatus.OK) return;
 
-            // Запрос на выбор точки положения мультивыноски
-            PromptPointOptions mLeaderPointPrompt = new PromptPointOptions("\nВыберите точку положения мультивыноски: ");
-            PromptPointResult mLeaderPointResult = acDoc.Editor.GetPoint(mLeaderPointPrompt);
-            if (mLeaderPointResult.Status != PromptStatus.OK) return;
+            // Создание объекта однострочного текста
+            DBText dbText = new DBText();
+            dbText.TextString = value;
+            dbText.Height = 1.0;
 
-            // Создание объекта мультивыноски
-            MLeader mLeader = new MLeader();
-
-            // Создание объекта MultileaderStyle для задания стиля мультивыноски
-            DBDictionary mLeaderStyles = acCurDb.MLeaderStyleDictionaryId.GetObject(OpenMode.ForRead) as DBDictionary;
-            //MultileaderStyle mLeaderStyle = mLeaderStyles.GetAt("Standard").GetObject(OpenMode.ForRead) as MultileaderStyle;
-            //mLeader.Style = mLeaderStyle;
-
-            // Создание и заполнение объекта MText
-            MText mtext = new MText();
-            mtext.Contents = "проверено";
-            mLeader.MText = mtext;
-
-            // Задание точки вставки и точки положения мультивыноски
-            //mLeader.Location = insPointResult.Value;
-            //mLeader.SetLeaderLinePoints(new Point3dCollection() { mLeaderPointResult.Value });
-
-
-            // Добавление созданной мультивыноски в пространство модели
+            // Задание точки вставки и добавление текста в пространство модели
+            dbText.Position = insPointResult.Value;
             BlockTableRecord acBlkTblRec;
             using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
             {
                 acBlkTblRec = acTrans.GetObject(acCurDb.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
-                acBlkTblRec.AppendEntity(mLeader);
-                acTrans.AddNewlyCreatedDBObject(mLeader, true);
+                acBlkTblRec.AppendEntity(dbText);
+                acTrans.AddNewlyCreatedDBObject(dbText, true);
                 acTrans.Commit();
             }
-            // Обновление экрана и вывод сообщения об успешном создании объекта
+
+            // Обновляем экран
             acDoc.Editor.Regen();
-            acDoc.Editor.WriteMessage("\nMLeader успешно вставлен");
+            acDoc.Editor.WriteMessage("\nТекст успешно вставлен");
         }
 
-
-
-        [CommandMethod("_mpCalc")]
-        public static void Satart()
+        public void RemoveOneText(string value)
         {
-            AddPanel.StartWindow();
+            Document adoc = Application.DocumentManager.MdiActiveDocument;
+            Database db = adoc.Database;
+            Editor ed = adoc.Editor;
+            bool enter = false;
+            while (!enter)
+            {
+                PromptEntityResult result = ed.GetEntity("\nВыберите текст: ");
+                if (result.Status == PromptStatus.Cancel) ed.WriteMessage("\nФункция была отменена!\n ");
+
+                ObjectId enId = result.ObjectId;
+
+                string classObj = enId.ObjectClass.Name;
+
+                if (!classObj.Equals("AcDbText"))
+                {
+                    ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                    continue;
+                }
+                using (DocumentLock docLock = adoc.LockDocument())
+                {
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
+                        obj.UpgradeOpen();
+                        obj.TextString = value;
+
+
+                        enter = true;
+                        tr.Commit();
+                    }
+                }
+            }
+            ed.WriteMessage("\nТекст был заменен! \n ");
         }
+
+        public void InsertPolyText(string value)
+        {
+            Document adoc = Application.DocumentManager.MdiActiveDocument;
+            Editor acEditor = adoc.Editor;
+            Database db = adoc.Database;
+
+            // Запрос на выбор многострочного текста на чертеже
+            PromptEntityOptions promptEntity = new PromptEntityOptions("\nВыберите многострочный текст на чертеже: ");
+            promptEntity.SetRejectMessage("Выбранный элемент не является многострочным текстом.");
+            promptEntity.AddAllowedClass(typeof(MText), true);
+            PromptEntityResult entityResult = acEditor.GetEntity(promptEntity);
+            if (entityResult.Status != PromptStatus.OK) return;
+
+            // Получение объекта многострочного текста и его содержимого
+            using (DocumentLock docLock = adoc.LockDocument())
+            {
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    MText obj = tr.GetObject(entityResult.ObjectId, OpenMode.ForRead, false, true) as MText;
+                    string text = obj.Contents;
+
+                    // Дополнение текста
+                    obj.UpgradeOpen();
+                    obj.Contents = text + "\n" + value;
+
+                    // Обновление экрана
+                    acEditor.Regen();
+
+                    acEditor.WriteMessage("\nТекст успешно дополнен");
+
+                    tr.Commit();
+                }
+            }
+            
+
+            
+
+        }
+
+
+
+
 
         
+
+
 
         public class AddPanel : IExtensionApplication
         {

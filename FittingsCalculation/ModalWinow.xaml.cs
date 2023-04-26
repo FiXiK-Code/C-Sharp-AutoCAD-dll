@@ -92,7 +92,7 @@ namespace FittingsCalculation
             // вызов функции для вставки наименования и массы (отдельная функция - смотреть ТЗ)
         }
         #endregion
-
+         
         private void diamComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(diamComboBox.SelectedItem != null)

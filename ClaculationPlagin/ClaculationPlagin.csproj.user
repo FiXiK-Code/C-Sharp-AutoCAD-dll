@@ -4,4 +4,7 @@
     <StartAction>Program</StartAction>
     <StartProgram>D:\Programm\AutoCad 2016\ACad_setup\AutoCAD 2016\acad.exe</StartProgram>
   </PropertyGroup>
+  <PropertyGroup>
+    <ProjectView>ShowAllFiles</ProjectView>
+  </PropertyGroup>
 </Project>
