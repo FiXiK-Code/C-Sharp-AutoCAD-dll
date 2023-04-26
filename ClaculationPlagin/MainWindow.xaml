@@ -35,9 +35,9 @@
                 <!--Округление-->
                 <StackPanel Orientation="Horizontal" Margin="3">
                     <TextBlock Margin="0,0,35,0">Округление:</TextBlock>
-                    <TextBox MinWidth="60">3</TextBox>
-                    <Button>///</Button>
-                    <Button>///</Button>
+                    <TextBox x:Name="DotPositionTextBox" MinWidth="58">3</TextBox>
+                    <Button x:Name="DotPositionPlusBtn" MinWidth="20" Click="DotPositionPlusBtn_Click">+</Button>
+                    <Button x:Name="DotPositionMinBtn" MinWidth="20" Click="DotPositionMinBtn_Click">-</Button>
                 </StackPanel>
 
                 <!--"Данные из чертежа"-->

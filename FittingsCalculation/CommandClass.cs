@@ -171,97 +171,175 @@ namespace FittingsCalculation
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
             Editor ed = adoc.Editor;
+            Database db = adoc.Database;
 
             while (true)
             {
-                PromptEntityResult result = ed.GetEntity("\nВыберите объект: ");
+                PromptEntityResult result = ed.GetEntity("\nВыберите объект: \n");
                 if (result.Status == PromptStatus.Cancel) break;
 
+                ed.WriteMessage(result.ObjectId.ObjectClass.Name);
 
-                if (result.ObjectId.ObjectClass.Name.Equals("AcDbTable"))
+                using (Transaction tr = db.TransactionManager.StartTransaction())
                 {
-                    ed.WriteMessage("Выбрана не таблица!");
-                    continue;
+                    MText obj = tr.GetObject(result.ObjectId, OpenMode.ForRead, false, true) as MText;
+
+                    ed.WriteMessage("\n" + obj.Text);
                 }
-
-                ObjectId enId = result.ObjectId;
-
-
             }
         }
 
-        [CommandMethod("INSERTTABLEVALUE")]
-        public void InsertTableValue()
+       
+        public static void InsertTableText(string naemFiting, string result)
         {
-            // Получаем текущий документ и его базу данных
+            // Получаем текущий документ и базу данных
             Document doc = Application.DocumentManager.MdiActiveDocument;
-            Editor ed = doc.Editor;
             Database db = doc.Database;
+            Editor ed = doc.Editor;
 
-            // Запрашиваем пользователю выбор ячейки таблицы
-            PromptPointResult ptRes = ed.GetPoint("\nВыберите ячейку таблицы:");
-            if (ptRes.Status != PromptStatus.OK)
-            {
-                ed.WriteMessage("Ошибка: не удалось выбрать ячейку таблицы");
-                return;
-            }
-
-            // Открываем таблицу и ищем выбранную ячейку
+            // Запрос у пользователя выбора таблицы
+            PromptEntityOptions peo = new PromptEntityOptions("\nВыберите таблицу: ");
+            peo.SetRejectMessage("\nВыберите только объекты таблицы.");
+            peo.AddAllowedClass(typeof(Table), false);
+            PromptEntityResult per = ed.GetEntity(peo);
+            if (per.Status != PromptStatus.OK) return;
             Table table = null;
-            Cell cell = null;
-            BlockTableRecord btr = null;
-            using (Transaction tr = db.TransactionManager.StartTransaction())
-            {
-                BlockTable bt = (BlockTable)tr.GetObject(doc.Database.BlockTableId, OpenMode.ForRead);
-                btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForRead);
-                foreach (ObjectId entId in btr)
-                {
-                    Entity ent = (Entity)tr.GetObject(entId, OpenMode.ForRead);
-                    if (ent is Table)
-                    {
-                        table = (Table)ent;
-                        break;
-                    }
-                    if (ent is Cell)
-                    {
-                        Cell c = (Cell)ent;
-                        Point3d ptCell = c.Position.TransformBy(ed.CurrentUserCoordinateSystem);
-                        if (ptCell.X <= ptRes.Value.X && ptCell.X + c.BlockWidth > ptRes.Value.X && ptCell.Y <= ptRes.Value.Y && ptCell.Y + c.BlockHeight > ptRes.Value.Y)
-                        {
-                            cell = c;
-                            break;
-                        }
-                    }
-                }
-                tr.Commit();
-            }
-
-            // Вставляем значение ячейки на чертеж в виде однострочного текста
-            if (cell != null)
+            using (DocumentLock docLock = doc.LockDocument())
             {
                 using (Transaction tr = db.TransactionManager.StartTransaction())
                 {
-                    BlockTable bt = (BlockTable)tr.GetObject(db.BlockTableId, OpenMode.ForRead);
-                    BlockTableRecord btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                    table = (Table)tr.GetObject(per.ObjectId, OpenMode.ForRead);
 
-                    DBText text = new DBText();
-                    text.Position = cell.Position;
-                    text.TextString = cell.Value.ToString();
-                    text.Height = cell.Height;
-                    text.Rotation = cell.Rotation;
-                    btr.AppendEntity(text);
-                    tr.AddNewlyCreatedDBObject(text, true);
+                    PromptPointOptions ppo = new PromptPointOptions("\nВыберите ячейку: ");
+                    PromptPointResult ppr = ed.GetPoint(ppo);
+                    if (ppr.Status != PromptStatus.OK) return;
+                    Point3d pt = ppr.Value;
+
+                    // Поиск ячейки
+                    Cell cell = FindCell(table, pt);
+                    if (cell == null)
+                    {
+                        ed.WriteMessage("\nНе удалось определить ячейку.");
+                        return;
+                    }
+
+                    table.UpgradeOpen();
+                    table.Cells[cell.Row, cell.Column].TextString = naemFiting;
+                    table.Cells[cell.Row, table.Columns.Count -1].TextString = result;
+
                     tr.Commit();
-
-                    ed.WriteMessage("Значение ячейки таблицы вставлено на чертеж в виде однострочного текста.");
                 }
             }
-            else
+        }
+
+        public static void InsertTableText(string insertText, bool _1pm)
+        {
+            // Получаем текущий документ и базу данных
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
+
+            // Запрос у пользователя выбора таблицы
+            PromptEntityOptions peo = new PromptEntityOptions("\nВыберите таблицу: ");
+            peo.SetRejectMessage("\nВыберите только объекты таблицы.");
+            peo.AddAllowedClass(typeof(Table), false);
+            PromptEntityResult per = ed.GetEntity(peo);
+            if (per.Status != PromptStatus.OK) return;
+            Table table = null;
+            using (DocumentLock docLock = doc.LockDocument())
             {
-                ed.WriteMessage("Ошибка: ячейка таблицы не найдена.");
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    table = (Table)tr.GetObject(per.ObjectId, OpenMode.ForRead);
+                    
+                    PromptPointOptions ppo = new PromptPointOptions("\nВыберите ячейку: ");
+                    PromptPointResult ppr = ed.GetPoint(ppo);
+                    if (ppr.Status != PromptStatus.OK) return;
+                    Point3d pt = ppr.Value;
+
+                    // Поиск ячейки
+                    Cell cell = FindCell(table, pt);
+                    if (cell == null)
+                    {
+                        ed.WriteMessage("\nНе удалось определить ячейку.");
+                        return;
+                    }
+
+                    table.UpgradeOpen();
+                    table.Cells[cell.Row, cell.Column].TextString = insertText;
+                    if( _1pm == true  ) table.Cells[cell.Row, cell.Column+1].TextString = "кг/п.м";
+
+                    tr.Commit();
+                }
             }
         }
-        
+
+        private static Cell FindCell(Table table, Point3d pt)
+        {
+            int numRows = table.Rows.Count;
+            int numCols = table.Columns.Count;
+
+            for (int row = 0; row < numRows; row++)
+            {
+                for (int col = 0; col < numCols; col++)
+                {
+                    Cell cell = table.Cells[row, col];
+                    Point3dCollection cellExtents = cell.GetExtents();
+
+                    Extents3d bbox = new Extents3d();
+                    bbox.AddPoint(cellExtents[0]);
+                    bbox.AddPoint(cellExtents[3]);
+
+                    if (pt.X > bbox.MinPoint.X && pt.X < bbox.MaxPoint.X &&
+                        pt.Y > bbox.MinPoint.Y && pt.Y < bbox.MaxPoint.Y)
+                    {
+                        // Найдена ячейка
+                        return cell;
+                    }
+                }
+            }
+
+            // Ячейка не найдена
+            return null;
+        }
+
+        public static string GetTableValue()
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
+
+            // Запрос у пользователя выбора таблицы
+            PromptEntityOptions peo = new PromptEntityOptions("\nВыберите таблицу: ");
+            peo.SetRejectMessage("\nВыберите только объекты таблицы.");
+            peo.AddAllowedClass(typeof(Table), false);
+            PromptEntityResult per = ed.GetEntity(peo);
+            if (per.Status != PromptStatus.OK) return null;
+            Table table = null;
+            using (DocumentLock docLock = doc.LockDocument())
+            {
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    table = (Table)tr.GetObject(per.ObjectId, OpenMode.ForRead);
+
+                    PromptPointOptions ppo = new PromptPointOptions("\nВыберите ячейку: ");
+                    PromptPointResult ppr = ed.GetPoint(ppo);
+                    if (ppr.Status != PromptStatus.OK) return null;
+                    Point3d pt = ppr.Value;
+
+                    // Поиск ячейки
+                    Cell cell = FindCell(table, pt);
+                    if (cell == null)
+                    {
+                        ed.WriteMessage("\nНе удалось определить ячейку.");
+                        return null;
+                    }
+                    tr.Commit();
+
+                    return table.Cells[cell.Row, cell.Column].TextString;
+                }
+            }
+        }
 
 
         public class StartClass : IExtensionApplication

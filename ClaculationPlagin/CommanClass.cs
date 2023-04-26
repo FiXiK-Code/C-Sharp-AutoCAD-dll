@@ -139,107 +139,312 @@ namespace ClaculationPlagin
             }
             return null;
         }
-    }
 
-    public class StartClass : IExtensionApplication
-    {
-        public void Initialize()
+        public static void InsertTableResult(string insertText)
         {
-            throw new NotImplementedException();
-        }
+            // Получаем текущий документ и базу данных
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
 
-        [CommandMethod("_mpCalc")]
-        public void StartWindow()
-        {
-            MainWindow mainWinow = new MainWindow();
-            Application.ShowModelessWindow(mainWinow);
-        }
-
-        public void Terminate()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class AddPanel : IExtensionApplication
-    {
-
-        // создание новой панели
-        RibbonPanelSource ribbonPanelSource = new RibbonPanelSource();
-        RibbonPanel ribbonPanel = new RibbonPanel();
-
-        // создание новой кнопки
-        RibbonButton ribbonButton = new RibbonButton();
-
-        public void Initialize()
-        {
-            // установка свойств панели
-            ribbonPanelSource.Title = "Калькулятор";
-            ribbonPanelSource.Id = "Id_pmCalc_Panel";
-            // добавление панели на вкладку Главная (Home)
-            Document adoc = Application.DocumentManager.MdiActiveDocument;
-            Editor ed = adoc.Editor;
-            RibbonControl ribbon = Autodesk.Windows.ComponentManager.Ribbon;
-
-            RibbonTab homeTab = ribbon.FindTab("ACAD.ID_TabHome");
-
-            // установка свойств кнопки
-            ribbonButton.Id = "Id_mpCalc";
-            ribbonButton.ToolTip = "Калькулятор для работы с чертежом.";
-
-            // добавление обработчика события при нажатии на кнопку
-            ribbonButton.CommandParameter = "_mpCalc";
-            ribbonButton.CommandHandler = new ButtonClickCommand();
-
-            // добавление кнопки на созданную панель
-            ribbonButton.Text = "Калькулятор";
-            try
+            // Запрос у пользователя выбора таблицы
+            PromptEntityOptions peo = new PromptEntityOptions("\nВыберите таблицу: ");
+            peo.SetRejectMessage("\nВыберите только объекты таблицы.");
+            peo.AddAllowedClass(typeof(Table), false);
+            PromptEntityResult per = ed.GetEntity(peo);
+            if (per.Status != PromptStatus.OK) return;
+            Table table = null;
+            using (DocumentLock docLock = doc.LockDocument())
             {
-                ribbonPanelSource.Items.Add(ribbonButton);
-            }
-            catch (System.Exception ex) { ed.WriteMessage(ex.Message + "\n Error on ribbonPanelSource.Items.Add(ribbonButton);"); return; }
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    table = (Table)tr.GetObject(per.ObjectId, OpenMode.ForRead);
 
-            try
-            {
-                ribbonPanel.Source = ribbonPanelSource;
-            }
-            catch (System.Exception ex) { ed.WriteMessage(ex.Message + "\n Error on ribbonPanel.Source = ribbonPanelSource;"); return; }
+                    PromptPointOptions ppo = new PromptPointOptions("\nВыберите ячейку: ");
+                    PromptPointResult ppr = ed.GetPoint(ppo);
+                    if (ppr.Status != PromptStatus.OK) return;
+                    Point3d pt = ppr.Value;
 
-            try
-            {
-                homeTab.Panels.Add(ribbonPanel);
-            }
-            catch (System.Exception ex) { ed.WriteMessage(ex.Message + "\n Error on homeTab.Panels.Add(ribbonPanel);"); return; }
+                    // Поиск ячейки
+                    Cell cell = FindCell(table, pt);
+                    if (cell == null)
+                    {
+                        ed.WriteMessage("\nНе удалось определить ячейку.");
+                        return;
+                    }
 
+                    table.UpgradeOpen();
+                    table.Cells[cell.Row, cell.Column].TextString = insertText;
+
+                    tr.Commit();
+                }
+            }
         }
 
-        public void Terminate()
+        private static Cell FindCell(Table table, Point3d pt)
         {
-            throw new NotImplementedException();
+            int numRows = table.Rows.Count;
+            int numCols = table.Columns.Count;
+
+            for (int row = 0; row < numRows; row++)
+            {
+                for (int col = 0; col < numCols; col++)
+                {
+                    Cell cell = table.Cells[row, col];
+                    Point3dCollection cellExtents = cell.GetExtents();
+
+                    Extents3d bbox = new Extents3d();
+                    bbox.AddPoint(cellExtents[0]);
+                    bbox.AddPoint(cellExtents[3]);
+
+                    if (pt.X > bbox.MinPoint.X && pt.X < bbox.MaxPoint.X &&
+                        pt.Y > bbox.MinPoint.Y && pt.Y < bbox.MaxPoint.Y)
+                    {
+                        // Найдена ячейка
+                        return cell;
+                    }
+                }
+            }
+
+            // Ячейка не найдена
+            return null;
         }
-    }
 
-    public class ButtonClickCommand : ICommand
-    {
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute(object parameter)
+        public static string GetTableValue()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
-            if (parameter is RibbonButton)
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
+
+            // Запрос у пользователя выбора таблицы
+            PromptEntityOptions peo = new PromptEntityOptions("\nВыберите таблицу: ");
+            peo.SetRejectMessage("\nВыберите только объекты таблицы.");
+            peo.AddAllowedClass(typeof(Table), false);
+            PromptEntityResult per = ed.GetEntity(peo);
+            if (per.Status != PromptStatus.OK) return null;
+            Table table = null;
+            using (DocumentLock docLock = doc.LockDocument())
             {
-                // Просто берем команду, записанную в CommandParameter кнопки
-                // и выпоняем её используя функцию SendStringToExecute
-                RibbonButton button = parameter as RibbonButton;
-                Application.DocumentManager.MdiActiveDocument.SendStringToExecute(
-                    button.CommandParameter + " ", true, false, true);
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    table = (Table)tr.GetObject(per.ObjectId, OpenMode.ForRead);
+
+                    PromptPointOptions ppo = new PromptPointOptions("\nВыберите ячейку: ");
+                    PromptPointResult ppr = ed.GetPoint(ppo);
+                    if (ppr.Status != PromptStatus.OK) return null;
+                    Point3d pt = ppr.Value;
+
+                    // Поиск ячейки
+                    Cell cell = FindCell(table, pt);
+                    if (cell == null)
+                    {
+                        ed.WriteMessage("\nНе удалось определить ячейку.");
+                        return null;
+                    }
+                    tr.Commit();
+
+                    return table.Cells[cell.Row, cell.Column].TextString;
+                }
             }
         }
 
-        public bool CanExecute(object parameter)
+        public static string GetTextValue()
         {
-            return true;
+            //Выберите объект: AcDbMLeader выноска
+            //Выберите объект: AcDbText текст
+            //Выберите объект: AcDbMText М текст
+
+            Document adoc = Application.DocumentManager.MdiActiveDocument;
+            Database db = adoc.Database;
+            Editor ed = adoc.Editor;
+            bool enter = false;
+            while (!enter)
+            {
+                PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
+                if (result.Status == PromptStatus.Cancel) return null;
+
+                ObjectId enId = result.ObjectId;
+
+                string classObj = enId.ObjectClass.Name;
+
+                if (!classObj.Equals("AcDbMLeader") || !classObj.Equals("AcDbText") || !classObj.Equals("AcDbMText"))
+                {
+                    ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                    continue;
+                }
+
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    if (classObj == "AcDbMLeader")
+                    {
+                        MLeader obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MLeader;
+                        return obj.MText.Text;
+                    }
+                    if (classObj == "AcDbText")
+                    {
+                        DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
+                        return obj.TextString;
+                    }
+                    if (classObj == "AcDbMText")
+                    {
+                        MText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MText;
+                        return obj.Text;
+                    }
+
+                    enter = true;
+
+                }
+            }
+            return null;
         }
 
+
+        [CommandMethod("MLeaderInsert")]
+        public void MLeaderInsert()
+        {
+            Document acDoc = Application.DocumentManager.MdiActiveDocument;
+            Database acCurDb = acDoc.Database;
+
+            // Запрос на выбор точки вставки
+            PromptPointOptions insPointPrompt = new PromptPointOptions("\nВыберите точку вставки: ");
+            PromptPointResult insPointResult = acDoc.Editor.GetPoint(insPointPrompt);
+            if (insPointResult.Status != PromptStatus.OK) return;
+
+            // Запрос на выбор точки положения мультивыноски
+            PromptPointOptions mLeaderPointPrompt = new PromptPointOptions("\nВыберите точку положения мультивыноски: ");
+            PromptPointResult mLeaderPointResult = acDoc.Editor.GetPoint(mLeaderPointPrompt);
+            if (mLeaderPointResult.Status != PromptStatus.OK) return;
+
+            // Создание объекта мультивыноски
+            MLeader mLeader = new MLeader();
+
+            // Создание объекта MultileaderStyle для задания стиля мультивыноски
+            DBDictionary mLeaderStyles = acCurDb.MLeaderStyleDictionaryId.GetObject(OpenMode.ForRead) as DBDictionary;
+            //MultileaderStyle mLeaderStyle = mLeaderStyles.GetAt("Standard").GetObject(OpenMode.ForRead) as MultileaderStyle;
+            //mLeader.Style = mLeaderStyle;
+
+            // Создание и заполнение объекта MText
+            MText mtext = new MText();
+            mtext.Contents = "проверено";
+            mLeader.MText = mtext;
+
+            // Задание точки вставки и точки положения мультивыноски
+            //mLeader.Location = insPointResult.Value;
+            //mLeader.SetLeaderLinePoints(new Point3dCollection() { mLeaderPointResult.Value });
+
+
+            // Добавление созданной мультивыноски в пространство модели
+            BlockTableRecord acBlkTblRec;
+            using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
+            {
+                acBlkTblRec = acTrans.GetObject(acCurDb.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
+                acBlkTblRec.AppendEntity(mLeader);
+                acTrans.AddNewlyCreatedDBObject(mLeader, true);
+                acTrans.Commit();
+            }
+            // Обновление экрана и вывод сообщения об успешном создании объекта
+            acDoc.Editor.Regen();
+            acDoc.Editor.WriteMessage("\nMLeader успешно вставлен");
+        }
+
+
+
+        [CommandMethod("_mpCalc")]
+        public static void Satart()
+        {
+            AddPanel.StartWindow();
+        }
+
+        
+
+        public class AddPanel : IExtensionApplication
+        {
+
+            // создание новой панели
+            RibbonPanelSource ribbonPanelSource = new RibbonPanelSource();
+            RibbonPanel ribbonPanel = new RibbonPanel();
+
+            // создание новой кнопки
+            RibbonButton ribbonButton = new RibbonButton();
+
+            public void Initialize()
+            {
+                // установка свойств панели
+                ribbonPanelSource.Title = "Калькулятор";
+                ribbonPanelSource.Id = "Id_pmCalc_Panel";
+                // добавление панели на вкладку Главная (Home)
+                Document adoc = Application.DocumentManager.MdiActiveDocument;
+                Editor ed = adoc.Editor;
+                RibbonControl ribbon = Autodesk.Windows.ComponentManager.Ribbon;
+
+                RibbonTab homeTab = ribbon.FindTab("ACAD.ID_TabHome");
+
+                // установка свойств кнопки
+                ribbonButton.Id = "Id_mpCalc";
+                ribbonButton.ToolTip = "Калькулятор для работы с чертежом.";
+
+                // добавление обработчика события при нажатии на кнопку
+                ribbonButton.CommandParameter = "_mpCalc";
+                ribbonButton.CommandHandler = new ButtonClickCommand();
+
+                // добавление кнопки на созданную панель
+                ribbonButton.Text = "Калькулятор";
+                try
+                {
+                    ribbonPanelSource.Items.Add(ribbonButton);
+                }
+                catch (System.Exception ex) { ed.WriteMessage(ex.Message + "\n Error on ribbonPanelSource.Items.Add(ribbonButton);"); return; }
+
+                try
+                {
+                    ribbonPanel.Source = ribbonPanelSource;
+                }
+                catch (System.Exception ex) { ed.WriteMessage(ex.Message + "\n Error on ribbonPanel.Source = ribbonPanelSource;"); return; }
+
+                try
+                {
+                    homeTab.Panels.Add(ribbonPanel);
+                }
+                catch (System.Exception ex) { ed.WriteMessage(ex.Message + "\n Error on homeTab.Panels.Add(ribbonPanel);"); return; }
+
+            }
+
+            public static void StartWindow()
+            {
+                MainWindow mainWinow = new MainWindow();
+                Application.ShowModelessWindow(mainWinow);
+            }
+
+            public void Terminate()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class ButtonClickCommand : ICommand
+        {
+            public event EventHandler CanExecuteChanged;
+
+            public void Execute(object parameter)
+            {
+                Document doc = Application.DocumentManager.MdiActiveDocument;
+                if (parameter is RibbonButton)
+                {
+                    // Просто берем команду, записанную в CommandParameter кнопки
+                    // и выпоняем её используя функцию SendStringToExecute
+                    RibbonButton button = parameter as RibbonButton;
+                    Application.DocumentManager.MdiActiveDocument.SendStringToExecute(
+                        button.CommandParameter + " ", true, false, true);
+                }
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+        }
     }
+
+    
 }

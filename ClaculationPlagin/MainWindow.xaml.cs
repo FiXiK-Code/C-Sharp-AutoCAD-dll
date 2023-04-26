@@ -113,5 +113,14 @@ namespace ClaculationPlagin
 
         }
 
+        private void DotPositionPlusBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DotPositionTextBox.Text = (Convert.ToInt32(DotPositionTextBox.Text) + 1).ToString();
+        }
+
+        private void DotPositionMinBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DotPositionTextBox.Text = Convert.ToInt32(DotPositionTextBox.Text) >= 1 ? (Convert.ToInt32(DotPositionTextBox.Text) - 1).ToString() : DotPositionTextBox.Text;
+        }
     }
 }

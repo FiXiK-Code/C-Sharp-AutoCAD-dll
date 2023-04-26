@@ -51,6 +51,7 @@ namespace FittingsCalculation
                 resStackPanel.Height = 0;
                 resStackPanel.IsEnabled = false;
                 lengthFitting.IsEnabled = false;
+                BufferClass.massFitting = masOnePMComboBox.Text;
             }
             else
             {
@@ -58,6 +59,7 @@ namespace FittingsCalculation
                 resStackPanel.Height = 17.6;
                 resStackPanel.IsEnabled = true;
                 lengthFitting.IsEnabled = true;
+                BufferClass.massFitting = resultTextBox.Text;
             }
         }
 
@@ -75,8 +77,9 @@ namespace FittingsCalculation
 
         private void resToTableLink_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            BufferClass.massFitting = resultTextBox.Text;
             // вызов функции выбора ячейки таблицы (для массы) (передавать в парметры BufferClass.massFitting)
+            // добавить учет галочки 1пм
+            CommandClass.InsertTableText(BufferClass.massFitting, false);
         }
 
         private void nameToTableLink_MouseDown(object sender, MouseButtonEventArgs e)
