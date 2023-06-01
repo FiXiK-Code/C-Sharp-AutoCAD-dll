@@ -6,57 +6,30 @@ using System.Threading.Tasks;
 
 namespace FittingsCalculation
 {
+    /// <summary>
+    /// Класс для математических рассетов.
+    /// </summary>
     public static class CalculationClass
     {
-        public static double CalcMass(bool pm, string gost, double diametr, double plSech, double mass1PM, string classFitting, double length)
+        /// <summary>
+        /// Метод для получения площади сечения арматуры
+        /// </summary>
+        /// <param name="d">Диаметр стержней</param>
+        /// <param name="n">Количество стержней</param>
+        /// <param name="p">Шаг стержней(расстояние между центрами стержней) в миллиметрах</param>
+        /// <param name="L"> длина участка, на который требуется расчитать количество стержней</param>
+        /// <returns>Площадь сечения арматуры</returns>
+        public static double GetPlosh(double d, double n, int p = 0, double L = 1)
         {
-
-            switch (pm)
+            //S = (πd²/4) * n
+            //n = L / p
+           
+            if (p != 0)
             {
-                case true:
-
-                        
-
-                    break;
-                case false:
-
-
-
-
-
-                    break;
-            }
-            return 0.0;
-        }
-
-        public static double CalcPlosh(string gost, double diametr, double plSech, double mass1PM, string classFitting, int countFitting = 0, double stepSitting = 0.0)
-        {
-            if(countFitting != 0)
-            {
-
-
-
-
-                return 0.0;
-            }
-            if(stepSitting != 0.0)
-            {
-
-
-
-
-
-                return 0.0;
-            }
-            else
-            {
-
-
-
-                return 0.0;
+                n = L / p / 1000;
             }
 
-            
+            return n * (Math.PI * Math.Pow(d, 2) / 4);
         }
     }
 }

@@ -10,20 +10,31 @@ using System.Windows.Input;
 
 namespace ClaculationPlagin
 {
+    /// <summary>
+    /// Класс, содержащий функции для взаимодействия с чертежом.
+    /// </summary>
     public class CommanClass
     {
+        /// <summary>
+        /// Методя для получния расстояния между точками
+        /// </summary>
+        /// <returns>Расстояние между точками в формате строки(string)</returns>
         public static string GetSize()
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
 
             PromptPointResult _pt1 = adoc.Editor.GetPoint("\nУкажите первую точку : ");
             Point3d pt1 = _pt1.Value;
-            PromptPointResult _pt2 = adoc.Editor.GetPoint("\nУкажите первую точку : ");
+            PromptPointResult _pt2 = adoc.Editor.GetPoint("\nУкажите вторую точку : ");
             Point3d pt2 = _pt2.Value;
 
             return Math.Round(pt1.DistanceTo(pt2), 3).ToString();
         }
 
+        /// <summary>
+        /// Метод для получения длинны выбранного объекта
+        /// </summary>
+        /// <returns>Возвращает длинну окружности, элипса, линии, полилинии, дуги и сплайна в зависимости от того, какой элемент выбран на чертеже</returns>
         public static string GetPolySize()
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
@@ -81,11 +92,16 @@ namespace ClaculationPlagin
             return Math.Round(outRez, 3).ToString();
         }
 
+        /// <summary>
+        /// Метод для получения координаты
+        /// </summary>
+        /// <param name="nap">Необхадима координата - x, y или z</param>
+        /// <returns>Координы выбранной точки x, y или z</returns>
         public static string GetCoordinate(string nap)
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
 
-            PromptPointResult _pt1 = adoc.Editor.GetPoint("\nУкажите первую точку : ");
+            PromptPointResult _pt1 = adoc.Editor.GetPoint("\nУкажите точку : ");
             Point3d pt1 = _pt1.Value;
 
             string output = null;
@@ -106,6 +122,11 @@ namespace ClaculationPlagin
             return output;
         }
 
+
+        /// <summary>
+        /// Метод для полечения значения размера.
+        /// </summary>
+        /// <returns>Значение размера в формате строки (string)</returns>
         public static string GetDimension()
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
@@ -121,7 +142,7 @@ namespace ClaculationPlagin
 
                 if (!enId.ObjectClass.Name.Equals("AcDbAlignedDimension"))
                 {
-                    ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                    ed.WriteMessage("\nВыбран не размер!");
                     continue;
                 }
 
@@ -140,6 +161,11 @@ namespace ClaculationPlagin
             return null;
         }
 
+
+        /// <summary>
+        /// Метод для вставки значения в ячейку таблицы.
+        /// </summary>
+        /// <param name="insertText"> Текст для вставки в таблицу </param>
         public static void InsertTableResult(string insertText)
         {
             // Получаем текущий документ и базу данных
@@ -181,6 +207,13 @@ namespace ClaculationPlagin
             }
         }
 
+
+        /// <summary>
+        /// Всопогательный метод для поиска ячейки в таблице.
+        /// </summary>
+        /// <param name="table"> Таблица в которой происходит поиск</param>
+        /// <param name="pt"> Точка нажатия</param>
+        /// <returns> Если ячейка найдена - возвращает ячейку. Иначе - null.</returns>
         private static Cell FindCell(Table table, Point3d pt)
         {
             int numRows = table.Rows.Count;
@@ -210,6 +243,11 @@ namespace ClaculationPlagin
             return null;
         }
 
+
+        /// <summary>
+        /// Метод для получения значения из ячейки таблицы.
+        /// </summary>
+        /// <returns>Если ячейка существует - возвращает строку с контентом.</returns>
         public static string GetTableValue()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
@@ -248,6 +286,11 @@ namespace ClaculationPlagin
             }
         }
 
+
+        /// <summary>
+        /// Метод для получения значения из однострочного/многострочного текста или выноски.
+        /// </summary>
+        /// <returns>Если удалось считать текст - возвращает его.</returns>
         public static string GetTextValue()
         {
             //Выберите объект: AcDbMLeader выноска
@@ -298,13 +341,20 @@ namespace ClaculationPlagin
             return null;
         }
 
+
+        /// <summary>
+        /// Метод для запуска отрисовки модального окна по стредствам выполнения комманды в консоли.
+        /// </summary>
         [CommandMethod("_mpCalc")]
         public static void Satart()
         {
             AddPanel.StartWindow();
         }
 
-
+        /// <summary>
+        /// Метод для вставки однострочного текста.
+        /// </summary>
+        /// <param name="value">Вставляемый текст</param>
         public void InsertOneText(string value)
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
@@ -336,7 +386,12 @@ namespace ClaculationPlagin
             acDoc.Editor.WriteMessage("\nТекст успешно вставлен");
         }
 
-        public void RemoveOneText(string value)
+
+        /// <summary>
+        /// Метод для замены текста в выбранном однострочном тексте.
+        /// </summary>
+        /// <param name="value">Текст для замены</param>
+        public void ReplaceOneText(string value)
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
             Database db = adoc.Database;
@@ -373,6 +428,11 @@ namespace ClaculationPlagin
             ed.WriteMessage("\nТекст был заменен! \n ");
         }
 
+
+        /// <summary>
+        /// Метод для вставки многострочно текста.
+        /// </summary>
+        /// <param name="value">Вставляемый текст</param>
         public void InsertPolyText(string value)
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
@@ -406,20 +466,127 @@ namespace ClaculationPlagin
                     tr.Commit();
                 }
             }
-            
-
-            
-
         }
 
 
+        /// <summary>
+        /// Тестовый метод для получения значений из выности или одно/много-строчного текста
+        /// </summary>
+        [CommandMethod("test")]
+        public static void GetTextValueTest()
+        {
+            //Выберите объект: AcDbMLeader выноска
+            //Выберите объект: AcDbText текст
+            //Выберите объект: AcDbMText М текст
 
+            Document adoc = Application.DocumentManager.MdiActiveDocument;
+            Database db = adoc.Database;
+            Editor ed = adoc.Editor;
+            bool enter = false;
+            while (!enter)
+            {
+                PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
+                if (result.Status == PromptStatus.Cancel) continue;
+
+                ObjectId enId = result.ObjectId;
+
+                string classObj = enId.ObjectClass.Name;
+
+                if (!classObj.Equals("AcDbMLeader") && !classObj.Equals("AcDbText") && !classObj.Equals("AcDbMText"))
+                {
+                    ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                    continue;
+                }
+
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    if (classObj == "AcDbMLeader")
+                    {
+                        MLeader obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MLeader;
+                        
+                        ed.WriteMessage("\n Location MText:\n" + obj.MText.Location.X + "\n"
+                            + obj.MText.Location.Y + "\n"
+                            + obj.MText.Location.Z + "\n");
+
+                       
+                        ed.WriteMessage("\n FirstVertex: \n" + obj.GetFirstVertex(0).ToString());
+                        ed.WriteMessage("\n LastVertex: \n" + obj.GetLastVertex(0).ToString());
+                        
+
+                    }
+                    if (classObj == "AcDbText")
+                    {
+                        DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
+                        
+                    }
+                    if (classObj == "AcDbMText")
+                    {
+                        MText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MText;
+                        
+                    }
+
+                    enter = true;
+
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Метод для всатвки выноски с текстом (вроде не работает)
+        /// </summary>
+        [CommandMethod("LeaderInsert")]
+        public void LeaderInsert()
+        {
+            Document acDoc = Application.DocumentManager.MdiActiveDocument;
+            Editor acEditor = acDoc.Editor;
+            Database acCurDb = acDoc.Database;
+
+            // Запрос на выбор первой точки
+            PromptPointOptions firstPointPrompt = new PromptPointOptions("\nВыберите первую точку для выноски: ");
+            PromptPointResult firstPointResult = acEditor.GetPoint(firstPointPrompt);
+            if (firstPointResult.Status != PromptStatus.OK) return;
+
+            // Запрос на выбор второй точки
+            PromptPointOptions secondPointPrompt = new PromptPointOptions("\nВыберите вторую точку для выноски: ");
+            secondPointPrompt.BasePoint = firstPointResult.Value;
+            secondPointPrompt.UseBasePoint = true;
+            PromptPointResult secondPointResult = acEditor.GetPoint(secondPointPrompt);
+            if (secondPointResult.Status != PromptStatus.OK) return;
+
+            // Создание объекта "выноска"
+            MLeader leader = new MLeader();
+            leader.ContentType = ContentType.MTextContent;
+            MText mtext = new MText();
+            mtext.Contents = "Проверено";
+            leader.MText = mtext;
+
+            // Задание точек выноски и добавление объекта в пространство модели
+            leader.SetFirstVertex(0,new Point3d(firstPointResult.Value.X, firstPointResult.Value.Y, 0.0));
+            leader.SetLastVertex(0, new Point3d(secondPointResult.Value.X, secondPointResult.Value.Y, 0.0));
+            leader.MText.Location = new Point3d(secondPointResult.Value.X, secondPointResult.Value.Y, 0.0);
+
+            BlockTableRecord acBlkTblRec;
+            using (DocumentLock docLock = acDoc.LockDocument())
+            {
+                using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
+                {
+                    acBlkTblRec = acTrans.GetObject(acCurDb.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
+                    acBlkTblRec.AppendEntity(leader);
+                    acTrans.AddNewlyCreatedDBObject(leader, true);
+                    acTrans.Commit();
+                }
+            }
+
+            acEditor.WriteMessage("\nВыноска с текстом 'Проверено' успешно вставлена");
+        }
 
 
         
 
-
-
+        /// <summary>
+        /// Класс для создания кнопки вызова модального окна в панели управления.
+        /// </summary>
         public class AddPanel : IExtensionApplication
         {
 
@@ -430,6 +597,9 @@ namespace ClaculationPlagin
             // создание новой кнопки
             RibbonButton ribbonButton = new RibbonButton();
 
+            /// <summary>
+            /// Метод создающий панель при инициализации (запуске) библиотеки.
+            /// </summary>
             public void Initialize()
             {
                 // установка свойств панели
@@ -472,6 +642,10 @@ namespace ClaculationPlagin
 
             }
 
+
+            /// <summary>
+            /// Метод для отрисовки модального окна.
+            /// </summary>
             public static void StartWindow()
             {
                 MainWindow mainWinow = new MainWindow();
@@ -484,10 +658,19 @@ namespace ClaculationPlagin
             }
         }
 
+
+        /// <summary>
+        /// Вспомогательный класс для обработки нажатия на кнопку в панели.
+        /// </summary>
         public class ButtonClickCommand : ICommand
         {
             public event EventHandler CanExecuteChanged;
 
+
+            /// <summary>
+            /// Методя для задания действия при нажатии на кнопку
+            /// </summary>
+            /// <param name="parameter">Комманда которую необходимо выполнить при нажатии</param>
             public void Execute(object parameter)
             {
                 Document doc = Application.DocumentManager.MdiActiveDocument;
@@ -500,6 +683,7 @@ namespace ClaculationPlagin
                         button.CommandParameter + " ", true, false, true);
                 }
             }
+
 
             public bool CanExecute(object parameter)
             {

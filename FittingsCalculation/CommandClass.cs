@@ -10,9 +10,15 @@ using System.Windows.Input;
 
 namespace FittingsCalculation
 {
+    /// <summary>
+    /// Класс, содержащий функции для взаимодействия с чертежом.
+    /// </summary>
     public class CommandClass
     {
-
+        /// <summary>
+        /// Метод для взаимодействия с чертежом.
+        /// </summary>
+        /// <returns> Ращделяем выбранный размер в указанной точке на два размера.</returns>
         public static string RunCommand2()
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
@@ -80,6 +86,13 @@ namespace FittingsCalculation
             }
         }
 
+        /// <summary>
+        /// Дополнительный метод для работы с точками на чертеже.
+        /// </summary>
+        /// <param name="point"> Указанная точка</param>
+        /// <param name="startPoint"> Точка начала отрезка</param>
+        /// <param name="endPoint"> Точка конца отрезка</param>
+        /// <returns>Возвращает точку проекции указанной точки на указанный отрезок</returns>
         public static Point3d GetProjectionOnLine(Point3d point, Point3d startPoint, Point3d endPoint)
         {
             var line = new Line(startPoint, endPoint);
@@ -97,6 +110,10 @@ namespace FittingsCalculation
             return startPoint + projectionOnDirection;
         }
 
+        /// <summary>
+        /// Методя для получения расстояния между точками
+        /// </summary>
+        /// <returns>Возвращает значение с точностью до 3-х знаков в формате строки(string)</returns>
         public static string GetSize()
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
@@ -109,6 +126,10 @@ namespace FittingsCalculation
             return Math.Round(pt1.DistanceTo(pt2), 3).ToString();
         }
 
+        /// <summary>
+        /// Метод для получения длинны выбранного ообъекта
+        /// </summary>
+        /// <returns>Возвращает длинну окружности, элипса, линии, полилинии, дуги и сплайна в зависимости от того, какой элемент выбран на чертеже</returns>
         public static string GetPolySize()
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
@@ -166,6 +187,10 @@ namespace FittingsCalculation
             return Math.Round(outRez, 3).ToString();
         }
 
+
+        /// <summary>
+        /// Метод для тестовых проверок. Например получение мнногострочного текста.
+        /// </summary>
         [CommandMethod("testObj")]
         public static void Test()
         {
@@ -190,6 +215,11 @@ namespace FittingsCalculation
         }
 
        
+        /// <summary>
+        /// Метод для вставки значения в ячейку таблицы.
+        /// </summary>
+        /// <param name="naemFiting"> Текст для вставки названия арматуры </param>
+        /// <param name="result"> Текст для вставки значеия результата вычислений</param>
         public static void InsertTableText(string naemFiting, string result)
         {
             // Получаем текущий документ и базу данных
@@ -232,6 +262,11 @@ namespace FittingsCalculation
             }
         }
 
+        /// <summary>
+        /// Методя для вставки результата вычислений с пометкой "кг/п.м." - килограмм на погонный метр.
+        /// </summary>
+        /// <param name="insertText">Текст для вставки значения результата</param>
+        /// <param name="_1pm">Вставлять ли в соседнюю ячейку "кг/п.м."</param>
         public static void InsertTableText(string insertText, bool _1pm)
         {
             // Получаем текущий документ и базу данных
@@ -274,6 +309,13 @@ namespace FittingsCalculation
             }
         }
 
+
+        /// <summary>
+        /// Всопогательный метод для поиска ячейки в таблице.
+        /// </summary>
+        /// <param name="table"> Таблица в которой происходит поиск</param>
+        /// <param name="pt"> Точка нажатия</param>
+        /// <returns> Если ячейка найдена - возвращает ячейку. Иначе - null.</returns>
         private static Cell FindCell(Table table, Point3d pt)
         {
             int numRows = table.Rows.Count;
@@ -303,6 +345,10 @@ namespace FittingsCalculation
             return null;
         }
 
+        /// <summary>
+        /// Метод для получения значения из ячейки таблицы.
+        /// </summary>
+        /// <returns>Если ячейка существует - возвращает строку с контентом.</returns>
         public static string GetTableValue()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
@@ -342,8 +388,15 @@ namespace FittingsCalculation
         }
 
 
+
+        /// <summary>
+        /// Класс для инициализации и отрисовки модального окна.
+        /// </summary>
         public class StartClass : IExtensionApplication
         {
+            /// <summary>
+            /// Метод для запуска отрисоки модального окна.
+            /// </summary>
             public void Initialize()
             {
                 ModalWinow modalWinow = new ModalWinow();

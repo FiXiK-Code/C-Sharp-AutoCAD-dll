@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FittingsCalculation
 {
+    /// <summary>
+    /// Класс для передачи информации между формами
+    /// </summary>
     public static class BufferClass
     {
         public static string lengthFitting { get; set; }
