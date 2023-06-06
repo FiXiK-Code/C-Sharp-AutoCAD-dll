@@ -122,7 +122,6 @@ namespace FittingsCalculation
             Point3d pt1 = _pt1.Value;
             PromptPointResult _pt2 = adoc.Editor.GetPoint("\nУкажите первую точку : ");
             Point3d pt2 = _pt2.Value;
-
             return Math.Round(pt1.DistanceTo(pt2), 3).ToString();
         }
 
@@ -140,6 +139,7 @@ namespace FittingsCalculation
 
             while (true)
             {
+                if(outRez!= 0.0) ed.WriteMessage("\nСумма: " + outRez);
                 PromptEntityResult result = ed.GetEntity("\nВыберите объект: ");
                 if (result.Status == PromptStatus.Cancel) break;
 
@@ -255,7 +255,7 @@ namespace FittingsCalculation
 
                     table.UpgradeOpen();
                     table.Cells[cell.Row, cell.Column].TextString = naemFiting;
-                    table.Cells[cell.Row, table.Columns.Count -1].TextString = result;
+                    table.Cells[cell.Row, table.Columns.Count -2].TextString = result;
 
                     tr.Commit();
                 }
@@ -302,7 +302,7 @@ namespace FittingsCalculation
 
                     table.UpgradeOpen();
                     table.Cells[cell.Row, cell.Column].TextString = insertText;
-                    if( _1pm == true  ) table.Cells[cell.Row, cell.Column+1].TextString = "кг/п.м";
+                    if(_1pm) table.Cells[cell.Row, cell.Column+1].TextString = "кг/п.м";
 
                     tr.Commit();
                 }

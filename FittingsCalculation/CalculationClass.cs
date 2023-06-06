@@ -17,19 +17,40 @@ namespace FittingsCalculation
         /// <param name="d">Диаметр стержней</param>
         /// <param name="n">Количество стержней</param>
         /// <param name="p">Шаг стержней(расстояние между центрами стержней) в миллиметрах</param>
-        /// <param name="L"> длина участка, на который требуется расчитать количество стержней</param>
         /// <returns>Площадь сечения арматуры</returns>
-        public static double GetPlosh(double d, double n, int p = 0, double L = 1)
+        public static double GetPlosh(double d, double n, int p = 0)
         {
             //S = (πd²/4) * n
             //n = L / p
            
             if (p != 0)
             {
-                n = L / p / 1000;
+                n = 1 / p / 1000;
             }
 
             return n * (Math.PI * Math.Pow(d, 2) / 4);
         }
+
+        /// <summary>
+        /// Метод для получения массы арматуры
+        /// </summary>
+        /// <param name="D">Диаметр арматуры</param>
+        /// <param name="L">Длинна арматуры в мм</param>
+        /// <returns></returns>
+        public static double GetMass(string D, string L)
+        {
+            return Math.Round( Math.PI * Math.Pow( Convert.ToDouble(D), 2) / 4 * 0.7850 * Convert.ToDouble(L) / 100000, 3) * Convert.ToDouble(BufferClass.countFitting);
+        }
+
+        /// <summary>
+        /// Метод получения площади сечения
+        /// </summary>
+        /// <param name="D"> Диаметр арматуры</param>
+        /// <returns></returns>
+        public static double GetPloshSech(string D)
+        {
+            return Math.Round( Math.PI * Math.Pow( Convert.ToDouble(D), 2 ) / 4 , 1 )  / 100;
+        }
+
     }
 }

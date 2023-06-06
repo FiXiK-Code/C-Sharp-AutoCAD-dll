@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FittingsCalculation"
         WindowStyle="None"
-        SizeToContent="WidthAndHeight" Loaded="Window_Loaded">
+        SizeToContent="WidthAndHeight" Loaded="Window_Loaded" Width="507.2">
     <Window.Resources>
         <SolidColorBrush x:Key="SelectedTabColorBrush" Color="White"/>
         <Style TargetType="TabItem">
@@ -75,10 +75,10 @@
         <StackPanel Orientation="Horizontal" Background="#FFEBEBEB">
             <Image Height="20" Width="20" Source="icons\лого.PNG"/>
             <TextBlock><Run Text="АРМАТУРА"/></TextBlock>
-            <Image Height="20" Width="20" HorizontalAlignment="Right" Margin="380,0,0,0" Source="icons\4115230-cancel-close-cross-delete_114048.png"/>
+            <Image x:Name="closeBtn" Height="20" Width="20" HorizontalAlignment="Right" Margin="400,0,0,0" Source="icons\4115230-cancel-close-cross-delete_114048.png" Cursor="Hand" MouseDown="closeBtn_MouseDown"/>
         </StackPanel>
 
-        
+
         <!--основная паналь ( левая часть с ComboBox; правая часть с вкладками)-->
         <StackPanel Orientation="Horizontal">
 
@@ -125,7 +125,7 @@
                 </ComboBox>
 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Площадь сеч., см²</TextBlock>
-                <TextBox IsEnabled="False" Name="PSechTextBox" Text="123123" SelectionOpacity="1"/>
+                <TextBox IsEnabled="False" Name="PSechTextBox" Text="0" SelectionOpacity="1"/>
 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Масса 1 п.м, кг</TextBlock>
                 <ComboBox x:Name="masOnePMComboBox" IsEnabled="False" Margin="2" Height="20">
@@ -171,27 +171,26 @@
             </StackPanel>
 
             <!--Правая панель-->
-            <StackPanel Orientation="Vertical" Margin="3" MinWidth="300" Width="317">
+            <StackPanel Orientation="Vertical" Margin="3" MinWidth="300" Width="336">
                 <TabControl>
 
                     <!--Масса-->
                     <TabItem Header="Масса">
 
                         <StackPanel Orientation="Vertical" Height="232">
-
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Длинна, мм:" Margin="0,0,2,0"/>
-                                <TextBox x:Name="lengthFitting" TextChanged="lengthFitting_TextChanged" Text="1180" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,0,2,0" Margin="0,0,2,0"/>
-                                <CheckBox x:Name="onePMCheckBox" Style="{StaticResource CustomCheckBox}" Click="onePMCheckBox_Click" Cursor="Hand" Content="п.м" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsChecked="False" Margin="0,0,2,0"/>
-                                <Image Height="20" Width="20" Margin="0,0,3,0" Source="icons\size_maximize_icon_142968.png" ToolTip="Замерить расстояние между двумя точками"/>
-                                <Image Height="20" Width="20" Source="icons\two-squares_icon-icons.com_55537.png" ToolTip="Получить сумму длин из объектов"/>
+                            <StackPanel Orientation="Horizontal" MaxWidth="232" Margin="0,0,0.2,0">
+                                <Label Content="Длинна, мм:" Margin="-20,0,2,0" Width="78"/>
+                                <TextBox x:Name="lengthFitting" TextChanged="lengthFitting_TextChanged" Text="118.312" VerticalContentAlignment="Center" MinWidth="31" HorizontalContentAlignment="Center" Padding="0,0,2,0" Margin="0,0,2,0" MaxWidth="70" Width="69" KeyDown="lengthFitting_KeyDown"/>
+                                <CheckBox x:Name="onePMCheckBox" Style="{StaticResource CustomCheckBox}" Click="onePMCheckBox_Click" Cursor="Hand" Content="п.м" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsChecked="False" Margin="0,0,2,0" Checked="onePMCheckBox_Checked"/>
+                                <Image x:Name="getLengthBtn" Height="20" Width="20" Margin="0,0,3,0" Source="icons\size_maximize_icon_142968.png" ToolTip="Замерить расстояние между двумя точками" Cursor="Hand" MouseDown="getLengthBtn_MouseDown"/>
+                                <Image x:Name="getPolyLengthBtn" Height="20" Width="20" Source="icons\two-squares_icon-icons.com_55537.png" ToolTip="Получить сумму длин из объектов" Cursor="Hand" MouseDown="getPolyLengthBtn_MouseDown"/>
                             </StackPanel>
                             <Label Content="РЕЗУЛЬТАТ, КГ"/>
 
-                            <StackPanel x:Name="resStackPanel"  Orientation="Horizontal">
+                            <StackPanel x:Name="resStackPanel"  Orientation="Horizontal" Height="25" >
                                 <TextBox x:Name="resultTextBox" Width="200" IsEnabled="False" Text="1000" VerticalContentAlignment="Center" HorizontalAlignment="Left" SelectionOpacity="-1" Foreground="Black" IsReadOnly="True"/>
                                 <Slider  IsSnapToTickEnabled="True" x:Name="sliderCountFitting" MinWidth="60"   ValueChanged="sliderCountFitting_ValueChanged" Value="1" Minimum="1" SmallChange="1" TickPlacement="TopLeft" Foreground="Blue" />
-                                <TextBox x:Name="countFittingTextBox" MinWidth="20" TextChanged="countFittingTextBox_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">1</TextBox>
+                                <TextBox x:Name="countFittingTextBox" MinWidth="20" TextChanged="countFittingTextBox_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="1" KeyDown="countFittingTextBox_KeyDown"/>
 
                             </StackPanel>
 
@@ -199,7 +198,7 @@
                             <Label x:Name="nameToTableLink" HorizontalAlignment="Center" Content="Наименование в таблицу" MouseDown="nameToTableLink_MouseDown" Cursor="Hand" Foreground="#FF153AD0"/>
                             <Label x:Name="resAndNameToTableLink" HorizontalAlignment="Center" Content="Вставить результат и наименование" MouseDown="resAndNameToTableLink_MouseDown" Cursor="Hand" Foreground="#FF153AD0"/>
 
-                            <CheckBox x:Name="addSymbolCheckBox" Style="{StaticResource CustomCheckBox}" Click="addSymbolCheckBox_Click" Cursor="Hand" IsChecked="True" Margin="0,28,0,0">Добавить символ диаметра (Ø)</CheckBox>
+                            <CheckBox x:Name="addSymbolCheckBox" Style="{StaticResource CustomCheckBox}" Click="addSymbolCheckBox_Click" Cursor="Hand" IsChecked="False" Margin="0,28,0.2,0" HorizontalAlignment="Right" Width="311" Content="Добавить символ диаметра (Ø)"/>
 
                         </StackPanel>
                     </TabItem>
@@ -216,9 +215,9 @@
                             </StackPanel>
 
                             <StackPanel RenderTransformOrigin="0.537,0.597" Width="100">
-                                <ComboBox Height="25" Width="99" BorderBrush="Blue"/>
-                                <TextBox Height="25" Margin="0,13,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                <ComboBox Height="25" Margin="0,13,0,0" BorderBrush="Blue">
+                                <ComboBox Name="countFittindComboBox" Height="25" Width="99" BorderBrush="Blue" SelectionChanged="countFittindComboBox_SelectionChanged"/>
+                                <TextBox x:Name="resultPloshSechTextBox" Height="25" Margin="0,13,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                <ComboBox Name="stepFittingComboBox" Height="25" Margin="0,13,0,0" BorderBrush="Blue" SelectionChanged="stepFittingComboBox_SelectionChanged">
                                     <TextBlock Text="100"/>
                                     <TextBlock Text="125"/>
                                     <TextBlock Text="150"/>
@@ -228,7 +227,7 @@
                                     <TextBlock Text="350"/>
                                     <TextBlock Text="400"/>
                                 </ComboBox>
-                                <TextBox Height="25" Margin="0,13,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="5"></TextBox>
+                                <TextBox x:Name="resultPloshSechOnStepTextBox" Height="25" Margin="0,13,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ></TextBox>
                             </StackPanel>
 
                         </StackPanel>
