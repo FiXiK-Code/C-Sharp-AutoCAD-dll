@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FittingsCalculation"
         WindowStyle="None"
-        SizeToContent="WidthAndHeight" Loaded="Window_Loaded" Width="507.2">
+        SizeToContent="WidthAndHeight" Width="507.2">
     <Window.Resources>
         <SolidColorBrush x:Key="SelectedTabColorBrush" Color="White"/>
         <Style TargetType="TabItem">
@@ -86,9 +86,9 @@
             <StackPanel Orientation="Vertical" Margin="3" MinWidth="150">
 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Норм. документ</TextBlock>
-                <ComboBox Margin="2" Height="20">
-                    <TextBlock Text="ГОСТ 5781-82 (устар.)"/>
-                    <TextBlock Text="ГОСТ 34028-2016 (актуал.)"/>
+                <ComboBox Name="gostComboBox" Margin="2" Height="20" SelectionChanged="gostComboBox_SelectionChanged">
+                    <TextBlock Text="ГОСТ 5781-82"/>
+                    <TextBlock Text="ГОСТ 34028-2016"/>
                 </ComboBox>
 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Диаметр</TextBlock>
@@ -161,12 +161,7 @@
                 </ComboBox>
 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Класс арматуры</TextBlock>
-                <ComboBox Margin="2" Height="20">
-                    <TextBlock Text="А-I (А240)"/>
-                    <TextBlock Text="АIII (А400)"/>
-                    <TextBlock Text="А500С"/>
-                    <TextBlock Text="Ат800"/>
-                </ComboBox>
+                <ComboBox Name="classFittingComboBox" Margin="2" Height="20" SelectionChanged="classFittingComboBox_SelectionChanged" />
 
             </StackPanel>
 
@@ -181,7 +176,7 @@
                             <StackPanel Orientation="Horizontal" MaxWidth="232" Margin="0,0,0.2,0">
                                 <Label Content="Длинна, мм:" Margin="-20,0,2,0" Width="78"/>
                                 <TextBox x:Name="lengthFitting" TextChanged="lengthFitting_TextChanged" Text="118.312" VerticalContentAlignment="Center" MinWidth="31" HorizontalContentAlignment="Center" Padding="0,0,2,0" Margin="0,0,2,0" MaxWidth="70" Width="69" KeyDown="lengthFitting_KeyDown"/>
-                                <CheckBox x:Name="onePMCheckBox" Style="{StaticResource CustomCheckBox}" Click="onePMCheckBox_Click" Cursor="Hand" Content="п.м" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsChecked="False" Margin="0,0,2,0" Checked="onePMCheckBox_Checked"/>
+                                <CheckBox x:Name="onePMCheckBox" Style="{StaticResource CustomCheckBox}" Click="onePMCheckBox_Click" Cursor="Hand" Content="п.м" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsChecked="False" Margin="0,0,2,0"/>
                                 <Image x:Name="getLengthBtn" Height="20" Width="20" Margin="0,0,3,0" Source="icons\size_maximize_icon_142968.png" ToolTip="Замерить расстояние между двумя точками" Cursor="Hand" MouseDown="getLengthBtn_MouseDown"/>
                                 <Image x:Name="getPolyLengthBtn" Height="20" Width="20" Source="icons\two-squares_icon-icons.com_55537.png" ToolTip="Получить сумму длин из объектов" Cursor="Hand" MouseDown="getPolyLengthBtn_MouseDown"/>
                             </StackPanel>

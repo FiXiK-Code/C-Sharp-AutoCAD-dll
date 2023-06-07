@@ -37,9 +37,19 @@ namespace FittingsCalculation
         /// <param name="D">Диаметр арматуры</param>
         /// <param name="L">Длинна арматуры в мм</param>
         /// <returns></returns>
-        public static double GetMass(string D, string L)
+        public static double GetMass(string D, string L, int gost)
         {
-            return Math.Round( Math.PI * Math.Pow( Convert.ToDouble(D), 2) / 4 * 0.7850 * Convert.ToDouble(L) / 100000, 3) * Convert.ToDouble(BufferClass.countFitting);
+            if(gost == 0)//ГОСТ 5781-82
+            {
+                return Math.Round(Math.PI * Math.Pow(Convert.ToDouble(D), 2) * Convert.ToDouble(L) * 1.05 * 0.006162, 3) * Convert.ToDouble(BufferClass.countFitting);
+
+            }
+            else//ГОСТ 34028-2016
+            {
+                return Math.Round((Math.PI * Math.Pow(Convert.ToDouble(D), 2) * Convert.ToDouble(L) / 4) * 0.785 , 3) * Convert.ToDouble(BufferClass.countFitting);
+            }
+
+            //return Math.Round( Math.PI * Math.Pow( Convert.ToDouble(D), 2) / 4 * 0.7850 * Convert.ToDouble(L) / 100000, 3) * Convert.ToDouble(BufferClass.countFitting);
         }
 
         /// <summary>

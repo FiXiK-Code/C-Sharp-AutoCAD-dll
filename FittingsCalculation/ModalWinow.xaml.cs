@@ -23,6 +23,7 @@ namespace FittingsCalculation
 
             BufferClass.countFitting = "1";
             BufferClass.synbol = false;
+            classFittingComboBox.Items.Add("Test");
         }
 
 
@@ -207,10 +208,20 @@ namespace FittingsCalculation
         {
             try
             {
+                if(diamComboBox.SelectedItem == null && diamComboBox.ActualHeight != 0)
+                {
+                    MessageBox.Show("Необходимо выбрать диаметр арматуры!");
+                }
+                if (gostComboBox.SelectedItem == null && gostComboBox.ActualHeight != 0)
+                {
+                    MessageBox.Show("Необходимо выбрать нормативный документ!");
+                }
                 if (lengthFitting.Text != "0" || lengthFitting.Text != "")
                 {
+                    int gost = ((TextBlock)gostComboBox.SelectedItem).Text == "ГОСТ 5781-82" ? 0 : 1;
+
                     if (diamComboBox.SelectedItem != null)
-                        resultTextBox.Text = CalculationClass.GetMass(((TextBlock)diamComboBox.SelectedItem).Text, lengthFitting.Text).ToString();
+                        resultTextBox.Text = CalculationClass.GetMass(((TextBlock)diamComboBox.SelectedItem).Text, lengthFitting.Text, gost).ToString();
                     BufferClass.massFitting = resultTextBox.Text;
                 }
             }
@@ -299,8 +310,32 @@ namespace FittingsCalculation
         }
 
 
+
         #endregion ploshTabControl
 
+        /// <summary>
+        /// Выбор нормативного документа
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void gostComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            classFittingComboBox.Items.Clear();
+            if(classFittingComboBox.SelectedIndex == 0)
+                classFittingComboBox.ItemsSource = new string[] { "A240C A-I", "A240C A-II", "A240C A-III" , "A240C В-I" , "A240C В-II" , "A240C В-III" 
+                                                                ,"В500С Ш-I", "В500С Ш-II","В500С Ш-III", "В500С В-I", "В500С В-II", "В500С B-III"};
+            else 
+                classFittingComboBox.ItemsSource = new string[] { "A240-I", "A240-II", "A240-III" ,"В500С-I", "В500С-II", "В500С-III", "А400", "В500"};
+        }
 
+        /// <summary>
+        /// Выбор класса армаруры - запись наименования в буффер
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void classFittingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (classFittingComboBox.SelectedItem != null) BufferClass.nameFitting = classFittingComboBox.SelectedItem.ToString();
+        }
     }
 }
