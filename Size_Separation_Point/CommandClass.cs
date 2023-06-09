@@ -10,9 +10,14 @@ using System.Windows.Input;
 
 namespace Size_Separation_Point
 {
+    /// <summary>
+    /// Класс для работы с чертежом автокада
+    /// </summary>
     public class CommandClass
     {
-
+        /// <summary>
+        /// Метод для разделения выбранного разсера на две части. Вызывается в консоли автокада командой "SeparationPoint".
+        /// </summary>
         [CommandMethod("SeparationPoint")]
         public void RunCommand2()
         {
@@ -74,6 +79,13 @@ namespace Size_Separation_Point
             }
         }
 
+        /// <summary>
+        /// Вспомогательный подметод для проекции точки на отрезке.
+        /// </summary>
+        /// <param name="point"> Выбранная точка</param>
+        /// <param name="startPoint"> Точка начала отрезка</param>
+        /// <param name="endPoint"> Точка конца отрезка</param>
+        /// <returns>Если проекция точки лежит на отрезке, возвращает ее в формате Point3d. Если точка за пределами отрезка - путой объект.</returns>
         public static Point3d GetProjectionOnLine(Point3d point, Point3d startPoint, Point3d endPoint)
         {
             var line = new Line(startPoint, endPoint);
@@ -92,6 +104,11 @@ namespace Size_Separation_Point
         }
 
     }
+
+
+    /// <summary>
+    /// Класс для создания кнопки на панели автокад при инициализации библиотеки.
+    /// </summary>
     public class YourPluginClass : IExtensionApplication
     {
 
@@ -153,10 +170,19 @@ namespace Size_Separation_Point
         }
     }
 
+
+    /// <summary>
+    /// Класс для задания функции кнопки
+    /// </summary>
     public class YourCommandHandler : ICommand
     {
         public event EventHandler CanExecuteChanged;
 
+
+        /// <summary>
+        /// Метод для определения выполняемой функции при нажатии на кнопку панели
+        /// </summary>
+        /// <param name="parameter">Выполняемая комманда (в данном случает вводит команду в консоль)</param>
         public void Execute(object parameter)
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
