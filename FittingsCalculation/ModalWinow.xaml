@@ -128,37 +128,7 @@
                 <TextBox IsEnabled="False" Name="PSechTextBox" Text="0" SelectionOpacity="1"/>
 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Масса 1 п.м, кг</TextBlock>
-                <ComboBox x:Name="masOnePMComboBox" IsEnabled="False" Margin="2" Height="20">
-                    <TextBlock Text="0.099 кг"/>
-                    <TextBlock Text="0.125 кг"/>
-                    <TextBlock Text="0.154 кг"/>
-                    <TextBlock Text="0.187 кг"/>
-                    <TextBlock Text="0.222 кг"/>
-                    <TextBlock Text="0.395 кг"/>
-                    <TextBlock Text="0.261 кг"/>
-                    <TextBlock Text="0.302 кг"/>
-                    <TextBlock Text="0.347 кг"/>
-                    <TextBlock Text="0.445 кг"/>
-                    <TextBlock Text="0.409 кг"/>
-                    <TextBlock Text="0.556 кг"/>
-                    <TextBlock Text="0.617 кг"/>
-                    <TextBlock Text="0.746 кг"/>
-                    <TextBlock Text="0.888 кг"/>
-                    <TextBlock Text="1.042 кг"/>
-                    <TextBlock Text="1.208 кг"/>
-                    <TextBlock Text="1.387 кг"/>
-                    <TextBlock Text="1.578 кг"/>
-                    <TextBlock Text="1.782 кг"/>
-                    <TextBlock Text="1.998 кг"/>
-                    <TextBlock Text="2.226 кг"/>
-                    <TextBlock Text="2.486 кг"/>
-                    <TextBlock Text="2.984 кг"/>
-                    <TextBlock Text="3.853 кг"/>
-                    <TextBlock Text="4.834 кг"/>
-                    <TextBlock Text="6.313 кг"/>
-                    <TextBlock Text="7.990 кг"/>
-                    <TextBlock Text="9.665 кг"/>
-                </ComboBox>
+                <TextBox x:Name="masOnePMTextBox" IsEnabled="False" Text="0" SelectionOpacity="1" />
 
                 <TextBlock Margin="2" HorizontalAlignment="Center">Класс арматуры</TextBlock>
                 <ComboBox Name="classFittingComboBox" Margin="2" Height="20" SelectionChanged="classFittingComboBox_SelectionChanged" />
@@ -175,7 +145,7 @@
                         <StackPanel Orientation="Vertical" Height="232">
                             <StackPanel Orientation="Horizontal" MaxWidth="232" Margin="0,0,0.2,0">
                                 <Label Content="Длинна, мм:" Margin="-20,0,2,0" Width="78"/>
-                                <TextBox x:Name="lengthFitting" TextChanged="lengthFitting_TextChanged" Text="118.312" VerticalContentAlignment="Center" MinWidth="31" HorizontalContentAlignment="Center" Padding="0,0,2,0" Margin="0,0,2,0" MaxWidth="70" Width="69" KeyDown="lengthFitting_KeyDown"/>
+                                <TextBox x:Name="lengthFitting" TextChanged="lengthFitting_TextChanged" Text="0" VerticalContentAlignment="Center" MinWidth="31" HorizontalContentAlignment="Center" Padding="0,0,2,0" Margin="0,0,2,0" MaxWidth="70" Width="69"/>
                                 <CheckBox x:Name="onePMCheckBox" Style="{StaticResource CustomCheckBox}" Click="onePMCheckBox_Click" Cursor="Hand" Content="п.м" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsChecked="False" Margin="0,0,2,0"/>
                                 <Image x:Name="getLengthBtn" Height="20" Width="20" Margin="0,0,3,0" Source="icons\size_maximize_icon_142968.png" ToolTip="Замерить расстояние между двумя точками" Cursor="Hand" MouseDown="getLengthBtn_MouseDown"/>
                                 <Image x:Name="getPolyLengthBtn" Height="20" Width="20" Source="icons\two-squares_icon-icons.com_55537.png" ToolTip="Получить сумму длин из объектов" Cursor="Hand" MouseDown="getPolyLengthBtn_MouseDown"/>
@@ -183,7 +153,7 @@
                             <Label Content="РЕЗУЛЬТАТ, КГ"/>
 
                             <StackPanel x:Name="resStackPanel"  Orientation="Horizontal" Height="25" >
-                                <TextBox x:Name="resultTextBox" Width="200" IsEnabled="False" Text="1000" VerticalContentAlignment="Center" HorizontalAlignment="Left" SelectionOpacity="-1" Foreground="Black" IsReadOnly="True"/>
+                                <TextBox x:Name="resultTextBox" Width="200" IsEnabled="False" Text="0" VerticalContentAlignment="Center" HorizontalAlignment="Left" SelectionOpacity="-1" Foreground="Black" IsReadOnly="True"/>
                                 <Slider  IsSnapToTickEnabled="True" x:Name="sliderCountFitting" MinWidth="60"   ValueChanged="sliderCountFitting_ValueChanged" Value="1" Minimum="1" SmallChange="1" TickPlacement="TopLeft" Foreground="Blue" />
                                 <TextBox x:Name="countFittingTextBox" MinWidth="20" TextChanged="countFittingTextBox_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="1" KeyDown="countFittingTextBox_KeyDown"/>
 
@@ -210,7 +180,22 @@
                             </StackPanel>
 
                             <StackPanel RenderTransformOrigin="0.537,0.597" Width="100">
-                                <ComboBox Name="countFittindComboBox" Height="25" Width="99" BorderBrush="Blue" SelectionChanged="countFittindComboBox_SelectionChanged"/>
+                                <ComboBox Name="countFittindComboBox" Height="25" Width="99" BorderBrush="Blue" SelectionChanged="countFittindComboBox_SelectionChanged">
+                                    <TextBlock Text="1" />
+                                    <TextBlock Text="2" />
+                                    <TextBlock Text="3" />
+                                    <TextBlock Text="4" />
+                                    <TextBlock Text="5" />
+                                    <TextBlock Text="6" />
+                                    <TextBlock Text="7" />
+                                    <TextBlock Text="8" />
+                                    <TextBlock Text="9" />
+                                    <TextBlock Text="11" />
+                                    <TextBlock Text="12" />
+                                    <TextBlock Text="13" />
+                                    <TextBlock Text="14" />
+                                    <TextBlock Text="15" />
+                                </ComboBox>
                                 <TextBox x:Name="resultPloshSechTextBox" Height="25" Margin="0,13,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                 <ComboBox Name="stepFittingComboBox" Height="25" Margin="0,13,0,0" BorderBrush="Blue" SelectionChanged="stepFittingComboBox_SelectionChanged">
                                     <TextBlock Text="100"/>

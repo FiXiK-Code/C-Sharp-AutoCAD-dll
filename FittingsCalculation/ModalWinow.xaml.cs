@@ -23,7 +23,6 @@ namespace FittingsCalculation
 
             BufferClass.countFitting = "1";
             BufferClass.synbol = false;
-            classFittingComboBox.Items.Add("Test");
         }
 
 
@@ -53,7 +52,7 @@ namespace FittingsCalculation
                 resStackPanel.Height = 0;
                 resStackPanel.IsEnabled = false;
                 lengthFitting.IsEnabled = false;
-                BufferClass.massFitting = masOnePMComboBox.Text;
+                BufferClass.massFitting = masOnePMTextBox.Text;
             }
             else
             {
@@ -83,24 +82,7 @@ namespace FittingsCalculation
             }
         }
 
-        /// <summary>
-        /// Ограничение ввода симолов в строку длинны арматуры
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void lengthFitting_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            char number = e.Key.ToString().Last();
-
-
-            if (!Char.IsDigit(number))
-            {
-                e.Handled = true;
-            }
-        }
-
-
+        
         /// <summary>
         /// Вставка результата в таблицу + возможноть вставки 1 п.м.
         /// </summary>
@@ -108,12 +90,17 @@ namespace FittingsCalculation
         /// <param name="e"></param>
         private void resToTableLink_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            WindowState windowState = this.WindowState;
+            if (BufferClass.massFitting == null || BufferClass.massFitting == "0")
+            {
+                MessageBox.Show("Вы пытаетесь записать пустое значение!");
+            }
+            else {
+                WindowState windowState = this.WindowState;
 
-            this.WindowState = WindowState.Minimized;
-            CommandClass.InsertTableText(BufferClass.massFitting, (bool)onePMCheckBox.IsChecked);
-            this.WindowState = windowState;
-            
+                this.WindowState = WindowState.Minimized;
+                CommandClass.InsertTableText(BufferClass.massFitting, (bool)onePMCheckBox.IsChecked);
+                this.WindowState = windowState;
+            }
         }
 
 
@@ -124,12 +111,20 @@ namespace FittingsCalculation
         /// <param name="e"></param>
         private void nameToTableLink_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (BufferClass.synbol) BufferClass.nameFitting += " Ø";
-            WindowState windowState = this.WindowState;
+            string symbol = "";
+            if (BufferClass.synbol) symbol += " Ø";
+            if (BufferClass.nameFitting == null)
+            {
+                MessageBox.Show("Вы пытаетесь записать пустое значение!");
+            }
+            else
+            {
+                WindowState windowState = this.WindowState;
 
-            this.WindowState = WindowState.Minimized;
-            CommandClass.InsertTableText(BufferClass.nameFitting, false);
-            this.WindowState = windowState;
+                this.WindowState = WindowState.Minimized;
+                CommandClass.InsertTableText(BufferClass.nameFitting + symbol, false);
+                this.WindowState = windowState;
+            }
         }
 
 
@@ -140,15 +135,20 @@ namespace FittingsCalculation
         /// <param name="e"></param>
         private void resAndNameToTableLink_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (BufferClass.synbol) BufferClass.nameFitting += " Ø";
+            string symbol = "";
+            if (BufferClass.synbol) symbol += " Ø";
             WindowState windowState = this.WindowState;
-
-            this.WindowState = WindowState.Minimized;
-            CommandClass.InsertTableText(BufferClass.nameFitting, BufferClass.massFitting);
-            this.WindowState = windowState;
+            if (BufferClass.nameFitting == null || BufferClass.massFitting == null || BufferClass.massFitting == "0")
+            {
+                MessageBox.Show("Вы пытаетесь записать пустое значение!");
+            }
+            else
+            {
+                this.WindowState = WindowState.Minimized;
+                CommandClass.InsertTableText(BufferClass.nameFitting + symbol, BufferClass.massFitting);
+                this.WindowState = windowState;
+            }
         }
-
-        
 
 
         /// <summary>
@@ -181,9 +181,6 @@ namespace FittingsCalculation
         }
 
 
-        
-
-
         /// <summary>
         /// При выборе диаметра пересчитывается площадь сечения
         /// </summary>
@@ -191,9 +188,15 @@ namespace FittingsCalculation
         /// <param name="e"></param>
         private void diamComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(diamComboBox.SelectedItem != null)
+            if (gostComboBox.SelectedItem == null && gostComboBox.ActualHeight != 0)
             {
-                masOnePMComboBox.SelectedIndex = diamComboBox.SelectedIndex;
+                MessageBox.Show("Необходимо выбрать нормативный документ!");
+            }
+            else if (diamComboBox.SelectedItem != null)
+            {
+                int gost = ((TextBlock)gostComboBox.SelectedItem).Text == "ГОСТ 5781-82" ? 0 : 1;
+
+                masOnePMTextBox.Text = CalculationClass.GetMass(((TextBlock)diamComboBox.SelectedItem).Text, "1000", gost).ToString();
                 PSechTextBox.Text = CalculationClass.GetPloshSech(((TextBlock)diamComboBox.SelectedItem).Text).ToString();
             }
         }
@@ -211,12 +214,14 @@ namespace FittingsCalculation
                 if(diamComboBox.SelectedItem == null && diamComboBox.ActualHeight != 0)
                 {
                     MessageBox.Show("Необходимо выбрать диаметр арматуры!");
+                    return;
                 }
-                if (gostComboBox.SelectedItem == null && gostComboBox.ActualHeight != 0)
+                else if (gostComboBox.SelectedItem == null && gostComboBox.ActualHeight != 0)
                 {
                     MessageBox.Show("Необходимо выбрать нормативный документ!");
+                    return;
                 }
-                if (lengthFitting.Text != "0" || lengthFitting.Text != "")
+                else if (lengthFitting.Text != "0" || lengthFitting.Text != "")
                 {
                     int gost = ((TextBlock)gostComboBox.SelectedItem).Text == "ГОСТ 5781-82" ? 0 : 1;
 
@@ -239,14 +244,11 @@ namespace FittingsCalculation
         {
             try
             {
-                if (Convert.ToInt32(countFittingTextBox.Text) > 10) BufferClass.countFitting = countFittingTextBox.Text;
-                else
-                {
-                    countFittingTextBox.Text = sliderCountFitting.Value.ToString();
-                    BufferClass.countFitting = countFittingTextBox.Text;
-                }
+                countFittingTextBox.Text = sliderCountFitting.Value.ToString();
+                BufferClass.countFitting = countFittingTextBox.Text;
+
             }
-            catch(Exception) { }
+            catch (Exception) { }
         }
 
         /// <summary>
@@ -293,8 +295,12 @@ namespace FittingsCalculation
         /// <param name="e"></param>
         private void countFittindComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            resultPloshSechOnStepTextBox.Text = CalculationClass.GetPlosh(Convert.ToDouble(((TextBlock)diamComboBox.SelectedItem).Text), Convert.ToDouble(BufferClass.countFitting)).ToString();
+            if (diamComboBox.SelectedItem == null && diamComboBox.ActualHeight != 0)
+            {
+                MessageBox.Show("Необходимо выбрать диаметр арматуры!");
+                return;
+            }
+            resultPloshSechTextBox.Text = CalculationClass.GetPlosh(Convert.ToDouble(((TextBlock)diamComboBox.SelectedItem).Text), Convert.ToDouble(((TextBlock)countFittindComboBox.SelectedItem).Text)).ToString();
 
         }
 
@@ -305,13 +311,17 @@ namespace FittingsCalculation
         /// <param name="e"></param>
         private void stepFittingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (diamComboBox.SelectedItem == null && diamComboBox.ActualHeight != 0)
+            {
+                MessageBox.Show("Необходимо выбрать диаметр арматуры!");
+                return;
+            }
             resultPloshSechOnStepTextBox.Text = CalculationClass.GetPlosh(Convert.ToDouble(((TextBlock)diamComboBox.SelectedItem).Text), Convert.ToDouble(BufferClass.countFitting), Convert.ToInt32(((TextBlock)stepFittingComboBox.SelectedItem).Text)).ToString();
         }
 
-
-
         #endregion ploshTabControl
+
+
 
         /// <summary>
         /// Выбор нормативного документа
@@ -320,8 +330,11 @@ namespace FittingsCalculation
         /// <param name="e"></param>
         private void gostComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            classFittingComboBox.Items.Clear();
-            if(classFittingComboBox.SelectedIndex == 0)
+            try
+            {
+                classFittingComboBox.Items.Clear();
+            }catch (Exception) { }
+            if(gostComboBox.SelectedIndex == 0)
                 classFittingComboBox.ItemsSource = new string[] { "A240C A-I", "A240C A-II", "A240C A-III" , "A240C В-I" , "A240C В-II" , "A240C В-III" 
                                                                 ,"В500С Ш-I", "В500С Ш-II","В500С Ш-III", "В500С В-I", "В500С В-II", "В500С B-III"};
             else 

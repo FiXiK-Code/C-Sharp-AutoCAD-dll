@@ -25,10 +25,11 @@ namespace FittingsCalculation
            
             if (p != 0)
             {
-                n = 1 / p / 1000;
+                n = (1000 / p)-1;
+                return Math.Round(n * (Math.PI * Math.Pow(d, 2) / 4) / 10000, 4);
             }
 
-            return n * (Math.PI * Math.Pow(d, 2) / 4);
+            else return Math.Round(n * (Math.PI * Math.Pow(d, 2) / 4) / 100, 4);
         }
 
         /// <summary>
@@ -41,12 +42,13 @@ namespace FittingsCalculation
         {
             if(gost == 0)//ГОСТ 5781-82
             {
-                return Math.Round(Math.PI * Math.Pow(Convert.ToDouble(D), 2) * Convert.ToDouble(L) * 1.05 * 0.006162, 3) * Convert.ToDouble(BufferClass.countFitting);
+
+                return Math.Round(Math.PI * Math.Pow(Convert.ToDouble(D), 2) / 4 * Convert.ToDouble(L) * 1.05 * 0.785 / 100000, 3) * Convert.ToDouble(BufferClass.countFitting);
 
             }
             else//ГОСТ 34028-2016
             {
-                return Math.Round((Math.PI * Math.Pow(Convert.ToDouble(D), 2) * Convert.ToDouble(L) / 4) * 0.785 , 3) * Convert.ToDouble(BufferClass.countFitting);
+                return Math.Round((Math.PI * Math.Pow(Convert.ToDouble(D), 2) * Convert.ToDouble(L) / 4) * 0.785 * 1.05 * 1.03 / 100000, 3) * Convert.ToDouble(BufferClass.countFitting);
             }
 
             //return Math.Round( Math.PI * Math.Pow( Convert.ToDouble(D), 2) / 4 * 0.7850 * Convert.ToDouble(L) / 100000, 3) * Convert.ToDouble(BufferClass.countFitting);
@@ -59,7 +61,7 @@ namespace FittingsCalculation
         /// <returns></returns>
         public static double GetPloshSech(string D)
         {
-            return Math.Round( Math.PI * Math.Pow( Convert.ToDouble(D), 2 ) / 4 , 1 )  / 100;
+            return Math.Round( Math.PI * Math.Pow( Convert.ToDouble(D), 2 ) / 4 , 3)  / 100;
         }
 
     }

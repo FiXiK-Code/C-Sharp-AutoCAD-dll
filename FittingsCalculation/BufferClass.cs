@@ -19,12 +19,12 @@ namespace FittingsCalculation
         /// <summary>
         /// Масса арматуры
         /// </summary>
-        public static string massFitting { get; set; }
+        public static string massFitting { get; set; } = null;
 
         /// <summary>
         /// Наименования арматуры согласно нормативного документа
         /// </summary>
-        public static string nameFitting { get; set; }
+        public static string nameFitting { get; set; } = null;
 
         /// <summary>
         /// Количество арматур
