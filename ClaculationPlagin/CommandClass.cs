@@ -13,7 +13,7 @@ namespace ClaculationPlagin
     /// <summary>
     /// Класс, содержащий функции для взаимодействия с чертежом.
     /// </summary>
-    public class CommanClass
+    public class CommandClass
     {
         /// <summary>
         /// Методя для получния расстояния между точками

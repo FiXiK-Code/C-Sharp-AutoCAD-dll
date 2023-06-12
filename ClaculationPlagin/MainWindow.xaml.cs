@@ -25,102 +25,255 @@ namespace ClaculationPlagin
             InitializeComponent();
         }
 
-        private void PointSizeBtn_Click(object sender, RoutedEventArgs e) // получене расстояния между точками
-        {
-            var result = CommanClass.GetSize();
 
-
-        }
-
-        private void PolySizeBtn_Click(object sender, RoutedEventArgs e) // получение длянны объктов
-        {
-            var result = CommanClass.GetPolySize();
-
-
-        }
-
-        private void PointCoordinateBtn_Click(object sender, RoutedEventArgs e) // получение координаты точки (выбор - XYZ)
-        {
-            string nap = "x";
-
-            var result = CommanClass.GetCoordinate(nap);
-
-
-        }
-
-        private void PlBtn_Click(object sender, RoutedEventArgs e) // получение площади
-        {
-
-
-
-        }
-
-        private void InputTextBtn_Click(object sender, RoutedEventArgs e) // получение значения из текста
+        /// <summary>
+        /// Открытие окна для выбора формулы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void functionBtn_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        private void InputToolsBtn_Click(object sender, RoutedEventArgs e) // получение значения из выноски
+        /// <summary>
+        /// Добавление знаков после запятой
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void plusRound_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        private void TableInputBtn_Click(object sender, RoutedEventArgs e) // получение значения из таблицы (яч)
+        /// <summary>
+        /// Уменьшение знаков после запятой
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void minusRound_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        private void SizeInputBtn_Click(object sender, RoutedEventArgs e) // получение размера
-        {
-            string result = CommanClass.GetDimension();
-            if(result == "Комманда была завершена!")
-            {
-                MessageBox.Show(result);
-                return;
-            }
-            if(result == null)
-            {
-                MessageBox.Show("Error!");
-                return;
-            }
-        }
-
-
-        /////////
-
-        private void OutputOneTextBtn_Click(object sender, RoutedEventArgs e) // вставка однострочного текста
+        /// <summary>
+        /// Cath изменения количества знаков после запятой
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DotPositionTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
 
-        private void OutputAddetTextBtn_Click(object sender, RoutedEventArgs e) // заменить текст в существующе (одстр)
+        /// <summary>
+        /// Скрытие появление кнопок для получения данных с чертежа
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void inoutDataSection_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        private void OutputInTableBtn_Click(object sender, RoutedEventArgs e) // вставить в таблицу
+        /// <summary>
+        /// Получение расстояния между точками
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lengthInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        private void OutputPolyTextBtn_Click(object sender, RoutedEventArgs e) // добавление к многострочному
+        /// <summary>
+        /// Получение суммы длин из объектов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void sumLengthInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        private void OutputToolBtn_Click(object sender, RoutedEventArgs e) // вставить в виде выноски
+        /// <summary>
+        /// Поличение координаты
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void coordinateInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        private void DotPositionPlusBtn_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Получени площади
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ploshInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DotPositionTextBox.Text = (Convert.ToInt32(DotPositionTextBox.Text) + 1).ToString();
+
         }
 
-        private void DotPositionMinBtn_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Получение значения из (мульти)-текста
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void textInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DotPositionTextBox.Text = Convert.ToInt32(DotPositionTextBox.Text) >= 1 ? (Convert.ToInt32(DotPositionTextBox.Text) - 1).ToString() : DotPositionTextBox.Text;
+
+        }
+
+        /// <summary>
+        /// Получение значения из выноски
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void vinosInput_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Получени значения из таблицы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tableInput_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Получение данных из размера
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dimensionInput_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Несколько значений
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void multyCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Округление
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void roundCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Знак разделителя при выборе нескольких значений
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void symbolMultyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Поле входных значений
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Поле результата
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void resultTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Вставка однострочного текста
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void onseTextOutput_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Добавить результат к однострочному тексту
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void plusOnseTextOutput_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Вставка результата в таблицу
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tableOutput_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Добавить результат к многострочному тексту
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void multyTextOutput_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Резильтат в виде выноски
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void vinosOuput_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Кнопка журнала
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void history_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Очистка истории
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void remuveHistory_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
