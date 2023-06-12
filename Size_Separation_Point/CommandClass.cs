@@ -80,7 +80,7 @@ namespace Size_Separation_Point
         }
 
         /// <summary>
-        /// Вспомогательный подметод для проекции точки на отрезке.
+        /// Вспомогательный подметод для проекции точки на отрезке. 
         /// </summary>
         /// <param name="point"> Выбранная точка</param>
         /// <param name="startPoint"> Точка начала отрезка</param>
