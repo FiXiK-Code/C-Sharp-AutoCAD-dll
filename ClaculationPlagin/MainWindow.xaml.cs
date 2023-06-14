@@ -125,7 +125,7 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void ploshInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            ///////////////
+            
         }
 
         /// <summary>
@@ -316,6 +316,16 @@ namespace ClaculationPlagin
         #endregion //////////////
 
         /// <summary>
+        /// Закрытие окна
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Close_Click(object sender, MouseButtonEventArgs e)
+        {
+            Close();
+        }
+
+        /// <summary>
         /// Кнопка журнала
         /// </summary>
         /// <param name="sender"></param>
@@ -335,12 +345,52 @@ namespace ClaculationPlagin
 
         }
 
+        /// <summary>
+        /// Вставка значений из кнопок не требующих преобразования
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NumButton_Click(object sender, RoutedEventArgs e)
         {
             resultTextBox.Text += ((Button)sender).Content.ToString();
         }
 
+        /// <summary>
+        /// Вставка значений из кнопок с необходимостью добавления скобки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FormulButton_Click(object sender, RoutedEventArgs e)
+        {
+            resultTextBox.Text += ((Button)sender).Content.ToString() + "(";
+        }
+
+        /// <summary>
+        /// Удаление последнего символа в строке ввода
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StrButton_Click(object sender, RoutedEventArgs e)
+        {
+            inputTextBox.Text = inputTextBox.Text.Length !=0 ? inputTextBox.Text.Remove(inputTextBox.Text.Length - 1, 1) : inputTextBox.Text;
+        }
+
+        /// <summary>
+        /// Очистка строки ввода
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RemoveInput_Click(object sender, MouseButtonEventArgs e)
+        {
+            inputTextBox.Text = "";
+        }
+
+        /// <summary>
+        /// Начало вычисления
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StrtCalc_Click(object sender, RoutedEventArgs e)
         {
 
         }

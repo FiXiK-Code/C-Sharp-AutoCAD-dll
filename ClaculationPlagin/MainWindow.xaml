@@ -47,7 +47,7 @@
             <Image Height="27" Width="28" Source="icon/лого.PNG"/>
             <TextBlock Width="86" ScrollViewer.VerticalScrollBarVisibility="Hidden" Height="27"  FlowDirection="RightToLeft" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="3,5,0,0" Grid.IsSharedSizeScope="True"><Run Text="КАЛЬКУЛЯТОР"/></TextBlock>
             <Image x:Name="history" Height="20" Width="20" Margin="290,0,0,0"   Source="icon/fileinterfacesymboloftextpapersheet_79740.png" Cursor="Hand" MouseDown="history_MouseDown"/>
-            <Image Height="20" Width="20" Source="icon/4115230-cancel-close-cross-delete_114048.png"/>
+            <Image Height="20" Width="20" Source="icon/4115230-cancel-close-cross-delete_114048.png" Cursor="Hand" MouseDown="Close_Click"/>
         </StackPanel>
 
         <!--основная паналь (левая чать - кальк; правая - журнал )-->
@@ -143,34 +143,34 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <Button Margin="1.5" Content="+" Height="20" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="-" Background="White" BorderBrush="#FF212121"/>
+                        <Button Margin="1.5" Content="+" Height="20" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="-" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
                         <Button Margin="1.5" Content="±" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="cos" Background="White" BorderBrush="#FF212121"/>
+                        <Button Margin="1.5" Content="cos" Background="White" BorderBrush="#FF212121" Click="FormulButton_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <Button Margin="1.5" Content="*" Width="20" Height="20" Background="White" BorderBrush="#FF212121"/>
+                        <Button Margin="1.5" Content="*" Width="20" Height="20" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
                         <Button Margin="1.5" Content="x²" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="√" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="tg" Background="White" BorderBrush="#FF212121"/>
+                        <Button Margin="1.5" Content="√" Background="White" BorderBrush="#FF212121" Click="FormulButton_Click"/>
+                        <Button Margin="1.5" Content="tg" Background="White" BorderBrush="#FF212121" Click="FormulButton_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <Button Margin="1.5" Content="/" Width="20" Height="20" Background="White" BorderBrush="#FF212121"/>
+                        <Button Margin="1.5" Content="/" Width="20" Height="20" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
                         <Button Margin="1.5" Content="x³" Background="White" BorderBrush="#FF212121"/>
                         <Button Margin="1.5" Content="½" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="╥" Background="White" BorderBrush="#FF212121" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                        <Button Margin="1.5" Content="╥" Background="White" BorderBrush="#FF212121" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="NumButton_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <Button Margin="1.5" Content="&lt;-" Width="20" Height="20" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content=")" Background="White" BorderBrush="#FF212121" Width="20" Height="19.5"/>
+                        <Button Margin="1.5" Content="&lt;-" Width="20" Height="20" Background="White" BorderBrush="#FF212121" Click="StrButton_Click"/>
+                        <Button Margin="1.5" Content=")" Background="White" BorderBrush="#FF212121" Width="20" Height="19.5" Click="NumButton_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <Button Content="C" Background="White" BorderBrush="#FF212121" Width="20" Height="20" Margin="0,1,0,0"/>
-                        <Button Content="=" Background="White" BorderBrush="#FF444444" Height="43" Width="20" Margin="0,25,0,0"/>
+                        <Button Content="C" Background="White" BorderBrush="#FF212121" Width="20" Height="20" Margin="0,1,0,0" MouseDown="RemoveInput_Click"/>
+                        <Button Content="=" Background="White" BorderBrush="#FF444444" Height="43" Width="20" Margin="0,25,0,0" Click="StrtCalc_Click"/>
                     </StackPanel>
 
                 </StackPanel>
