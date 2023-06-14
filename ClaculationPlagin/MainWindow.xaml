@@ -43,7 +43,7 @@
     <StackPanel Orientation="Vertical">
 
         <!--Верняя панель ( название, кнопка журнала)-->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="27" Width="446" Background="#FFF4F4F5">
+        <StackPanel Orientation="Horizontal"  Height="27" Width="446" Background="#FFF4F4F5">
             <Image Height="27" Width="28" Source="icon/лого.PNG"/>
             <TextBlock Width="86" ScrollViewer.VerticalScrollBarVisibility="Hidden" Height="27"  FlowDirection="RightToLeft" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="3,5,0,0" Grid.IsSharedSizeScope="True"><Run Text="КАЛЬКУЛЯТОР"/></TextBlock>
             <Image x:Name="history" Height="20" Width="20" Margin="290,0,0,0"   Source="icon/fileinterfacesymboloftextpapersheet_79740.png" Cursor="Hand" MouseDown="history_MouseDown"/>
@@ -65,9 +65,9 @@
 
                 <!--Префикс и суффикс-->
                 <StackPanel Orientation="Horizontal" Margin="3" Height="29" Width="211">
-                    <TextBox Margin="3" MinWidth="60" Text="Префикс" Opacity="0.69" Height="22" Width="62" VerticalContentAlignment="Center" ></TextBox>
+                    <TextBox Margin="3" Text="Префикс" MinWidth="60" Opacity="0.69" Height="22" Width="62" VerticalContentAlignment="Center"></TextBox>
                     <TextBox x:Name="resultTextBox" Margin="3" MinWidth="60" Text="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Height="22" Width="60" VerticalContentAlignment="Center" TextChanged="resultTextBox_TextChanged"></TextBox>
-                    <TextBox Margin="3" MinWidth="60" Text="Суффикс" Opacity="0.69" Height="22" Width="60" VerticalContentAlignment="Center"></TextBox>
+                    <TextBox Margin="3"  Text="Суффикс" MinWidth="60" Opacity="0.69" Height="22" Width="60" VerticalContentAlignment="Center"></TextBox>
                 </StackPanel>
 
                 <!--Округление-->
@@ -81,12 +81,11 @@
                 <!--"Данные из чертежа"-->
                 <StackPanel Orientation="Horizontal" Margin="3">
                     <Label Margin="0,0,62,0" Width="130" HorizontalAlignment="Left">Данные из чертежа</Label>
-                    <Image x:Name="inoutDataSection" Height="13" Width="13
-						   " Source="icon/arrowpointingup_83680.png" Margin="22,0,0,0" Cursor="Hand" MouseDown="inoutDataSection_MouseDown"/>
+                    <Image x:Name="inoutDataSection" Height="13" Width="10" Source="icon/arrowpointingup_83680.png" Margin="22,0,0,0" Cursor="Hand" MouseDown="inoutDataSection_MouseDown" RenderTransformOrigin="0.5,0.5"></Image>
                 </StackPanel>
 
                 <!--Кнопки выборки с чертежа-->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="3" Width="175">
+                <StackPanel x:Name="inputButton" Orientation="Horizontal" HorizontalAlignment="Center" Margin="3" Width="175" Height="22">
                     <Image x:Name="lengthInput" Height="20" Width="20" Source="icon\size_maximize_icon_142968.png" Margin="0,0,2,0" ToolTip="Замерить расстояние между двумя точками" Cursor="Hand" MouseDown="lengthInput_MouseDown"/>
                     <Image x:Name="sumLengthInput" Height="20" Width="20" Source="icon\menu_add_icon_206006.png" Margin="0,0,2,0" ToolTip="Получить сумму длин из объектов" Cursor="Hand" MouseDown="sumLengthInput_MouseDown"/>
                     <Image x:Name="coordinateInput" Height="20" Width="20" Source="icon/point_icon_151143.png" Margin="0,0,2,0" ToolTip="Получить координату" Cursor="Hand" MouseDown="coordinateInput_MouseDown"/>
@@ -107,14 +106,14 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
-                        <Label Width="79" HorizontalAlignment="Left">Разделитель:</Label>
+                        <Label Width="80" HorizontalAlignment="Left" Content="Разделитель:"/>
 
                     </StackPanel>
-                    <ComboBox x:Name="symbolMultyComboBox" Width="55" Background="Yellow" BorderBrush="White" Foreground="White" Height="16" SelectionChanged="symbolMultyComboBox_SelectionChanged">
-                        <TabItem Content="*" Background="White"/>
-                        <TabItem Content="/" Background="White"/>
-                        <TabItem Content="+" Background="White"/>
-                        <TabItem Content="-" Background="White"/>
+                    <ComboBox x:Name="symbolMultyComboBox" Width="55" Background="Yellow" BorderBrush="White" SelectionChanged="symbolMultyComboBox_SelectionChanged" Margin="0,2,0,6">
+                        <ComboBoxItem Content="*" HorizontalAlignment="Center"/>
+                        <ComboBoxItem Content="/" HorizontalAlignment="Center"/>
+                        <ComboBoxItem Content="+" HorizontalAlignment="Center"/>
+                        <ComboBoxItem Content="-" HorizontalAlignment="Center"/>
                     </ComboBox>
 
                 </StackPanel>
@@ -123,24 +122,24 @@
                 <StackPanel Orientation="Horizontal" Margin="3">
 
                     <StackPanel Orientation="Vertical">
-                        <Button Margin="1.5" BorderBrush="Black" Background="White" Content="1" Width="20" Height="20"/>
-                        <Button Margin="1.5" Content="4" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="7" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="0" Background="White" BorderBrush="#FF212121"/>
+                        <Button Margin="1.5" BorderBrush="Black" Background="White" Content="1" Width="20" Height="20" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="4" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="7" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="0" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <Button Margin="1.5" Content="2" Width="20" Height="20" Background="White" BorderBrush="#FF444444"/>
-                        <Button Margin="1.5" Content="5" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="8" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="." Background="White" BorderBrush="#FF212121"/>
+                        <Button Margin="1.5" Content="2" Width="20" Height="20" Background="White" BorderBrush="#FF444444" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="5" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="8" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="." Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <Button Margin="1.5" Content="3" Width="20" Height="20" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="6" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="9" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="sin" Background="White" BorderBrush="#FF212121"/>
+                        <Button Margin="1.5" Content="3" Width="20" Height="20" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="6" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="9" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content="sin" Background="White" BorderBrush="#FF212121" Click="FormulButton_Click" />
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
@@ -173,11 +172,11 @@
                         <Button Content="C" Background="White" BorderBrush="#FF212121" Width="20" Height="20" Margin="0,1,0,0"/>
                         <Button Content="=" Background="White" BorderBrush="#FF444444" Height="43" Width="20" Margin="0,25,0,0"/>
                     </StackPanel>
-                    
+
                 </StackPanel>
 
                 <!--Нижняя панель-->
-                <Label Foreground="#FF2200FF" >Реультат в таблицу:</Label>
+                <Label Foreground="#FF2200FF" >Реультат на чертеж:</Label>
                 <StackPanel Orientation="Horizontal">
                     <Image x:Name="onseTextOutput" Height="20" Width="20" Source="/ClaculationPlagin;component/icon/Group 11 (1).png" ToolTip="Вставить результат в виде однострочного текста" RenderTransformOrigin="0.72,0.5" Cursor="Hand" MouseDown="onseTextOutput_MouseDown"/>
                     <Image x:Name="plusOnseTextOutput" Height="20" Width="20" Source="icon/format_font_size_decrease_icon_136597 (1).png" ToolTip="Добавить результат в существующий однострочный текст (с заменой содержимого)
@@ -189,7 +188,7 @@
                 </StackPanel>
 
             </StackPanel>
-            <StackPanel Orientation="Vertical" MinWidth="200">
+            <StackPanel x:Name="historyBlock" Orientation="Vertical" MinWidth="200">
 
                 <StackPanel>
                     <Label HorizontalAlignment="Center" Content="Журнал"/>
