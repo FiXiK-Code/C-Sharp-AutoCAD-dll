@@ -65,9 +65,9 @@
 
                 <!--Префикс и суффикс-->
                 <StackPanel Orientation="Horizontal" Margin="3" Height="29" Width="211">
-                    <TextBox Margin="3" Text="Префикс" MinWidth="60" Opacity="0.69" Height="22" Width="62" VerticalContentAlignment="Center"></TextBox>
+                    <TextBox x:Name="pref" Margin="3" Text="Префикс" MinWidth="60" Opacity="0.69" Height="22" Width="62" VerticalContentAlignment="Center" TextChanged="pref_TextChanged"></TextBox>
                     <TextBox x:Name="resultTextBox" Margin="3" MinWidth="60" Text="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Height="22" Width="60" VerticalContentAlignment="Center" TextChanged="resultTextBox_TextChanged"></TextBox>
-                    <TextBox Margin="3"  Text="Суффикс" MinWidth="60" Opacity="0.69" Height="22" Width="60" VerticalContentAlignment="Center"></TextBox>
+                    <TextBox x:Name="suff" Margin="3"  Text="Суффикс" MinWidth="60" Opacity="0.69" Height="22" Width="60" VerticalContentAlignment="Center" TextChanged="suff_TextChanged"></TextBox>
                 </StackPanel>
 
                 <!--Округление-->
@@ -90,7 +90,7 @@
                     <Image x:Name="sumLengthInput" Height="20" Width="20" Source="icon\menu_add_icon_206006.png" Margin="0,0,2,0" ToolTip="Получить сумму длин из объектов" Cursor="Hand" MouseDown="sumLengthInput_MouseDown"/>
                     <Image x:Name="coordinateInput" Height="20" Width="20" Source="icon/point_icon_151143.png" Margin="0,0,2,0" ToolTip="Получить координату" Cursor="Hand" MouseDown="coordinateInput_MouseDown"/>
                     <Image x:Name="ploshInput" Height="20" Width="20" Source="icon/frame_icon_217736.png" Margin="0,0,2,0" ToolTip="Получить площадь" Cursor="Hand" MouseDown="ploshInput_MouseDown"/>
-                    <Image x:Name="textInput" Height="20" Width="20" Source="icon/format_font_size_increase_icon_137585 (1).png" Margin="0,0,2,0" ToolTip="Получить значение из текста" Cursor="Hand" MouseDown="textInput_MouseDown"/>
+                    <Image x:Name="textInput" Height="20" Width="20" Source="icon/format_font_size_increase_icon_137585 (1).png" Margin="0,1,2,0" ToolTip="Получить значение из текста" Cursor="Hand" MouseDown="textInput_MouseDown" VerticalAlignment="Top"/>
                     <Image x:Name="vinosInput" Height="20" Width="20" Source="/ClaculationPlagin;component/icon/Group 8 (2).png" Margin="0,0,2,0" ToolTip="Получить значение из выноски" Cursor="Hand" MouseDown="vinosInput_MouseDown"/>
                     <Image x:Name="tableInput" Height="20" Width="20" Source="/ClaculationPlagin;component/icon/table_120011 (1).png" Margin="0,0,2,0" ToolTip="Получить значение из ячейки таблицы" Cursor="Hand" MouseDown="tableInput_MouseDown"/>
                     <Image x:Name="dimensionInput" Height="20" Width="20" Source="/ClaculationPlagin;component/icon/Group 10.png" Margin="0,0,2,0" ToolTip="Получить значение из размера" Cursor="Hand" MouseDown="dimensionInput_MouseDown"/>
@@ -139,27 +139,27 @@
                         <Button Margin="1.5" Content="3" Width="20" Height="20" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
                         <Button Margin="1.5" Content="6" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
                         <Button Margin="1.5" Content="9" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
-                        <Button Margin="1.5" Content="sin" Background="White" BorderBrush="#FF212121" Click="FormulButton_Click" />
+                        <Button Margin="1.5" Content="sin" Background="White" BorderBrush="#FF212121" Click="Func_Click" />
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
                         <Button Margin="1.5" Content="+" Height="20" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
                         <Button Margin="1.5" Content="-" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
-                        <Button Margin="1.5" Content="±" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="cos" Background="White" BorderBrush="#FF212121" Click="FormulButton_Click"/>
+                        <Button Margin="1.5" Content="±" Background="White" BorderBrush="#FF212121" Click="PM_Click"/>
+                        <Button Margin="1.5" Content="cos" Background="White" BorderBrush="#FF212121" Click="Func_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
                         <Button Margin="1.5" Content="*" Width="20" Height="20" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
-                        <Button Margin="1.5" Content="x²" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="√" Background="White" BorderBrush="#FF212121" Click="FormulButton_Click"/>
-                        <Button Margin="1.5" Content="tg" Background="White" BorderBrush="#FF212121" Click="FormulButton_Click"/>
+                        <Button Margin="1.5" Content="x²" Background="White" BorderBrush="#FF212121" Click="Func_Click"/>
+                        <Button Margin="1.5" Content="√" Background="White" BorderBrush="#FF212121" Click="Func_Click"/>
+                        <Button Margin="1.5" Content="tg" Background="White" BorderBrush="#FF212121" Click="Func_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
                         <Button Margin="1.5" Content="/" Width="20" Height="20" Background="White" BorderBrush="#FF212121" Click="NumButton_Click"/>
-                        <Button Margin="1.5" Content="x³" Background="White" BorderBrush="#FF212121"/>
-                        <Button Margin="1.5" Content="½" Background="White" BorderBrush="#FF212121"/>
+                        <Button Margin="1.5" Content="x³" Background="White" BorderBrush="#FF212121" Click="Func_Click"/>
+                        <Button x:Name="Drob" Margin="1.5" Content="1/x" Background="White" BorderBrush="#FF212121" Click="Func_Click"/>
                         <Button Margin="1.5" Content="╥" Background="White" BorderBrush="#FF212121" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="NumButton_Click"/>
                     </StackPanel>
 
@@ -169,7 +169,7 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <Button Content="C" Background="White" BorderBrush="#FF212121" Width="20" Height="20" Margin="0,1,0,0" MouseDown="RemoveInput_Click"/>
+                        <Button Content="C" Background="White" BorderBrush="#FF212121" Width="20" Height="20" Margin="0,1,0,0" Click="RemoveInput_Click"/>
                         <Button Content="=" Background="White" BorderBrush="#FF444444" Height="43" Width="20" Margin="0,25,0,0" Click="StrtCalc_Click"/>
                     </StackPanel>
 

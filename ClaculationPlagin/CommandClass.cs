@@ -8,6 +8,7 @@ using Autodesk.Windows;
 using System;
 using System.Windows.Input;
 
+
 namespace ClaculationPlagin
 {
     /// <summary>
@@ -25,22 +26,60 @@ namespace ClaculationPlagin
         }
 
 
-
+        #region Input //////////
 
         /// <summary>
         /// Методя для получния расстояния между точками
         /// </summary>
         /// <returns>Расстояние между точками в формате строки(string) без округления</returns>
-        public static string GetSize()
+        public static string GetSize(string znac)
         {
+
             Document adoc = Application.DocumentManager.MdiActiveDocument;
+            double sum = 0.0;
+            if(znac != null)
+            {
+                while (true)
+                {
+                    PromptPointResult _pt1 = adoc.Editor.GetPoint("\nУкажите первую точку : ");
+                    if (_pt1.Status == PromptStatus.Cancel) break;
 
-            PromptPointResult _pt1 = adoc.Editor.GetPoint("\nУкажите первую точку : ");
-            Point3d pt1 = _pt1.Value;
-            PromptPointResult _pt2 = adoc.Editor.GetPoint("\nУкажите вторую точку : ");
-            Point3d pt2 = _pt2.Value;
+                    Point3d pt1 = _pt1.Value;
 
-            return pt1.DistanceTo(pt2).ToString();
+                    PromptPointResult _pt2 = adoc.Editor.GetPoint("\nУкажите вторую точку : ");
+                    if (_pt2.Status == PromptStatus.Cancel) break;
+
+                    Point3d pt2 = _pt2.Value;
+                    switch (znac)
+                    {
+                        case "+":
+                            sum += pt1.DistanceTo(pt2);
+                            break;
+                        case "-":
+                            sum -= pt1.DistanceTo(pt2);
+                            break;
+                        case "*":
+                            sum *= pt1.DistanceTo(pt2);
+                            break;
+                        case "/":
+                            sum /= pt1.DistanceTo(pt2);
+                            break;
+                    }
+                   
+                }
+            }
+            else
+            {
+                PromptPointResult _pt1 = adoc.Editor.GetPoint("\nУкажите первую точку : ");
+                Point3d pt1 = _pt1.Value;
+                PromptPointResult _pt2 = adoc.Editor.GetPoint("\nУкажите вторую точку : ");
+                Point3d pt2 = _pt2.Value;
+
+                sum = pt1.DistanceTo(pt2);
+            }
+            
+
+            return sum.ToString();
         }
 
         /// <summary>
@@ -98,6 +137,7 @@ namespace ClaculationPlagin
                             outRez += spline.GetDistanceAtParameter(spline.EndParam) - spline.GetDistanceAtParameter(spline.StartParam);
                             break;
                     }
+
                 }
             }
 
@@ -109,29 +149,103 @@ namespace ClaculationPlagin
         /// </summary>
         /// <param name="nap">Необхадима координата - x, y или z</param>
         /// <returns>Координы выбранной точки x, y или z</returns>
-        public static string GetCoordinate(string nap)
+        public static string GetCoordinate(string nap, string znac)
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
 
-            PromptPointResult _pt1 = adoc.Editor.GetPoint("\nУкажите точку : ");
-            Point3d pt1 = _pt1.Value;
+            
 
-            string output = null;
-
-            switch (nap)
+            double output = 0.0;
+            if (znac != null)
             {
-                case "x":
-                    output = pt1.X.ToString();
-                    break;
-                case "y":
-                    output = pt1.Y.ToString();
-                    break;
-                case "z":
-                    output = pt1.Z.ToString();
-                    break;
-            }
+                while (true)
+                {
+                    PromptPointResult _pt1 = adoc.Editor.GetPoint("\nУкажите точку : ");
+                    if (_pt1.Status == PromptStatus.Cancel) break;
 
-            return output;
+                    Point3d pt1 = _pt1.Value;
+                    switch (znac)
+                    {
+                        case "+":
+                            switch (nap)
+                            {
+                                case "x":
+                                    output += pt1.X;
+                                    break;
+                                case "y":
+                                    output += pt1.Y;
+                                    break;
+                                case "z":
+                                    output += pt1.Z;
+                                    break;
+                            }
+                            break;
+                        case "-":
+                            switch (nap)
+                            {
+                                case "x":
+                                    output -= pt1.X;
+                                    break;
+                                case "y":
+                                    output -= pt1.Y;
+                                    break;
+                                case "z":
+                                    output -= pt1.Z;
+                                    break;
+                            }
+                            break;
+                        case "*":
+                            switch (nap)
+                            {
+                                case "x":
+                                    output *= pt1.X;
+                                    break;
+                                case "y":
+                                    output *= pt1.Y;
+                                    break;
+                                case "z":
+                                    output *= pt1.Z;
+                                    break;
+                            }
+                            break;
+                        case "/":
+                            switch (nap)
+                            {
+                                case "x":
+                                    output /= pt1.X;
+                                    break;
+                                case "y":
+                                    output /= pt1.Y;
+                                    break;
+                                case "z":
+                                    output /= pt1.Z;
+                                    break;
+                            }
+                            break;
+                    }
+                   
+                }
+            }
+            else
+            {
+                PromptPointResult _pt1 = adoc.Editor.GetPoint("\nУкажите точку : ");
+                Point3d pt1 = _pt1.Value;
+                switch (nap)
+                {
+                    case "x":
+                        output = pt1.X;
+                        break;
+                    case "y":
+                        output = pt1.Y;
+                        break;
+                    case "z":
+                        output = pt1.Z;
+                        break;
+                }
+            }
+            
+
+            return output.ToString();
         }
 
 
@@ -139,40 +253,824 @@ namespace ClaculationPlagin
         /// Метод для полечения значения размера.
         /// </summary>
         /// <returns>Значение размера в формате строки (string), без округления</returns>
-        public static string GetDimension()
+        public static string GetDimension(string znac)
         {
             Document adoc = Application.DocumentManager.MdiActiveDocument;
             Database db = adoc.Database;
             Editor ed = adoc.Editor;
-            bool enter = false;
-            while (!enter)
+
+            double sum = 0.0;
+
+            if(znac != null)
             {
-                PromptEntityResult result = ed.GetEntity("\nВыберите размер: ");
-                if (result.Status == PromptStatus.Cancel) return "Комманда была завершена!";
-
-                ObjectId enId = result.ObjectId;
-
-                if (!enId.ObjectClass.Name.Equals("AcDbAlignedDimension"))
+                while (true)
                 {
-                    ed.WriteMessage("\nВыбран не размер!");
-                    continue;
+                    PromptEntityResult result = ed.GetEntity("\nВыберите размер: ");
+                    if (result.Status == PromptStatus.Cancel) break;
+
+                    ObjectId enId = result.ObjectId;
+
+                    if (!enId.ObjectClass.Name.Equals("AcDbAlignedDimension"))
+                    {
+                        ed.WriteMessage("\nВыбран не размер!");
+                        continue;
+                    }
+
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        AlignedDimension obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as AlignedDimension;
+
+                        Point3d startPoint = obj.XLine1Point;
+                        Point3d endPoint = obj.XLine2Point;
+
+                        switch (znac)
+                        {
+                            case "+":
+                                sum += startPoint.DistanceTo(endPoint);
+                                break;
+                            case "-":
+                                sum -= startPoint.DistanceTo(endPoint);
+                                break;
+                            case "*":
+                                sum *= startPoint.DistanceTo(endPoint);
+                                break;
+                            case "/":
+                                sum /= startPoint.DistanceTo(endPoint);
+                                break;
+                        }
+                       
+                    }
                 }
-
-                using (Transaction tr = db.TransactionManager.StartTransaction())
-                {
-                    AlignedDimension obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as AlignedDimension;
-
-                    Point3d startPoint = obj.XLine1Point;
-                    Point3d endPoint = obj.XLine2Point;
-
-                    enter = true;
-
-                    return startPoint.DistanceTo(endPoint).ToString();
-                }
+                return sum.ToString();
             }
-            return null;
+            else
+            {
+                while (true)
+                {
+                    PromptEntityResult result = ed.GetEntity("\nВыберите размер: ");
+                    if (result.Status == PromptStatus.Cancel) return "Комманда была завершена!";
+
+                    ObjectId enId = result.ObjectId;
+
+                    if (!enId.ObjectClass.Name.Equals("AcDbAlignedDimension"))
+                    {
+                        ed.WriteMessage("\nВыбран не размер!");
+                        continue;
+                    }
+
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        AlignedDimension obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as AlignedDimension;
+
+                        Point3d startPoint = obj.XLine1Point;
+                        Point3d endPoint = obj.XLine2Point;
+
+                        return startPoint.DistanceTo(endPoint).ToString();
+                        break;
+                    }
+                }
+                return null;
+            }
         }
 
+
+        /// <summary>
+        /// Метод для получения значения из ячейки таблицы.
+        /// </summary>
+        /// <returns>Если ячейка существует - возвращает строку с контентом.</returns>
+        public static string GetTableValue(string znac)
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
+
+            double sum = 0.0;
+            string altrsSum = "";
+            bool alter = false;
+
+            if (znac != null)
+            {
+                // добавить проверку и сообщение на вставку всей строки для ручного редактирования
+                while (true)
+                {
+                    PromptEntityOptions peo = new PromptEntityOptions("\nВыберите таблицу: ");
+                    peo.SetRejectMessage("\nВыберите только объекты таблицы.");
+                    peo.AddAllowedClass(typeof(Table), false);
+                    PromptEntityResult per = ed.GetEntity(peo);
+                    if (per.Status != PromptStatus.OK) break;
+                    Table table = null;
+                    using (DocumentLock docLock = doc.LockDocument())
+                    {
+                        using (Transaction tr = db.TransactionManager.StartTransaction())
+                        {
+                            table = (Table)tr.GetObject(per.ObjectId, OpenMode.ForRead);
+
+                            while (true)
+                            {
+                                PromptPointOptions ppo = new PromptPointOptions("\nВыберите ячейку: ");
+                                PromptPointResult ppr = ed.GetPoint(ppo);
+                                if (ppr.Status != PromptStatus.OK) break;
+                                Point3d pt = ppr.Value;
+
+                                // Поиск ячейки
+                                Cell cell = FindCell(table, pt);
+                                if (cell == null)
+                                {
+                                    ed.WriteMessage("\nНе удалось определить ячейку.");
+                                    continue;
+                                }
+                                
+                                switch (znac)
+                                {
+                                    case "+":
+                                        try
+                                        {
+                                            if(!alter)sum += Convert.ToDouble(table.Cells[cell.Row, cell.Column].TextString);
+                                            altrsSum += table.Cells[cell.Row, cell.Column].TextString +"+";
+                                        }
+                                        catch (System.Exception) 
+                                        {
+                                            System.Windows.MessageBoxResult result = System.Windows.MessageBox.Show("Значение в ячейке содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (result == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                altrsSum += table.Cells[cell.Row, cell.Column].TextString + "+";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "-":
+                                        try
+                                        {
+                                            if (!alter) sum -= Convert.ToDouble(table.Cells[cell.Row, cell.Column].TextString);
+                                            altrsSum += table.Cells[cell.Row, cell.Column].TextString+"-";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult result = System.Windows.MessageBox.Show("Значение в ячейке содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (result == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                altrsSum += table.Cells[cell.Row, cell.Column].TextString + "-";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "*":
+                                        try
+                                        {
+                                            if (!alter) sum *= Convert.ToDouble(table.Cells[cell.Row, cell.Column].TextString);
+                                            altrsSum += table.Cells[cell.Row, cell.Column].TextString+"*";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult result = System.Windows.MessageBox.Show("Значение в ячейке содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (result == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                altrsSum += table.Cells[cell.Row, cell.Column].TextString + "*";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "/":
+                                        try
+                                        {
+                                            if (!alter) sum /= Convert.ToDouble(table.Cells[cell.Row, cell.Column].TextString);
+                                            altrsSum +=  table.Cells[cell.Row, cell.Column].TextString+"/";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult result = System.Windows.MessageBox.Show("Значение в ячейке содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (result == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                altrsSum += table.Cells[cell.Row, cell.Column].TextString + "/";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+                return altrsSum == "" ? sum.ToString() : altrsSum;
+            }
+            else
+            {
+                PromptEntityOptions peo = new PromptEntityOptions("\nВыберите таблицу: ");
+                peo.SetRejectMessage("\nВыберите только объекты таблицы.");
+                peo.AddAllowedClass(typeof(Table), false);
+                PromptEntityResult per = ed.GetEntity(peo);
+                if (per.Status != PromptStatus.OK) return null;
+                Table table = null;
+                using (DocumentLock docLock = doc.LockDocument())
+                {
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        table = (Table)tr.GetObject(per.ObjectId, OpenMode.ForRead);
+
+                        PromptPointOptions ppo = new PromptPointOptions("\nВыберите ячейку: ");
+                        PromptPointResult ppr = ed.GetPoint(ppo);
+                        if (ppr.Status != PromptStatus.OK) return null;
+                        Point3d pt = ppr.Value;
+
+                        // Поиск ячейки
+                        Cell cell = FindCell(table, pt);
+                        if (cell == null)
+                        {
+                            ed.WriteMessage("\nНе удалось определить ячейку.");
+                            return null;
+                        }
+                        
+
+                        try
+                        {
+                            sum = Convert.ToDouble(table.Cells[cell.Row, cell.Column].TextString);
+                        }
+                        catch (System.Exception)
+                        {
+                            System.Windows.MessageBoxResult result = System.Windows.MessageBox.Show("Значение в ячейке содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                            if (result == System.Windows.MessageBoxResult.Yes)
+                            {
+                                altrsSum = table.Cells[cell.Row, cell.Column].TextString;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                        return altrsSum == "" ? sum.ToString() : altrsSum;
+                    }
+                }
+            }
+
+            
+        }
+
+
+        /// <summary>
+        /// Метод для получения значения из однострочного/многострочного текста или выноски.
+        /// </summary>
+        /// <param name="onlyText">Считывание с текста или с выноски</param>
+        /// <returns>Если удалось считать текст - возвращает его.</returns>
+        public static string GetTextValue(bool onlyText, string znac)
+        {
+            //Выберите объект: AcDbMLeader выноска
+            //Выберите объект: AcDbText текст
+            //Выберите объект: AcDbMText М текст
+            Document adoc = Application.DocumentManager.MdiActiveDocument;
+            Database db = adoc.Database;
+            Editor ed = adoc.Editor;
+
+            double sum = 0.0;
+            bool alter = false;
+            string alterSum = "";
+
+            if (znac != null)
+            {
+                if (onlyText)
+                {
+                    while (true)
+                    {
+                        PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
+                        if (result.Status == PromptStatus.Cancel) break;
+
+                        ObjectId enId = result.ObjectId;
+
+                        string classObj = enId.ObjectClass.Name;
+
+                        if (!classObj.Equals("AcDbText") && !classObj.Equals("AcDbMText"))
+                        {
+                            ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                            continue;
+                        }
+
+                        using (Transaction tr = db.TransactionManager.StartTransaction())
+                        {
+                            if (classObj == "AcDbText")
+                            {
+                                DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
+                                switch (znac)
+                                {
+                                    case "+":
+                                        try
+                                        {
+                                            if(!alter) sum += Convert.ToDouble(obj.TextString);
+                                            alterSum += obj.TextString + "+";
+                                        }
+                                        catch (System.Exception) 
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.TextString + "+";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "-":
+                                        try
+                                        {
+                                            if (!alter) sum -= Convert.ToDouble(obj.TextString);
+                                            alterSum += obj.TextString + "-";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.TextString + "-";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "*":
+                                        try
+                                        {
+                                            if (!alter) sum *= Convert.ToDouble(obj.TextString);
+                                            alterSum += obj.TextString + "*";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.TextString + "*";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "/":
+                                        try
+                                        {
+                                            if (!alter) sum /= Convert.ToDouble(obj.TextString);
+                                            alterSum += obj.TextString + "/";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.TextString + "/";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                }
+                                
+                            }
+                            if (classObj == "AcDbMText")
+                            {
+                                MText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MText;
+                                switch (znac)
+                                {
+                                    case "+":
+                                        try
+                                        {
+                                            if (!alter) sum += Convert.ToDouble(obj.Text);
+                                            alterSum += obj.Text + "+";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.Text + "+";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "-":
+                                        try
+                                        {
+                                            if (!alter) sum -= Convert.ToDouble(obj.Text);
+                                            alterSum += obj.Text + "-";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.Text + "-";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "*":
+                                        try
+                                        {
+                                            if (!alter) sum *= Convert.ToDouble(obj.Text);
+                                            alterSum += obj.Text + "*";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.Text + "*";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "/":
+                                        try
+                                        {
+                                            if (!alter) sum /= Convert.ToDouble(obj.Text);
+                                            alterSum += obj.Text + "/";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.Text + "/";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                    return alterSum == "" ? sum.ToString() : alterSum;
+                }
+                else
+                {
+                    while (true)
+                    {
+                        PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
+                        if (result.Status == PromptStatus.Cancel) break;
+
+                        ObjectId enId = result.ObjectId;
+
+                        string classObj = enId.ObjectClass.Name;
+
+                        if (!classObj.Equals("AcDbMLeader"))
+                        {
+                            ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                            continue;
+                        }
+
+                        using (Transaction tr = db.TransactionManager.StartTransaction())
+                        {
+                            if (classObj == "AcDbMLeader")
+                            {
+                                MLeader obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MLeader;
+                                switch (znac)
+                                {
+                                    case "+":
+                                        try
+                                        {
+                                            if (!alter) sum += Convert.ToDouble(obj.MText.Text);
+                                            alterSum += obj.MText.Text + "+";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.MText.Text + "+";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "-":
+                                        try
+                                        {
+                                            if (!alter) sum -= Convert.ToDouble(obj.MText.Text);
+                                            alterSum += obj.MText.Text + "-";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.MText.Text + "-";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "*":
+                                        try
+                                        {
+                                            if (!alter) sum *= Convert.ToDouble(obj.MText.Text);
+                                            alterSum += obj.MText.Text + "*";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.MText.Text + "*";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                    case "/":
+                                        try
+                                        {
+                                            if (!alter) sum /= Convert.ToDouble(obj.MText.Text);
+                                            alterSum += obj.MText.Text + "/";
+                                        }
+                                        catch (System.Exception)
+                                        {
+                                            System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                            if (res == System.Windows.MessageBoxResult.Yes)
+                                            {
+                                                alterSum += obj.MText.Text + "/";
+                                                alter = true;
+                                            }
+                                            else
+                                            {
+                                                return null;
+                                            }
+                                        }
+                                        break;
+                                }
+                                
+                            }
+
+
+                        }
+                    }
+                    return sum.ToString();
+                }
+            }
+            else
+            {
+                if (onlyText)
+                {
+                    while (true)
+                    {
+                        PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
+                        if (result.Status == PromptStatus.Cancel) break;
+
+                        ObjectId enId = result.ObjectId;
+
+                        string classObj = enId.ObjectClass.Name;
+
+                        if (!classObj.Equals("AcDbText") && !classObj.Equals("AcDbMText"))
+                        {
+                            ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                            continue;
+                        }
+
+                        using (Transaction tr = db.TransactionManager.StartTransaction())
+                        {
+                            if (classObj == "AcDbText")
+                            {
+                                DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
+                                return obj.TextString;
+                            }
+                            if (classObj == "AcDbMText")
+                            {
+                                MText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MText;
+                                return obj.Text;
+                            }
+
+                            break;
+
+                        }
+                    }
+                    return null;
+                }
+                else
+                {
+                    while (true)
+                    {
+                        PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
+                        if (result.Status == PromptStatus.Cancel) break;
+
+                        ObjectId enId = result.ObjectId;
+
+                        string classObj = enId.ObjectClass.Name;
+
+                        if (!classObj.Equals("AcDbMLeader"))
+                        {
+                            ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                            continue;
+                        }
+
+                        using (Transaction tr = db.TransactionManager.StartTransaction())
+                        {
+                            if (classObj == "AcDbMLeader")
+                            {
+                                MLeader obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MLeader;
+                                return obj.MText.Text;
+                            }
+
+                            break;
+
+                        }
+                    }
+                    return null;
+                }
+            }
+
+           
+        }
+
+        /// <summary>
+        /// Метод для получения площади фигуры
+        /// </summary>
+        /// <param name="znac"></param>
+        /// <returns></returns>
+        public static string GetPlosh(string znac)
+        {
+            Document adoc = Application.DocumentManager.MdiActiveDocument;
+            Database db = adoc.Database;
+            Editor ed = adoc.Editor;
+
+
+            double sum = 0.0;
+            if (znac != null)
+            {
+                while (true)
+                {
+                    PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
+                    if (result.Status == PromptStatus.Cancel) break;
+
+                    ObjectId enId = result.ObjectId;
+
+                    string classObj = enId.ObjectClass.Name;
+
+                    if (!classObj.Equals("AcDbCircle") && !classObj.Equals("AcDbEllipse") && !classObj.Equals("AcDbPolyline"))
+                    {
+                        ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                        continue;
+                    }
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        var obj = tr.GetObject(enId, OpenMode.ForRead, false, true);
+
+                        switch (result.ObjectId.ObjectClass.Name)
+                        {
+                            case "AcDbCircle":
+                                Circle circl = obj as Circle;
+                                switch (znac)
+                                {
+                                    case "+":
+                                        sum += circl.Radius * circl.Radius * Math.PI;
+                                        break;
+                                    case "-":
+                                        sum -= circl.Radius * circl.Radius * Math.PI;
+                                        break;
+                                    case "*":
+                                        sum *= circl.Radius * circl.Radius * Math.PI;
+                                        break;
+                                    case "/":
+                                        sum /= circl.Radius * circl.Radius * Math.PI;
+                                        break;
+                                }
+                                break;
+
+                            case "AcDbEllipse":
+                                Ellipse ellips = obj as Ellipse;
+                                switch (znac)
+                                {
+                                    case "+":
+                                        sum += ellips.Area;
+                                        break;
+                                    case "-":
+                                        sum -= ellips.Area;
+                                        break;
+                                    case "*":
+                                        sum *= ellips.Area;
+                                        break;
+                                    case "/":
+                                        sum /= ellips.Area;
+                                        break;
+                                }
+                                break;
+                            case "AcDbPolyline":
+                                Polyline polyLine = obj as Polyline;
+                                switch (znac)
+                                {
+                                    case "+":
+                                        sum += polyLine.Area;
+                                        break;
+                                    case "-":
+                                        sum -= polyLine.Area;
+                                        break;
+                                    case "*":
+                                        sum *= polyLine.Area;
+                                        break;
+                                    case "/":
+                                        sum /= polyLine.Area;
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                while (true)
+                {
+                    PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
+                    if (result.Status == PromptStatus.Cancel) break;
+
+                    ObjectId enId = result.ObjectId;
+
+                    string classObj = enId.ObjectClass.Name;
+
+                    if (!classObj.Equals("AcDbCircle") && !classObj.Equals("AcDbEllipse") && !classObj.Equals("AcDbPolyline"))
+                    {
+                        ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                        continue;
+                    }
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        var obj = tr.GetObject(enId, OpenMode.ForRead, false, true);
+
+                        switch (result.ObjectId.ObjectClass.Name)
+                        {
+                            case "AcDbCircle":
+                                Circle circl = obj as Circle;
+                                return (circl.Radius * circl.Radius * Math.PI).ToString();
+                                break;
+                            case "AcDbEllipse":
+                                Ellipse ellips = obj as Ellipse;
+                                return ellips.Area.ToString();
+                                break;
+                            case "AcDbPolyline":
+                                Polyline polyLine = obj as Polyline;
+                                return polyLine.Area.ToString();
+                                break;
+                        }
+                    }
+                }
+
+            }
+
+
+            return sum.ToString();
+        }
+
+        #endregion ////////////////
+
+
+        #region Insert ///////////////
 
         /// <summary>
         /// Метод для вставки значения в ячейку таблицы.
@@ -255,135 +1153,6 @@ namespace ClaculationPlagin
             return null;
         }
 
-
-        /// <summary>
-        /// Метод для получения значения из ячейки таблицы.
-        /// </summary>
-        /// <returns>Если ячейка существует - возвращает строку с контентом.</returns>
-        public static string GetTableValue()
-        {
-            Document doc = Application.DocumentManager.MdiActiveDocument;
-            Database db = doc.Database;
-            Editor ed = doc.Editor;
-
-            // Запрос у пользователя выбора таблицы
-            PromptEntityOptions peo = new PromptEntityOptions("\nВыберите таблицу: ");
-            peo.SetRejectMessage("\nВыберите только объекты таблицы.");
-            peo.AddAllowedClass(typeof(Table), false);
-            PromptEntityResult per = ed.GetEntity(peo);
-            if (per.Status != PromptStatus.OK) return null;
-            Table table = null;
-            using (DocumentLock docLock = doc.LockDocument())
-            {
-                using (Transaction tr = db.TransactionManager.StartTransaction())
-                {
-                    table = (Table)tr.GetObject(per.ObjectId, OpenMode.ForRead);
-
-                    PromptPointOptions ppo = new PromptPointOptions("\nВыберите ячейку: ");
-                    PromptPointResult ppr = ed.GetPoint(ppo);
-                    if (ppr.Status != PromptStatus.OK) return null;
-                    Point3d pt = ppr.Value;
-
-                    // Поиск ячейки
-                    Cell cell = FindCell(table, pt);
-                    if (cell == null)
-                    {
-                        ed.WriteMessage("\nНе удалось определить ячейку.");
-                        return null;
-                    }
-                    tr.Commit();
-
-                    return table.Cells[cell.Row, cell.Column].TextString;
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Метод для получения значения из однострочного/многострочного текста или выноски.
-        /// </summary>
-        /// <param name="onlyText">Считывание с текста или с выноски</param>
-        /// <returns>Если удалось считать текст - возвращает его.</returns>
-        public static string GetTextValue(bool onlyText)
-        {
-            //Выберите объект: AcDbMLeader выноска
-            //Выберите объект: AcDbText текст
-            //Выберите объект: AcDbMText М текст
-            Document adoc = Application.DocumentManager.MdiActiveDocument;
-            Database db = adoc.Database;
-            Editor ed = adoc.Editor;
-            bool enter = false;
-
-            if (onlyText)
-            {
-                while (!enter)
-                {
-                    PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
-                    if (result.Status == PromptStatus.Cancel) return null;
-
-                    ObjectId enId = result.ObjectId;
-
-                    string classObj = enId.ObjectClass.Name;
-
-                    if (!classObj.Equals("AcDbText") || !classObj.Equals("AcDbMText"))
-                    {
-                        ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
-                        continue;
-                    }
-
-                    using (Transaction tr = db.TransactionManager.StartTransaction())
-                    {
-                        if (classObj == "AcDbText")
-                        {
-                            DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
-                            return obj.TextString;
-                        }
-                        if (classObj == "AcDbMText")
-                        {
-                            MText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MText;
-                            return obj.Text;
-                        }
-
-                        enter = true;
-
-                    }
-                }
-                return null;
-            }
-            else
-            {
-                while (!enter)
-                {
-                    PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
-                    if (result.Status == PromptStatus.Cancel) return null;
-
-                    ObjectId enId = result.ObjectId;
-
-                    string classObj = enId.ObjectClass.Name;
-
-                    if (!classObj.Equals("AcDbMLeader"))
-                    {
-                        ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
-                        continue;
-                    }
-
-                    using (Transaction tr = db.TransactionManager.StartTransaction())
-                    {
-                        if (classObj == "AcDbMLeader")
-                        {
-                            MLeader obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MLeader;
-                            return obj.MText.Text;
-                        }
-
-                        enter = true;
-
-                    }
-                }
-                return null;
-            }
-        }
-
-
         /// <summary>
         /// Метод для вставки однострочного текста.
         /// </summary>
@@ -401,18 +1170,22 @@ namespace ClaculationPlagin
             // Создание объекта однострочного текста
             DBText dbText = new DBText();
             dbText.TextString = value;
-            dbText.Height = 1.0;
+            dbText.Height = 6.0;
 
             // Задание точки вставки и добавление текста в пространство модели
             dbText.Position = insPointResult.Value;
             BlockTableRecord acBlkTblRec;
-            using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
+            using (DocumentLock docLock = acDoc.LockDocument())
             {
-                acBlkTblRec = acTrans.GetObject(acCurDb.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
-                acBlkTblRec.AppendEntity(dbText);
-                acTrans.AddNewlyCreatedDBObject(dbText, true);
-                acTrans.Commit();
+                using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
+                {
+                    acBlkTblRec = acTrans.GetObject(acCurDb.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
+                    acBlkTblRec.AppendEntity(dbText);
+                    acTrans.AddNewlyCreatedDBObject(dbText, true);
+                    acTrans.Commit();
+                }
             }
+
 
             // Обновляем экран
             acDoc.Editor.Regen();
@@ -451,6 +1224,47 @@ namespace ClaculationPlagin
                         DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
                         obj.UpgradeOpen();
                         obj.TextString = value;
+
+
+                        enter = true;
+                        tr.Commit();
+                    }
+                }
+            }
+            ed.WriteMessage("\nТекст был заменен! \n ");
+        }
+
+        /// <summary>
+        /// Метод для добавления строки к тексту
+        /// </summary>
+        /// <param name="value"></param>
+        public static void AddToText(string value)
+        {
+            Document adoc = Application.DocumentManager.MdiActiveDocument;
+            Database db = adoc.Database;
+            Editor ed = adoc.Editor;
+            bool enter = false;
+            while (!enter)
+            {
+                PromptEntityResult result = ed.GetEntity("\nВыберите текст: ");
+                if (result.Status == PromptStatus.Cancel) ed.WriteMessage("\nФункция была отменена!\n ");
+
+                ObjectId enId = result.ObjectId;
+
+                string classObj = enId.ObjectClass.Name;
+
+                if (!classObj.Equals("AcDbText"))
+                {
+                    ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
+                    continue;
+                }
+                using (DocumentLock docLock = adoc.LockDocument())
+                {
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
+                        obj.UpgradeOpen();
+                        obj.TextString += " "+ value;
 
 
                         enter = true;
@@ -501,121 +1315,69 @@ namespace ClaculationPlagin
             }
         }
 
-
-        /// <summary>
-        /// Тестовый метод для получения значений из выности или одно/много-строчного текста
-        /// </summary>
-        [CommandMethod("test")]
-        public static void GetTextValueTest()
-        {
-            //Выберите объект: AcDbMLeader выноска
-            //Выберите объект: AcDbText текст
-            //Выберите объект: AcDbMText М текст
-
-            Document adoc = Application.DocumentManager.MdiActiveDocument;
-            Database db = adoc.Database;
-            Editor ed = adoc.Editor;
-            bool enter = false;
-            while (!enter)
-            {
-                PromptEntityResult result = ed.GetEntity("\nВыберите элемент: ");
-                if (result.Status == PromptStatus.Cancel) continue;
-
-                ObjectId enId = result.ObjectId;
-
-                string classObj = enId.ObjectClass.Name;
-
-                if (!classObj.Equals("AcDbMLeader") && !classObj.Equals("AcDbText") && !classObj.Equals("AcDbMText"))
-                {
-                    ed.WriteMessage("\nВыбран объект: " + result.ObjectId.ObjectClass.Name);
-                    continue;
-                }
-
-                using (Transaction tr = db.TransactionManager.StartTransaction())
-                {
-                    if (classObj == "AcDbMLeader")
-                    {
-                        MLeader obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MLeader;
-                        
-                        ed.WriteMessage("\n Location MText:\n" + obj.MText.Location.X + "\n"
-                            + obj.MText.Location.Y + "\n"
-                            + obj.MText.Location.Z + "\n");
-
-                       
-                        ed.WriteMessage("\n FirstVertex: \n" + obj.GetFirstVertex(0).ToString());
-                        ed.WriteMessage("\n LastVertex: \n" + obj.GetLastVertex(0).ToString());
-                        
-
-                    }
-                    if (classObj == "AcDbText")
-                    {
-                        DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
-                        
-                    }
-                    if (classObj == "AcDbMText")
-                    {
-                        MText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MText;
-                        
-                    }
-
-                    enter = true;
-
-                }
-            }
-        }
+        #endregion //////////////
 
 
         /// <summary>
         /// Метод для всатвки выноски с текстом (вроде не работает)
         /// </summary>
-        [CommandMethod("LeaderInsert")]
         public static void LeaderInsert(string value)
         {
+            
+            
+
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
-            Editor acEditor = acDoc.Editor;
-            Database acCurDb = acDoc.Database;
+            Database acDb = acDoc.Database;
+            Editor acEd = acDoc.Editor;
 
-            // Запрос на выбор первой точки
-            PromptPointOptions firstPointPrompt = new PromptPointOptions("\nВыберите первую точку для выноски: ");
-            PromptPointResult firstPointResult = acEditor.GetPoint(firstPointPrompt);
-            if (firstPointResult.Status != PromptStatus.OK) return;
+            // Запрос выбора первой точки
+            PromptPointOptions opt1 = new PromptPointOptions("Укажите первую точку выноски: ");
+            PromptPointResult res1 = acEd.GetPoint(opt1);
+            if (res1.Status != PromptStatus.OK)
+                return;
 
-            // Запрос на выбор второй точки
-            PromptPointOptions secondPointPrompt = new PromptPointOptions("\nВыберите вторую точку для выноски: ");
-            secondPointPrompt.BasePoint = firstPointResult.Value;
-            secondPointPrompt.UseBasePoint = true;
-            PromptPointResult secondPointResult = acEditor.GetPoint(secondPointPrompt);
-            if (secondPointResult.Status != PromptStatus.OK) return;
+            // Запрос выбора второй точки
+            PromptPointOptions opt2 = new PromptPointOptions("Укажите вторую точку выноски: ");
+            opt2.BasePoint = res1.Value;
+            opt2.UseBasePoint = true;
+            PromptPointResult res2 = acEd.GetCorner(opt2);
+            if (res2.Status != PromptStatus.OK)
+                return;
 
-            // Создание объекта "выноска"
-            MLeader leader = new MLeader();
-            leader.ContentType = ContentType.MTextContent;
-            MText mtext = new MText();
-            mtext.Contents = value;
-            leader.MText = mtext;
+            // Создание объекта MLeader
+            MLeader mLeader = new MLeader();
+            MText mText = new MText();
+            mText.Contents = "Проверено";
 
-            // Задание точек выноски и добавление объекта в пространство модели
-            leader.SetFirstVertex(0,new Point3d(firstPointResult.Value.X, firstPointResult.Value.Y, 0.0));
-            leader.SetLastVertex(0, new Point3d(secondPointResult.Value.X, secondPointResult.Value.Y, 0.0));
-            leader.MText.Location = new Point3d(secondPointResult.Value.X, secondPointResult.Value.Y, 0.0);
+            mLeader.ContentType = ContentType.MTextContent;
+            mLeader.MText = mText;
 
-            BlockTableRecord acBlkTblRec;
+            // Добавление линии лидера
+
+            mLeader.AddLeaderLine(res1.Value);
+
+            // Добавление точек выноски
+
+            mLeader.SetFirstVertex(0, res1.Value);
+            mLeader.SetLastVertex(0, res2.Value);
+
+
+
+            // Добавление MLeader в чертеж
             using (DocumentLock docLock = acDoc.LockDocument())
             {
-                using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
+                Transaction tr = acDoc.TransactionManager.StartTransaction();
+                using (tr)
                 {
-                    acBlkTblRec = acTrans.GetObject(acCurDb.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
-                    acBlkTblRec.AppendEntity(leader);
-                    acTrans.AddNewlyCreatedDBObject(leader, true);
-                    acTrans.Commit();
+                    BlockTableRecord btr = (BlockTableRecord)tr.GetObject(acDb.CurrentSpaceId, OpenMode.ForWrite);
+                    ObjectId id = btr.AppendEntity(mLeader);
+                    tr.AddNewlyCreatedDBObject(mLeader, true);
+                    tr.Commit();
                 }
             }
-
-            acEditor.WriteMessage("\nВыноска с текстом 'Проверено' успешно вставлена");
         }
 
 
-        
 
         /// <summary>
         /// Класс для создания кнопки вызова модального окна в панели управления.
