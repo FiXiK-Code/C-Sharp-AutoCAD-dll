@@ -1,0 +1,35 @@
+﻿<Window x:Class="ClaculationPlagin.FormulWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ClaculationPlagin"
+             mc:Ignorable="d" Height="286.688" Width="264.794" ResizeMode="NoResize" WindowStyle="None">
+    <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+        <StackPanel HorizontalAlignment="Right" Margin="10">
+            <Button Width="50" Height="25" FontSize="16" Click="Close_Click">X</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="2" >
+            <Button Margin="4" Width="120" Content="Abs(x)" ToolTip="Возвращает абсолютное значение указанного числа" Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Acos(x)" ToolTip="Возвращает угол, косинус которого равен указанному числу"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Atan(x)" ToolTip="Возвращает угол, тангенс которого равен указанному числу"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Ceiling(x)" ToolTip="Возвращает наименьшее целое число больше или равно заданному числу"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Exp(x)" ToolTip="Возвращает e, возведенное в указанную степень"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Floor(x)" ToolTip="Возвращает наибольшее целое число меньше или равно заданному числу"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="IEEERemainder(x,y)" ToolTip="Возвращает остаток от деления указанного числа на другое указанное число"  Click="Button_Click"></Button>
+            
+        </StackPanel>
+            <StackPanel Margin="2">
+                <Button Margin="4" Width="120" Content="Log(x,y)" ToolTip="Возвращает логарифм указанного числа"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Log10(x)" ToolTip="Возвращает логарифм с основанием 10 указанного числа"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Max(x,y)" ToolTip="Возвращает большее из двух указанных чисел"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Min(x,y)" ToolTip="Возвращает меньшее из двух указанных чисел"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Pow(x,y)" ToolTip="Возвращает указанное число, возведённое в указанную степень"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Round(x,y)" ToolTip="Округляет значение до ближайшего целого или указанного количества десятичных разрядов"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Sign(x)" ToolTip="Возвращает значение, определяющее знак числа"  Click="Button_Click"></Button>
+                <Button Margin="4" Width="120" Content="Truncate(x)" ToolTip="Вычисляет целую часть числа"  Click="Button_Click"></Button>
+        </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>

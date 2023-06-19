@@ -76,12 +76,19 @@
     <Compile Include="BufferClass.cs" />
     <Compile Include="CalculationClass.cs" />
     <Compile Include="CommandClass.cs" />
+    <Compile Include="FormulWindow.xaml.cs">
+      <DependentUpon>FormulWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="FormulWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

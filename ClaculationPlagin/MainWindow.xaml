@@ -165,7 +165,7 @@
 
                     <StackPanel Orientation="Vertical">
                         <Button Margin="1.5" Content="&lt;-" Width="20" Height="20" Background="White" BorderBrush="#FF212121" Click="StrButton_Click"/>
-                        <Button Margin="1.5" Content=")" Background="White" BorderBrush="#FF212121" Width="20" Height="19.5" Click="NumButton_Click"/>
+                        <Button Margin="1.5" Content=")" Background="White" BorderBrush="#FF212121" Width="20" Height="19.5" Click="FunctionCalculate_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">

@@ -33,6 +33,17 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void functionBtn_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            WindowState windowState = this.WindowState;
+
+            this.WindowState = WindowState.Minimized;
+
+            FormulWindow formul = new FormulWindow();
+            formul.ShowDialog();
+
+            inputTextBox.Text += BufferClass.formul != null ? BufferClass.formul : "";
+            BufferClass.formul = null;
+
+            this.WindowState = windowState;
 
         }
 
@@ -735,8 +746,41 @@ namespace ClaculationPlagin
             result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
         }
 
+        /// <summary>
+        /// Рассчет функций из дополнительного окна
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FunctionCalculate_Click(object sender, RoutedEventArgs e)
+        {
+            inputTextBox.Text += ")";
+            string value = "";
+            bool func = false;
+            for(int i = inputTextBox.Text.Length - 1; i >= 0; i--)
+            {
+                if (inputTextBox.Text[i] == '(') func = true;
+                if (func)
+                {
+                    if(inputTextBox.Text[i]!= '+' && inputTextBox.Text[i] != '-' && inputTextBox.Text[i] != '*' && inputTextBox.Text[i] != '/')
+                    {
+                        value = inputTextBox.Text[i] + value;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    value = inputTextBox.Text[i] + value;
+                }
+            }
+            inputTextBox.Text = inputTextBox.Text.Replace(value, CalculationClass.FunctionCalculation(value).ToString());
+        }
+
+
         #endregion //////////////
 
-        
+
     }
 }

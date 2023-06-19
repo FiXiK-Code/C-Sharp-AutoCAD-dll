@@ -14,5 +14,6 @@ namespace ClaculationPlagin
         public static int roundItem { get; set; } = 3;
         public static string pref { get; set; } = null;
         public static string suff { get; set; } = null;
+        public static string formul { get; set; } = null;
     }
 }

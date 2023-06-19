@@ -8,3 +8,6 @@ D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\bin\Debug\ClaculationPlagin.d
 D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\bin\Debug\ClaculationPlagin.pdb
 D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\ClaculationPlagin.dll
 D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\ClaculationPlagin.pdb
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\FormulWindow.g.cs
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\ClaculationPlagin_MarkupCompile.lref
+D:\Programm\Projects\AutoCad_dll\ClaculationPlagin\obj\Debug\FormulWindow.baml
