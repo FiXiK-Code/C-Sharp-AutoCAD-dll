@@ -20,11 +20,47 @@ namespace ClaculationPlagin
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool historyOpen = true;
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Поле входных значений
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //string result = "";
+            //result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
+        }
+
+        /// <summary>
+        /// Поле результата
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void resultTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //string result = "";
+            //result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
+        }
+
+        #region AlterFunction /////////
+
+        /// <summary>
+        /// Метод для вставки записи в журнал. При передаче одно из параметров "null", будет вставлен отолько один. При передаче двух - первый пример, второй результат.
+        /// </summary>
+        /// <param name="text1"></param>
+        /// <param name="text2"></param>
+        private void AddHistoryBlock(string text1, string text2)
+        {
+            var newElement = (StackPanel)((DataTemplate)FindResource("HistoryContentTemplate")).LoadContent();
+            var val = BufferClass.SetTemlate(newElement, text1, text2);
+            historyContentBlock.Children.Add(val);
+        }
 
         /// <summary>
         /// Открытие окна для выбора формулы
@@ -54,6 +90,18 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void history_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (historyOpen)
+            {
+                contentPanel.Width = 250;
+                history.Margin = new Thickness(90, 0, 0, 0);
+                historyOpen = false;
+            }
+            else
+            {
+                contentPanel.Width = 450;
+                history.Margin = new Thickness(290, 0, 0, 0);
+                historyOpen = true;
+            }
 
         }
 
@@ -64,32 +112,28 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void remuveHistory_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            historyContentBlock.Children.Clear();
         }
 
         /// <summary>
-        /// Поле входных значений
+        /// Вставка примера из журнала
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void historyContent_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //string result = "";
-            //result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
+            inputTextBox.Text = ((TextBlock)sender).Text;
         }
 
         /// <summary>
-        /// Поле результата
+        /// Вставка рзультата из журнала
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void resultTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void historyResult_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //string result = "";
-            //result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
+            resultTextBox.Text = ((TextBlock)sender).Text;
         }
-
-        #region AlterFunction /////////
 
         /// <summary>
         /// Закрытие окна
@@ -736,18 +780,19 @@ namespace ClaculationPlagin
         }
 
         /// <summary>
-        /// Начало вычисления (Enter or = _Click)
+        /// Начало вычисления (Enter or "="_Click)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void StrtCalc_Click(object sender, RoutedEventArgs e)
         {
-            string result = "";
-            result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
+            //string result = "";
+            //result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
+            //AddHistoryBlock(null, "test2");
         }
 
         /// <summary>
-        /// Рассчет функций из дополнительного окна
+        /// Рассчет функций из дополнительного окна => кнопка ")"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -779,8 +824,10 @@ namespace ClaculationPlagin
         }
 
 
+
+
         #endregion //////////////
 
-
+        
     }
 }
