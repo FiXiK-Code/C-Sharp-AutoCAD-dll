@@ -786,9 +786,9 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void StrtCalc_Click(object sender, RoutedEventArgs e)
         {
-            //string result = "";
-            //result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
-            //AddHistoryBlock(null, "test2");
+            var calculate = CalculationClass.Calculate(inputTextBox.Text);
+            resultTextBox.Text = BufferClass.round ? Math.Round(calculate, BufferClass.roundItem).ToString() : calculate.ToString();
+            AddHistoryBlock(inputTextBox.Text, resultTextBox.Text);
         }
 
         /// <summary>
