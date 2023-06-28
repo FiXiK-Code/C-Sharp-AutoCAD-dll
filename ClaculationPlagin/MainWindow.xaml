@@ -1,8 +1,7 @@
 ﻿<Window x:Name="mainWindow" x:Class="ClaculationPlagin.MainWindow"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        WindowStyle="None"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStyle="None">
     <Window.Resources>
 
         <DataTemplate x:Key="HistoryContentTemplate">
@@ -73,14 +72,14 @@
                 <!--Поле ввода-->
                 <StackPanel Orientation="Horizontal" Margin="3" Width="208">
                     <Image x:Name="functionBtn" Height="20" Width="20" Source="/ClaculationPlagin;component/icon/Mask group.png" Cursor="Hand" MouseDown="functionBtn_MouseDown"/>
-                    <TextBox x:Name="inputTextBox" MinWidth="160" TextChanged="inputTextBox_TextChanged"/>
+                    <TextBox x:Name="inputTextBox" MinWidth="160" TextChanged="inputTextBox_TextChanged" KeyDown="inputTextBox_KeyDown"/>
                     <Image x:Name="functionBtn1" Height="20" Width="20" Source="/ClaculationPlagin;component/icon/function.png" Cursor="Hand" MouseDown="functionBtn_MouseDown"/>
                 </StackPanel>
 
                 <!--Префикс и суффикс-->
                 <StackPanel Orientation="Horizontal" Margin="3" Height="29" Width="211">
                     <TextBox x:Name="pref" Margin="3" Text="Префикс" MinWidth="60" Opacity="0.69" Height="22" Width="62" VerticalContentAlignment="Center" TextChanged="pref_TextChanged"></TextBox>
-                    <TextBox x:Name="resultTextBox" Margin="3" MinWidth="60" Text="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Height="22" Width="60" VerticalContentAlignment="Center" TextChanged="resultTextBox_TextChanged"></TextBox>
+                    <TextBox x:Name="resultTextBox" Margin="3" MinWidth="60" Text="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Height="22" Width="60" VerticalContentAlignment="Center"></TextBox>
                     <TextBox x:Name="suff" Margin="3"  Text="Суффикс" MinWidth="60" Opacity="0.69" Height="22" Width="60" VerticalContentAlignment="Center" TextChanged="suff_TextChanged"></TextBox>
                 </StackPanel>
 
@@ -179,7 +178,7 @@
 
                     <StackPanel Orientation="Vertical">
                         <Button Margin="1.5" Content="&lt;-" Width="20" Height="20" Background="White" BorderBrush="#FF212121" Click="StrButton_Click"/>
-                        <Button Margin="1.5" Content=")" Background="White" BorderBrush="#FF212121" Width="20" Height="19.5" Click="FunctionCalculate_Click"/>
+                        <Button Margin="1.5" Content=")" Background="White" BorderBrush="#FF212121" Width="20" Height="19.5" Click="NumButton_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">

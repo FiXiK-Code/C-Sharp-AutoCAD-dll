@@ -69,40 +69,10 @@ namespace ClaculationPlagin
             value = value.Replace(")","");
             value = value.Replace(" ","");
 
-            int countUmn = 0;
-            int countDel = 0;
-            int countPlus = 0;
-            int countMin = 0;
-            
-            foreach(var elem in value)
-            {
-                switch (elem)
-                {
-                    case '*':
-                        countUmn++;
-                        break;
-                    case '/':
-                        countDel++;
-                        break;
-                    case '+':
-                        countPlus++;
-                        break;
-                }
-            }
-
-            value = UmnFunc(value,countUmn);
-            value = DelFunc(value, countDel);
-            value = PlusFunc(value, countPlus);
-            foreach (var elem in value)
-            {
-                switch (elem)
-                {
-                    case '-':
-                        countMin++;
-                        break;
-                }
-            }
-            value = MinFunc(value, countMin);
+            value = UmnFunc(value);
+            value = DelFunc(value);
+            value = PlusFunc(value);
+            value = MinFunc(value);
 
             return Convert.ToDouble(value);
         }
@@ -111,13 +81,13 @@ namespace ClaculationPlagin
         /// Метод, рассчитывающий элементы произведения в входной строке
         /// </summary>
         /// <param name="value">входная строка</param>
-        /// <param name="countUmn">количество примеров, требующих рассчета</param>
         /// <returns>Строку в которой элементы произведения заменены на результат</returns>
-        private static string UmnFunc(string value, int countUmn)
+        private static string UmnFunc(string value)
         {
-            for (int i = 0; i < countUmn; i++)
+            while(true)
             {
                 var indexZnac = value.IndexOf('*');
+                if (indexZnac == -1) break;
                 var num1 = "";
                 var num2 = "";
 
@@ -131,9 +101,9 @@ namespace ClaculationPlagin
                 {
                     if (j > 0)
                     {
-                        if (value[j] == '*' || value[j] == '-' || value[j] == '/' || value[j] == '+')
+                        if (value[j] == '*' || value[j] == '-' || value[j] == '/' || value[j] == '+' && !num1_ok)
                         {
-                            if (j - 1 != 0 && value[j] != '-' && value[j - 1] != '*' && value[j - 1] != '-' && value[j - 1] != '/' && value[j - 1] != '+')
+                            if (j - 1 != 0  && value[j - 1] == '*' || value[j - 1] == '/' || value[j - 1] != '+')
                             {
                                 num1_ok = true;
                             }
@@ -148,17 +118,12 @@ namespace ClaculationPlagin
                     if (j == -1) num1_ok = true;
                     if (k < value.Length)
                     {
-                        if (value[k] == '*' || value[k] == '-' || value[k] == '/' || value[k] == '+')
+                        if (value[k] == '*' || value[k] == '-' || value[k] == '/' || value[k] == '+' && !num2_ok)
                         {
-                            if (k + 1 < value.Length && value[k] != '-' && value[k + 1] != '*' && value[k + 1] != '-' && value[k + 1] != '/' && value[k + 1] != '+')
+                            if (num2 != "")
                             {
                                 num2_ok = true;
                             }
-                            if (value[k] == '-' && num2 != "")
-                            {
-                                num2_ok = true;
-                            }
-
                         }
                     }
                     if (k == value.Length) num2_ok = true;
@@ -179,8 +144,7 @@ namespace ClaculationPlagin
                 }
 
                 var res = Convert.ToDouble(num1) * Convert.ToDouble(num2);
-                value = value.Replace(num1 + "*" + num2, res >= 0? "+"+res.ToString() : res.ToString());
-
+                value = value.Replace(num1 + "*" + num2, j>=0 && value[j] != '*' && value[j] != '-' && value[j] != '/' && value[j] != '+' && res >= 0 ? "+"+res.ToString() : res.ToString());
             }
             return value;
         }
@@ -189,13 +153,13 @@ namespace ClaculationPlagin
         /// Метод, рассчитывающий элементы деления в входной строке
         /// </summary>
         /// <param name="value">входная строка</param>
-        /// <param name="countDel">количество примеров, требующих рассчета</param>
         /// <returns>Строку в которой элементы деления заменены на результат</returns>
-        private static string DelFunc(string value, int countDel)
+        private static string DelFunc(string value)
         {
-            for (int i = 0; i < countDel; i++)
+            while(true)
             {
                 var indexZnac = value.IndexOf('/');
+                if (indexZnac == -1) break;
                 var num1 = "";
                 var num2 = "";
 
@@ -209,9 +173,9 @@ namespace ClaculationPlagin
                 {
                     if (j > 0)
                     {
-                        if (value[j] == '*' || value[j] == '-' || value[j] == '/' || value[j] == '+')
+                        if (value[j] == '*' || value[j] == '-' || value[j] == '/' || value[j] == '+' && !num1_ok)
                         {
-                            if (j - 1 != 0 && value[j] != '-' && value[j - 1] != '*' && value[j - 1] != '-' && value[j - 1] != '/' && value[j - 1] != '+')
+                            if (j - 1 != 0 && value[j - 1] == '*' || value[j - 1] == '/' || value[j - 1] != '+')
                             {
                                 num1_ok = true;
                             }
@@ -226,13 +190,9 @@ namespace ClaculationPlagin
                     if (j == -1) num1_ok = true;
                     if (k < value.Length)
                     {
-                        if (value[k] == '*' || value[k] == '-' || value[k] == '/' || value[k] == '+')
+                        if (value[k] == '*' || value[k] == '-' || value[k] == '/' || value[k] == '+' && !num2_ok)
                         {
-                            if (k + 1 < value.Length && value[k] != '-' && value[k + 1] != '*' && value[k + 1] != '-' && value[k + 1] != '/' && value[k + 1] != '+')
-                            {
-                                num2_ok = true;
-                            }
-                            if (value[k] == '-')
+                            if (num2 != "")
                             {
                                 num2_ok = true;
                             }
@@ -257,7 +217,7 @@ namespace ClaculationPlagin
                 }
 
                 var res = Convert.ToDouble(num1) / Convert.ToDouble(num2);
-                value = value.Replace(num1 + "/" + num2, res >= 0 ? "+" + res.ToString() : res.ToString());
+                value = value.Replace(num1 + "/" + num2, j >= 0 && value[j] != '*' && value[j] != '-' && value[j] != '/' && value[j] != '+' && res >= 0 ? "+" + res.ToString() : res.ToString());
 
             }
             return value;
@@ -267,13 +227,13 @@ namespace ClaculationPlagin
         /// Метод, рассчитывающий элементы сложения в входной строке
         /// </summary>
         /// <param name="value">входная строка</param>
-        /// <param name="countPlus">количество примеров, требующих рассчета</param>
         /// <returns>Строку в которой элементы сложения заменены на результат</returns>
-        private static string PlusFunc(string value, int countPlus)
+        private static string PlusFunc(string value)
         {
-            for (int i = 0; i < countPlus; i++)
+            while(true)
             {
                 var indexZnac = value.IndexOf('+');
+                if (indexZnac == -1) break;
                 var num1 = "";
                 var num2 = "";
 
@@ -287,9 +247,9 @@ namespace ClaculationPlagin
                 {
                     if (j > 0)
                     {
-                        if (value[j] == '*' || value[j] == '-' || value[j] == '/' || value[j] == '+')
+                        if (value[j] == '*' || value[j] == '-' || value[j] == '/' || value[j] == '+' && !num1_ok)
                         {
-                            if (j - 1 != 0 && value[j] != '-' && value[j-1] != '*' && value[j-1] != '-' && value[j-1] != '/' && value[j-1] != '+')
+                            if (j - 1 != 0 && value[j - 1] == '*' || value[j - 1] == '/' || value[j - 1] != '+')
                             {
                                 num1_ok = true;
                             }
@@ -304,13 +264,9 @@ namespace ClaculationPlagin
                     if(j==-1) num1_ok = true;
                     if (k < value.Length)
                     {
-                        if (value[k] == '*' || value[k] == '-' || value[k] == '/' || value[k] == '+')
+                        if (value[k] == '*' || value[k] == '-' || value[k] == '/' || value[k] == '+' && !num2_ok)
                         {
-                            if (k + 1 < value.Length && value[k] != '-' && value[k + 1] != '*' && value[k + 1] != '-' && value[k + 1] != '/' && value[k + 1] != '+')
-                            {
-                                num2_ok = true;
-                            }
-                            if (value[k] == '-')
+                            if ( num2 != "")
                             {
                                 num2_ok = true;
                             }
@@ -335,7 +291,7 @@ namespace ClaculationPlagin
                 }
 
                 var res = Convert.ToDouble(num1) + Convert.ToDouble(num2);
-                value = value.Replace(num1 + "+" + num2, res >= 0 ? "+" + res.ToString() : res.ToString());
+                value = value.Replace(num1 + "+" + num2, j >= 0 && value[j] != '*' && value[j] != '-' && value[j] != '/' && value[j] != '+' && res >= 0 ? "+" + res.ToString() : res.ToString());
 
             }
             return value;
@@ -345,13 +301,12 @@ namespace ClaculationPlagin
         /// Метод, рассчитывающий элементы вычитания в входной строке
         /// </summary>
         /// <param name="value">входная строка</param>
-        /// <param name="countMin">количество примеров, требующих рассчета</param>
         /// <returns>Строку в которой элементы вычитания заменены на результат</returns>
-        private static string MinFunc(string value, int countMin)
+        private static string MinFunc(string value)
         {
-            for (int i = 0; i < countMin; i++)
+            while(true)
             {
-                var indexZnac = value.IndexOf('-');
+                var indexZnac = value.IndexOf('-',1);
                 var num1 = "";
                 if (indexZnac == -1) break;
                 if (indexZnac == 0) num1 = "0";
@@ -367,20 +322,26 @@ namespace ClaculationPlagin
                 {
                     if (j > 0)
                     {
-                        if (value[j] == '*' || value[j] == '-' || value[j] == '/' || value[j] == '+')
+                        if (value[j] == '*' || value[j] == '-' || value[j] == '/' || value[j] == '+' && !num1_ok)
                         {
-                            if (j - 1 != 0 && value[j] != '-' && value[j - 1] != '*' && value[j - 1] != '-' && value[j - 1] != '/' && value[j - 1] != '+')
+                            if (j - 1 != 0 && value[j - 1] == '*' || value[j - 1] == '/' || value[j - 1] != '+')
                             {
                                 num1_ok = true;
+                            }
+                            if (value[j] == '-')
+                            {
+                                num1_ok = true;
+                                num1 = value[j] + num1;
+                                j--;
                             }
                         }
                     }
                     if (j == -1) num1_ok = true;
                     if (k < value.Length)
                     {
-                        if (value[k] == '*' || value[k] == '-' || value[k] == '/' || value[k] == '+')
+                        if (value[k] == '*' || value[k] == '-' || value[k] == '/' || value[k] == '+' && !num2_ok)
                         {
-                            if (k + 1 < value.Length && value[k] != '-' && value[k + 1] != '*' && value[k + 1] != '-' && value[k + 1] != '/' && value[k + 1] != '+')
+                            if (num2 != "")
                             {
                                 num2_ok = true;
                             }
@@ -405,7 +366,7 @@ namespace ClaculationPlagin
                 }
 
                 var res = Convert.ToDouble(num1) - Convert.ToDouble(num2);
-                value = value.Replace(num1 + "-" + num2, res >= 0 ? "+" + res.ToString() : res.ToString());
+                value = value.Replace(num1 + "-" + num2, j >= 0 && value[j] != '*' && value[j] != '-' && value[j] != '/' && value[j] != '+' && res >= 0 ? "+" + res.ToString() : res.ToString());
 
             }
             return value;

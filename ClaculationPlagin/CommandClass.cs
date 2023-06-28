@@ -50,6 +50,11 @@ namespace ClaculationPlagin
                     if (_pt2.Status == PromptStatus.Cancel) break;
 
                     Point3d pt2 = _pt2.Value;
+                    if(sum == 0.0)
+                    {
+                        sum += pt1.DistanceTo(pt2);
+                        continue;
+                    }
                     switch (znac)
                     {
                         case "+":
@@ -164,6 +169,22 @@ namespace ClaculationPlagin
                     if (_pt1.Status == PromptStatus.Cancel) break;
 
                     Point3d pt1 = _pt1.Value;
+                    if (output == 0.0)
+                    {
+                        switch (nap)
+                        {
+                            case "x":
+                                output += pt1.X;
+                                break;
+                            case "y":
+                                output += pt1.Y;
+                                break;
+                            case "z":
+                                output += pt1.Z;
+                                break;
+                        }
+                        continue;
+                    }
                     switch (znac)
                     {
                         case "+":
@@ -283,6 +304,12 @@ namespace ClaculationPlagin
                         Point3d startPoint = obj.XLine1Point;
                         Point3d endPoint = obj.XLine2Point;
 
+                        if (sum == 0.0)
+                        {
+                            sum += startPoint.DistanceTo(endPoint);
+                            continue;
+                        }
+
                         switch (znac)
                         {
                             case "+":
@@ -379,7 +406,29 @@ namespace ClaculationPlagin
                                     ed.WriteMessage("\nНе удалось определить ячейку.");
                                     continue;
                                 }
-                                
+                                if (sum == 0.0)
+                                {
+                                    try
+                                    {
+                                        if (!alter) sum += Convert.ToDouble(table.Cells[cell.Row, cell.Column].TextString);
+                                        altrsSum += table.Cells[cell.Row, cell.Column].TextString + "+";
+                                    }
+                                    catch (System.Exception)
+                                    {
+                                        System.Windows.MessageBoxResult result = System.Windows.MessageBox.Show("Значение в ячейке содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                        if (result == System.Windows.MessageBoxResult.Yes)
+                                        {
+                                            altrsSum += table.Cells[cell.Row, cell.Column].TextString + "+";
+                                            alter = true;
+                                        }
+                                        else
+                                        {
+                                            return null;
+                                        }
+                                    }
+                                    continue;
+                                }
+
                                 switch (znac)
                                 {
                                     case "+":
@@ -565,6 +614,28 @@ namespace ClaculationPlagin
                             if (classObj == "AcDbText")
                             {
                                 DBText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as DBText;
+                                if (sum == 0.0)
+                                {
+                                    try
+                                    {
+                                        if (!alter) sum += Convert.ToDouble(obj.TextString);
+                                        alterSum += obj.TextString + "+";
+                                    }
+                                    catch (System.Exception)
+                                    {
+                                        System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                        if (res == System.Windows.MessageBoxResult.Yes)
+                                        {
+                                            alterSum += obj.TextString + "+";
+                                            alter = true;
+                                        }
+                                        else
+                                        {
+                                            return null;
+                                        }
+                                    }
+                                    continue;
+                                }
                                 switch (znac)
                                 {
                                     case "+":
@@ -653,6 +724,28 @@ namespace ClaculationPlagin
                             if (classObj == "AcDbMText")
                             {
                                 MText obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MText;
+                                if (sum == 0.0)
+                                {
+                                    try
+                                    {
+                                        if (!alter) sum += Convert.ToDouble(obj.Text);
+                                        alterSum += obj.Text + "+";
+                                    }
+                                    catch (System.Exception)
+                                    {
+                                        System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                        if (res == System.Windows.MessageBoxResult.Yes)
+                                        {
+                                            alterSum += obj.Text + "+";
+                                            alter = true;
+                                        }
+                                        else
+                                        {
+                                            return null;
+                                        }
+                                    }
+                                    continue;
+                                }
                                 switch (znac)
                                 {
                                     case "+":
@@ -763,6 +856,28 @@ namespace ClaculationPlagin
                             if (classObj == "AcDbMLeader")
                             {
                                 MLeader obj = tr.GetObject(enId, OpenMode.ForRead, false, true) as MLeader;
+                                if (sum == 0.0)
+                                {
+                                    try
+                                    {
+                                        if (!alter) sum += Convert.ToDouble(obj.MText.Text);
+                                        alterSum += obj.MText.Text + "+";
+                                    }
+                                    catch (System.Exception)
+                                    {
+                                        System.Windows.MessageBoxResult res = System.Windows.MessageBox.Show("Значение в объекте содержит не только число.\nВыполнить считывание контента для ручного редактирования?", "Ошибка считывания", System.Windows.MessageBoxButton.YesNo);
+                                        if (res == System.Windows.MessageBoxResult.Yes)
+                                        {
+                                            alterSum += obj.MText.Text + "+";
+                                            alter = true;
+                                        }
+                                        else
+                                        {
+                                            return null;
+                                        }
+                                    }
+                                    continue;
+                                }
                                 switch (znac)
                                 {
                                     case "+":
@@ -848,8 +963,6 @@ namespace ClaculationPlagin
                                 }
                                 
                             }
-
-
                         }
                     }
                     return sum.ToString();
@@ -1319,7 +1432,7 @@ namespace ClaculationPlagin
 
 
         /// <summary>
-        /// Метод для всатвки выноски с текстом (вроде не работает)
+        /// Метод для всатвки выноски с текстом
         /// </summary>
         public static void LeaderInsert(string value)
         {
@@ -1347,7 +1460,7 @@ namespace ClaculationPlagin
             // Создание объекта MLeader
             MLeader mLeader = new MLeader();
             MText mText = new MText();
-            mText.Contents = "Проверено";
+            mText.Contents = value;
 
             mLeader.ContentType = ContentType.MTextContent;
             mLeader.MText = mText;

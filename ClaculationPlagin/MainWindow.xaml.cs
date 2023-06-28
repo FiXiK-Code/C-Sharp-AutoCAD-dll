@@ -33,19 +33,34 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //string result = "";
-            //result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
-        }
-
-        /// <summary>
-        /// Поле результата
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void resultTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //string result = "";
-            //result += BufferClass.round ? Math.Round(Convert.ToDouble(result), BufferClass.roundItem).ToString() : result;
+            try
+            {
+                if(inputTextBox.Text.Last() == ')')
+                {
+                    string value = "";
+                    bool func = false;
+                    for (int i = inputTextBox.Text.Length - 1; i >= 0; i--)
+                    {
+                        if (inputTextBox.Text[i] == '(') func = true;
+                        if (func)
+                        {
+                            if (inputTextBox.Text[i] != '+' && inputTextBox.Text[i] != '-' && inputTextBox.Text[i] != '*' && inputTextBox.Text[i] != '/')
+                            {
+                                value = inputTextBox.Text[i] + value;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            value = inputTextBox.Text[i] + value;
+                        }
+                    }
+                    inputTextBox.Text = inputTextBox.Text.Replace(value, CalculationClass.FunctionCalculation(value).ToString());
+                }
+            }catch(Exception) { }    
         }
 
         #region AlterFunction /////////
@@ -297,8 +312,15 @@ namespace ClaculationPlagin
                 this.WindowState = windowState;
                
             }
-           
-            inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+            try
+            {
+                length = CalculationClass.Calculate(length.ToString()).ToString();
+                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+            }
+            catch (Exception) { inputTextBox.Text += length; }
+
+
+            
         }
 
         /// <summary>
@@ -344,8 +366,14 @@ namespace ClaculationPlagin
                 this.WindowState = windowState;
                 
             }
+            try
+            {
+                coordinate = CalculationClass.Calculate(coordinate.ToString()).ToString();
+                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(coordinate), BufferClass.roundItem).ToString() : coordinate;
+            }
+            catch (Exception) { inputTextBox.Text += coordinate; }
 
-            inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(coordinate), BufferClass.roundItem).ToString() : coordinate;
+            
         }
 
         /// <summary>
@@ -374,14 +402,13 @@ namespace ClaculationPlagin
                 this.WindowState = windowState;
 
             }
+
             try
             {
+                length = CalculationClass.Calculate(length.ToString()).ToString();
                 inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
             }
-            catch (Exception)
-            {
-                inputTextBox.Text += length;
-            }
+            catch (Exception) { inputTextBox.Text += length; }
         }
 
         /// <summary>
@@ -410,14 +437,13 @@ namespace ClaculationPlagin
                 this.WindowState = windowState;
                 
             }
+
             try
             {
+                length = CalculationClass.Calculate(length.ToString()).ToString();
                 inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
             }
-            catch (Exception)
-            {
-                inputTextBox.Text += length;
-            }
+            catch (Exception) { inputTextBox.Text += length; }
         }
 
         /// <summary>
@@ -448,12 +474,10 @@ namespace ClaculationPlagin
             }
             try
             {
+                length = CalculationClass.Calculate(length.ToString()).ToString();
                 inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
             }
-            catch (Exception)
-            {
-                inputTextBox.Text += length;
-            }
+            catch (Exception) { inputTextBox.Text += length; }
         }
 
         /// <summary>
@@ -484,11 +508,10 @@ namespace ClaculationPlagin
             }
             try
             {
+                length = CalculationClass.Calculate(length.ToString()).ToString();
                 inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
-            }catch(Exception)
-            {
-                inputTextBox.Text += length;
             }
+            catch (Exception) { inputTextBox.Text += length; }
         }
 
         /// <summary>
@@ -506,7 +529,6 @@ namespace ClaculationPlagin
                 this.WindowState = WindowState.Minimized;
                 length = CommandClass.GetDimension(null);
                 this.WindowState = windowState;
-                
             }
             else
             {
@@ -515,9 +537,13 @@ namespace ClaculationPlagin
                 this.WindowState = WindowState.Minimized;
                 length = CommandClass.GetDimension(BufferClass.znac);
                 this.WindowState = windowState;
-                
             }
-            inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+            try
+            {
+                length = CalculationClass.Calculate(length.ToString()).ToString();
+                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+            }
+            catch (Exception) { inputTextBox.Text += length; }
         }
 
 
@@ -786,47 +812,36 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void StrtCalc_Click(object sender, RoutedEventArgs e)
         {
-            var calculate = CalculationClass.Calculate(inputTextBox.Text);
-            resultTextBox.Text = BufferClass.round ? Math.Round(calculate, BufferClass.roundItem).ToString() : calculate.ToString();
-            AddHistoryBlock(inputTextBox.Text, resultTextBox.Text);
-        }
-
-        /// <summary>
-        /// Рассчет функций из дополнительного окна => кнопка ")"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FunctionCalculate_Click(object sender, RoutedEventArgs e)
-        {
-            inputTextBox.Text += ")";
-            string value = "";
-            bool func = false;
-            for(int i = inputTextBox.Text.Length - 1; i >= 0; i--)
+            double calculate = 0.0;
+            try
             {
-                if (inputTextBox.Text[i] == '(') func = true;
-                if (func)
-                {
-                    if(inputTextBox.Text[i]!= '+' && inputTextBox.Text[i] != '-' && inputTextBox.Text[i] != '*' && inputTextBox.Text[i] != '/')
-                    {
-                        value = inputTextBox.Text[i] + value;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                else
-                {
-                    value = inputTextBox.Text[i] + value;
-                }
+                calculate = CalculationClass.Calculate(inputTextBox.Text);
+                resultTextBox.Text = BufferClass.round ? Math.Round(calculate, BufferClass.roundItem).ToString() : calculate.ToString();
+                AddHistoryBlock(inputTextBox.Text, resultTextBox.Text);
             }
-            inputTextBox.Text = inputTextBox.Text.Replace(value, CalculationClass.FunctionCalculation(value).ToString());
+            catch (Exception) { MessageBox.Show("Ошибка входных данных"); }
+            
         }
-
-
 
 
         #endregion //////////////
+
+        private void inputTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+           
+            if (e.Key == Key.Enter)
+            {
+                double calculate = 0.0;
+                try
+                {
+                    calculate = CalculationClass.Calculate(inputTextBox.Text);
+                    resultTextBox.Text = BufferClass.round ? Math.Round(calculate, BufferClass.roundItem).ToString() : calculate.ToString();
+                    AddHistoryBlock(inputTextBox.Text, resultTextBox.Text);
+                }
+                catch (Exception) { MessageBox.Show("Ошибка входных данных"); }
+            }
+        }
+
 
         
     }
