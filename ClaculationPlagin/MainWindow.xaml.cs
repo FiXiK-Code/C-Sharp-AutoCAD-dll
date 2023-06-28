@@ -72,9 +72,13 @@ namespace ClaculationPlagin
         /// <param name="text2"></param>
         private void AddHistoryBlock(string text1, string text2)
         {
-            var newElement = (StackPanel)((DataTemplate)FindResource("HistoryContentTemplate")).LoadContent();
-            var val = BufferClass.SetTemlate(newElement, text1, text2);
-            historyContentBlock.Children.Add(val);
+            try
+            {
+                var newElement = (StackPanel)((DataTemplate)FindResource("HistoryContentTemplate")).LoadContent();
+                var val = BufferClass.SetTemlate(newElement, text1, text2);
+                historyContentBlock.Children.Add(val);
+            }
+            catch (Exception) { }
         }
 
         /// <summary>
@@ -84,17 +88,22 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void functionBtn_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            WindowState windowState = this.WindowState;
+            try
+            {
+                WindowState windowState = this.WindowState;
 
-            this.WindowState = WindowState.Minimized;
+                this.WindowState = WindowState.Minimized;
 
-            FormulWindow formul = new FormulWindow();
-            formul.ShowDialog();
+                FormulWindow formul = new FormulWindow();
+                formul.ShowDialog();
 
-            inputTextBox.Text += BufferClass.formul != null ? BufferClass.formul : "";
-            BufferClass.formul = null;
+                inputTextBox.Text += BufferClass.formul != null ? BufferClass.formul : "";
+                BufferClass.formul = null;
 
-            this.WindowState = windowState;
+                this.WindowState = windowState;
+            }
+            catch (Exception) { }
+            
 
         }
 
@@ -105,18 +114,23 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void history_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (historyOpen)
+            try
             {
-                contentPanel.Width = 250;
-                history.Margin = new Thickness(90, 0, 0, 0);
-                historyOpen = false;
+                if (historyOpen)
+                {
+                    contentPanel.Width = 250;
+                    history.Margin = new Thickness(90, 0, 0, 0);
+                    historyOpen = false;
+                }
+                else
+                {
+                    contentPanel.Width = 450;
+                    history.Margin = new Thickness(290, 0, 0, 0);
+                    historyOpen = true;
+                }
             }
-            else
-            {
-                contentPanel.Width = 450;
-                history.Margin = new Thickness(290, 0, 0, 0);
-                historyOpen = true;
-            }
+            catch (Exception) { }
+            
 
         }
 
@@ -127,7 +141,11 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void remuveHistory_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            historyContentBlock.Children.Clear();
+            try
+            {
+                historyContentBlock.Children.Clear();
+            }
+            catch (Exception) { }
         }
 
         /// <summary>
@@ -137,7 +155,12 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void historyContent_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            inputTextBox.Text = ((TextBlock)sender).Text;
+            try
+            {
+                inputTextBox.Text = ((TextBlock)sender).Text;
+            }
+            catch (Exception) { }
+           
         }
 
         /// <summary>
@@ -147,7 +170,12 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void historyResult_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            resultTextBox.Text = ((TextBlock)sender).Text;
+            try
+            {
+                resultTextBox.Text = ((TextBlock)sender).Text;
+            }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -167,7 +195,12 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void pref_TextChanged(object sender, TextChangedEventArgs e)
         {
-            BufferClass.pref = pref.Text;
+            try
+            {
+                BufferClass.pref = pref.Text;
+            }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -177,7 +210,12 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void suff_TextChanged(object sender, TextChangedEventArgs e)
         {
-            BufferClass.suff = suff.Text;
+            try
+            {
+                BufferClass.suff = suff.Text;
+            }
+            catch (Exception) { }
+           
         }
 
         /// <summary>
@@ -187,7 +225,11 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void plusRound_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DotPositionTextBox.Text = (Convert.ToInt32(DotPositionTextBox.Text) + 1).ToString(); 
+            try
+            {
+                DotPositionTextBox.Text = (Convert.ToInt32(DotPositionTextBox.Text) + 1).ToString();
+            }
+            catch (Exception) { }
         }
 
         /// <summary>
@@ -197,7 +239,12 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void minusRound_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DotPositionTextBox.Text = (Convert.ToInt32(DotPositionTextBox.Text) >= 1? Convert.ToInt32(DotPositionTextBox.Text) - 1 : Convert.ToInt32(DotPositionTextBox.Text)).ToString();
+            try
+            {
+                DotPositionTextBox.Text = (Convert.ToInt32(DotPositionTextBox.Text) >= 1 ? Convert.ToInt32(DotPositionTextBox.Text) - 1 : Convert.ToInt32(DotPositionTextBox.Text)).ToString();
+
+            }
+            catch (Exception) { }
         }
 
         /// <summary>
@@ -207,7 +254,12 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void DotPositionTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            BufferClass.roundItem = Convert.ToInt32(DotPositionTextBox.Text);
+            try
+            {
+                BufferClass.roundItem = Convert.ToInt32(DotPositionTextBox.Text);
+            }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -217,10 +269,14 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void inoutDataSection_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            inputButton.Height = inputButton.Height == 22 ? 0 : 22;
-            RotateTransform rotateTransform = new RotateTransform(inputButton.Height == 22 ? 0 : 180);
+            try
+            {
+                inputButton.Height = inputButton.Height == 22 ? 0 : 22;
+                RotateTransform rotateTransform = new RotateTransform(inputButton.Height == 22 ? 0 : 180);
 
-            inoutDataSection.RenderTransform = rotateTransform;
+                inoutDataSection.RenderTransform = rotateTransform;
+            } catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -230,14 +286,19 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void multyCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (multyCheckBox.IsChecked == true)
+            try
             {
-                BufferClass.multyItem = true;
+                if (multyCheckBox.IsChecked == true)
+                {
+                    BufferClass.multyItem = true;
+                }
+                else
+                {
+                    BufferClass.multyItem = false;
+                }
             }
-            else
-            {
-                BufferClass.multyItem = false;
-            }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -247,14 +308,19 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void roundCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (roundCheckBox.IsChecked == true)
+            try
             {
-                BufferClass.round = true;
+                if (roundCheckBox.IsChecked == true)
+                {
+                    BufferClass.round = true;
+                }
+                else
+                {
+                    BufferClass.round = false;
+                }
             }
-            else
-            {
-                BufferClass.round = false;
-            }
+            catch (Exception) { }
+           
         }
 
         /// <summary>
@@ -264,21 +330,26 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void symbolMultyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (symbolMultyComboBox.SelectedIndex)
+            try
             {
-                case 0:
-                    BufferClass.znac = "*";
-                    break;
-                case 1:
-                    BufferClass.znac = "/";
-                    break;
-                case 2:
-                    BufferClass.znac = "+";
-                    break;
-                case 3:
-                    BufferClass.znac = "-";
-                    break;
+                switch (symbolMultyComboBox.SelectedIndex)
+                {
+                    case 0:
+                        BufferClass.znac = "*";
+                        break;
+                    case 1:
+                        BufferClass.znac = "/";
+                        break;
+                    case 2:
+                        BufferClass.znac = "+";
+                        break;
+                    case 3:
+                        BufferClass.znac = "-";
+                        break;
+                }
             }
+            catch (Exception) { }
+            
         }
 
         #endregion ///////////
@@ -293,31 +364,36 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void lengthInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string length;
-            if (!BufferClass.multyItem)
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetSize(null);
-                this.WindowState = windowState;
-                
-            }
-            else
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetSize(BufferClass.znac);
-                this.WindowState = windowState;
-               
-            }
             try
             {
-                length = CalculationClass.Calculate(length.ToString()).ToString();
-                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                string length;
+                if (!BufferClass.multyItem)
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetSize(null);
+                    this.WindowState = windowState;
+
+                }
+                else
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetSize(BufferClass.znac);
+                    this.WindowState = windowState;
+
+                }
+                try
+                {
+                    length = CalculationClass.Calculate(length.ToString()).ToString();
+                    inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                }
+                catch (Exception) { inputTextBox.Text += length; }
             }
-            catch (Exception) { inputTextBox.Text += length; }
+            catch (Exception) { }
+            
 
 
             
@@ -330,13 +406,18 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void sumLengthInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            WindowState windowState = this.WindowState;
+            try
+            {
+                WindowState windowState = this.WindowState;
 
-            this.WindowState = WindowState.Minimized;
-            string length = CommandClass.GetPolySize();
-            this.WindowState = windowState;
+                this.WindowState = WindowState.Minimized;
+                string length = CommandClass.GetPolySize();
+                this.WindowState = windowState;
+
+                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+            }
+            catch (Exception) { }
             
-            inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
         }
 
         /// <summary>
@@ -346,32 +427,37 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void coordinateInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string nap = "x";
-            string coordinate;
-            if (!BufferClass.multyItem)
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                coordinate = CommandClass.GetCoordinate(nap, null);
-                this.WindowState = windowState;
-                
-            }
-            else
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                coordinate = CommandClass.GetCoordinate(nap, BufferClass.znac);
-                this.WindowState = windowState;
-                
-            }
             try
             {
-                coordinate = CalculationClass.Calculate(coordinate.ToString()).ToString();
-                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(coordinate), BufferClass.roundItem).ToString() : coordinate;
+                string nap = "x";
+                string coordinate;
+                if (!BufferClass.multyItem)
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    coordinate = CommandClass.GetCoordinate(nap, null);
+                    this.WindowState = windowState;
+
+                }
+                else
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    coordinate = CommandClass.GetCoordinate(nap, BufferClass.znac);
+                    this.WindowState = windowState;
+
+                }
+                try
+                {
+                    coordinate = CalculationClass.Calculate(coordinate.ToString()).ToString();
+                    inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(coordinate), BufferClass.roundItem).ToString() : coordinate;
+                }
+                catch (Exception) { inputTextBox.Text += coordinate; }
             }
-            catch (Exception) { inputTextBox.Text += coordinate; }
+            catch (Exception) { }
+            
 
             
         }
@@ -383,32 +469,37 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void ploshInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string length;
-            if (!BufferClass.multyItem)
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetPlosh(null);
-                this.WindowState = windowState;
-
-            }
-            else
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetPlosh(BufferClass.znac);
-                this.WindowState = windowState;
-
-            }
-
             try
             {
-                length = CalculationClass.Calculate(length.ToString()).ToString();
-                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                string length;
+                if (!BufferClass.multyItem)
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetPlosh(null);
+                    this.WindowState = windowState;
+
+                }
+                else
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetPlosh(BufferClass.znac);
+                    this.WindowState = windowState;
+
+                }
+
+                try
+                {
+                    length = CalculationClass.Calculate(length.ToString()).ToString();
+                    inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                }
+                catch (Exception) { inputTextBox.Text += length; }
             }
-            catch (Exception) { inputTextBox.Text += length; }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -418,32 +509,37 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void textInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string length;
-            if (!BufferClass.multyItem)
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetTextValue(true, null);
-                this.WindowState = windowState;
-               
-            }
-            else
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetTextValue(true, BufferClass.znac);
-                this.WindowState = windowState;
-                
-            }
-
             try
             {
-                length = CalculationClass.Calculate(length.ToString()).ToString();
-                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                string length;
+                if (!BufferClass.multyItem)
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetTextValue(true, null);
+                    this.WindowState = windowState;
+
+                }
+                else
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetTextValue(true, BufferClass.znac);
+                    this.WindowState = windowState;
+
+                }
+
+                try
+                {
+                    length = CalculationClass.Calculate(length.ToString()).ToString();
+                    inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                }
+                catch (Exception) { inputTextBox.Text += length; }
             }
-            catch (Exception) { inputTextBox.Text += length; }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -453,31 +549,36 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void vinosInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string length;
-            if (!BufferClass.multyItem)
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetTextValue(false, null);
-                this.WindowState = windowState;
-                
-            }
-            else
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetTextValue(false, BufferClass.znac);
-                this.WindowState = windowState;
-                
-            }
             try
             {
-                length = CalculationClass.Calculate(length.ToString()).ToString();
-                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                string length;
+                if (!BufferClass.multyItem)
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetTextValue(false, null);
+                    this.WindowState = windowState;
+
+                }
+                else
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetTextValue(false, BufferClass.znac);
+                    this.WindowState = windowState;
+
+                }
+                try
+                {
+                    length = CalculationClass.Calculate(length.ToString()).ToString();
+                    inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                }
+                catch (Exception) { inputTextBox.Text += length; }
             }
-            catch (Exception) { inputTextBox.Text += length; }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -487,31 +588,36 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void tableInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string length;
-            if (!BufferClass.multyItem)
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetTableValue(null);
-                this.WindowState = windowState;
-                
-            }
-            else
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetTableValue(BufferClass.znac);
-                this.WindowState = windowState;
-                
-            }
             try
             {
-                length = CalculationClass.Calculate(length.ToString()).ToString();
-                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                string length;
+                if (!BufferClass.multyItem)
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetTableValue(null);
+                    this.WindowState = windowState;
+
+                }
+                else
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetTableValue(BufferClass.znac);
+                    this.WindowState = windowState;
+
+                }
+                try
+                {
+                    length = CalculationClass.Calculate(length.ToString()).ToString();
+                    inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                }
+                catch (Exception) { inputTextBox.Text += length; }
             }
-            catch (Exception) { inputTextBox.Text += length; }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -521,29 +627,34 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void dimensionInput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string length;
-            if (!BufferClass.multyItem)
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetDimension(null);
-                this.WindowState = windowState;
-            }
-            else
-            {
-                WindowState windowState = this.WindowState;
-
-                this.WindowState = WindowState.Minimized;
-                length = CommandClass.GetDimension(BufferClass.znac);
-                this.WindowState = windowState;
-            }
             try
             {
-                length = CalculationClass.Calculate(length.ToString()).ToString();
-                inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                string length;
+                if (!BufferClass.multyItem)
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetDimension(null);
+                    this.WindowState = windowState;
+                }
+                else
+                {
+                    WindowState windowState = this.WindowState;
+
+                    this.WindowState = WindowState.Minimized;
+                    length = CommandClass.GetDimension(BufferClass.znac);
+                    this.WindowState = windowState;
+                }
+                try
+                {
+                    length = CalculationClass.Calculate(length.ToString()).ToString();
+                    inputTextBox.Text += BufferClass.round ? Math.Round(Convert.ToDouble(length), BufferClass.roundItem).ToString() : length;
+                }
+                catch (Exception) { inputTextBox.Text += length; }
             }
-            catch (Exception) { inputTextBox.Text += length; }
+            catch (Exception) { }
+            
         }
 
 
@@ -558,12 +669,17 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void onseTextOutput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string result = resultTextBox.Text;
-            WindowState windowState = this.WindowState;
+            try
+            {
+                string result = resultTextBox.Text;
+                WindowState windowState = this.WindowState;
 
-            this.WindowState = WindowState.Minimized;
-            CommandClass.InsertOneText(BufferClass.pref + " " + result + " " + BufferClass.suff);
-            this.WindowState = windowState;
+                this.WindowState = WindowState.Minimized;
+                CommandClass.InsertOneText(BufferClass.pref + " " + result + " " + BufferClass.suff);
+                this.WindowState = windowState;
+            }
+            catch (Exception) { }
+            
             
         }
 
@@ -574,12 +690,17 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void plusOnseTextOutput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string result = resultTextBox.Text;
-            WindowState windowState = this.WindowState;
+            try
+            {
+                string result = resultTextBox.Text;
+                WindowState windowState = this.WindowState;
 
-            this.WindowState = WindowState.Minimized;
-            CommandClass.ReplaceOneText(BufferClass.pref + " " + result + " " + BufferClass.suff);
-            this.WindowState = windowState;
+                this.WindowState = WindowState.Minimized;
+                CommandClass.ReplaceOneText(BufferClass.pref + " " + result + " " + BufferClass.suff);
+                this.WindowState = windowState;
+            }
+            catch (Exception) { }
+            
             
         }
 
@@ -590,12 +711,17 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void tableOutput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string result = resultTextBox.Text;
-            WindowState windowState = this.WindowState;
+            try
+            {
+                string result = resultTextBox.Text;
+                WindowState windowState = this.WindowState;
 
-            this.WindowState = WindowState.Minimized;
-            CommandClass.InsertTableResult(BufferClass.pref + " " + result + " " + BufferClass.suff);
-            this.WindowState = windowState;
+                this.WindowState = WindowState.Minimized;
+                CommandClass.InsertTableResult(BufferClass.pref + " " + result + " " + BufferClass.suff);
+                this.WindowState = windowState;
+            }
+            catch (Exception) { }
+           
             
         }
 
@@ -606,12 +732,17 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void multyTextOutput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string result = resultTextBox.Text;
-            WindowState windowState = this.WindowState;
+            try
+            {
+                string result = resultTextBox.Text;
+                WindowState windowState = this.WindowState;
 
-            this.WindowState = WindowState.Minimized;
-            CommandClass.InsertPolyText(BufferClass.pref + " " + result + " " + BufferClass.suff);
-            this.WindowState = windowState;
+                this.WindowState = WindowState.Minimized;
+                CommandClass.InsertPolyText(BufferClass.pref + " " + result + " " + BufferClass.suff);
+                this.WindowState = windowState;
+            }
+            catch (Exception) { }
+            
             
         }
 
@@ -622,12 +753,17 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void vinosOuput_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string result = resultTextBox.Text;
-            WindowState windowState = this.WindowState;
+            try
+            {
+                string result = resultTextBox.Text;
+                WindowState windowState = this.WindowState;
 
-            this.WindowState = WindowState.Minimized;
-            CommandClass.LeaderInsert(BufferClass.pref + " " + result + " " + BufferClass.suff);
-            this.WindowState = windowState;
+                this.WindowState = WindowState.Minimized;
+                CommandClass.LeaderInsert(BufferClass.pref + " " + result + " " + BufferClass.suff);
+                this.WindowState = windowState;
+            }
+            catch (Exception) { }
+            
             
         }
 
@@ -642,7 +778,12 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void NumButton_Click(object sender, RoutedEventArgs e)
         {
-            inputTextBox.Text += ((Button)sender).Content.ToString();
+            try
+            {
+                inputTextBox.Text += ((Button)sender).Content.ToString();
+            }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -652,7 +793,12 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void FormulButton_Click(object sender, RoutedEventArgs e)
         {
-            inputTextBox.Text += ((Button)sender).Content.ToString() + "(";
+            try
+            {
+                inputTextBox.Text += ((Button)sender).Content.ToString() + "(";
+            }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -782,7 +928,11 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void PM_Click(object sender, RoutedEventArgs e)
         {
-            resultTextBox.Text = resultTextBox.Text[0] != '-' ? '-' + resultTextBox.Text : resultTextBox.Text.Remove(0, 1);
+            try
+            {
+                resultTextBox.Text = resultTextBox.Text[0] != '-' ? '-' + resultTextBox.Text : resultTextBox.Text.Remove(0, 1);
+            }
+            catch (Exception) { }
         }
 
         /// <summary>
@@ -792,7 +942,12 @@ namespace ClaculationPlagin
         /// <param name="e"></param>
         private void StrButton_Click(object sender, RoutedEventArgs e)
         {
-            inputTextBox.Text = inputTextBox.Text.Length !=0 ? inputTextBox.Text.Remove(inputTextBox.Text.Length - 1, 1) : inputTextBox.Text;
+            try
+            {
+                inputTextBox.Text = inputTextBox.Text.Length != 0 ? inputTextBox.Text.Remove(inputTextBox.Text.Length - 1, 1) : inputTextBox.Text;
+            }
+            catch (Exception) { }
+            
         }
 
         /// <summary>
@@ -823,12 +978,14 @@ namespace ClaculationPlagin
             
         }
 
-
-        #endregion //////////////
-
+        /// <summary>
+        /// обработка нажатия Enter для начала вычислений
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void inputTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-           
+
             if (e.Key == Key.Enter)
             {
                 double calculate = 0.0;
@@ -842,7 +999,7 @@ namespace ClaculationPlagin
             }
         }
 
+        #endregion //////////////
 
-        
     }
 }
